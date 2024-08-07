@@ -1,0 +1,22 @@
+.block {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 20px 0;
+  border-top: 1px solid var(--border-color);
+
+  .block__title {
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 39px;
+    color: var(--primary-font-color);
+    text-transform: uppercase;
+  }
+
+  .block__content {
+    width: 100%;
+    flex-direction: column;
+  }
+}

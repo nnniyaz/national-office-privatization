@@ -1,0 +1,236 @@
+.header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .header__upper_layer {
+    width: 100%;
+    height: 61px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border-color);
+
+    .header__upper_layer__group {
+      height: 100%;
+      display: flex;
+      align-items: center;
+
+      .header__upper_layer__group__logo_block {
+        height: calc(100% - 12px);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding-right: 30px;
+        border-right: 1px solid var(--border-color);
+
+        .header__upper_layer__group__logo_block__gov_logo {
+          width: 40px;
+          height: 40px;
+
+          .header__upper_layer__group__logo_block__gov_logo__link {
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+          }
+        }
+
+        .header__upper_layer__group__logo_block__nop_logo {
+          height: 100%;
+
+          .header__upper_layer__group__logo_block__nop_logo__link {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            cursor: pointer;
+
+            h1 {
+              font-weight: 600;
+              font-size: 12px;
+              line-height: 16px;
+              text-transform: uppercase;
+              color: var(--primary-font-color);
+            }
+
+            h2 {
+              font-weight: 600;
+              font-size: 12px;
+              line-height: 16px;
+              text-transform: uppercase;
+              color: var(--primary-font-color);
+            }
+          }
+        }
+      }
+
+      .header__upper_layer__group__contacts {
+        height: 100%;
+        padding-left: 10px;
+
+        .header__upper_layer__group__contacts__list {
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          padding: 10px 0;
+          list-style: none;
+
+          .header__upper_layer__group__contacts__list__item {
+            width: fit-content;
+
+            .header__upper_layer__group__contacts__list__item__link {
+              display: flex;
+              align-items: center;
+              gap: 10px;
+              text-decoration: none;
+
+              &:hover {
+
+                .header__upper_layer__group__contacts__list__item__link__icon {
+                  color: var(--link-color);
+                }
+
+                p {
+                  color: var(--link-color);
+                }
+              }
+
+              .header__upper_layer__group__contacts__list__item__link__icon {
+                color: var(--primary-font-color);
+                transition: .1s linear;
+              }
+
+              p {
+                font-weight: 400;
+                font-size: 12px;
+                line-height: 16px;
+                color: var(--primary-font-color);
+                transition: .1s linear;
+              }
+            }
+
+            .header__upper_layer__group__contacts__list__item__link__active {
+              @extend .header__upper_layer__group__contacts__list__item__link;
+
+              p {
+                color: var(--link-color);
+              }
+            }
+          }
+        }
+      }
+
+      &:last-child {
+        align-items: flex-start;
+      }
+
+      .header__upper_layer__group__langs {
+        height: 100%;
+        display: flex;
+
+        .header__upper_layer__group__langs__list {
+          display: flex;
+          list-style: none;
+
+          .header__upper_layer__group__langs__list__item {
+            height: fit-content;
+            padding: 0 7px;
+            border-right: 1px solid var(--primary-font-color);
+
+            &:last-child {
+              border-right: none;
+            }
+
+            p {
+              font-weight: 400;
+              font-size: 14px;
+              line-height: 16px;
+              color: var(--primary-font-color);
+              cursor: pointer;
+              transition: .1s linear;
+
+              &:hover {
+                color: var(--link-color);
+              }
+            }
+          }
+
+          .header__upper_layer__group__langs__list__item__active {
+            @extend .header__upper_layer__group__langs__list__item;
+
+            p {
+              color: var(--link-color);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .header__lower_layer {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+
+    .header__lower_layer__navigation {
+      width: 100%;
+
+      .header__lower_layer__navigation__list {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 40px;
+        list-style: none;
+
+        .header__lower_layer__navigation__list__item {
+
+          .header__lower_layer__navigation__list__item__link {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            text-decoration: none;
+            cursor: pointer;
+
+            &:hover {
+              .header__lower_layer__navigation__list__item__link__icon {
+                color: var(--link-color);
+              }
+
+              p {
+                color: var(--link-color);
+              }
+            }
+
+            .header__lower_layer__navigation__list__item__link__icon {
+              color: var(--primary-font-color);
+              transition: .1s linear;
+            }
+
+            p {
+              font-weight: 500;
+              font-size: 16px;
+              line-height: 16px;
+              color: var(--primary-font-color);
+              transition: .1s linear;
+            }
+          }
+
+          .header__lower_layer__navigation__list__item__link__active {
+            @extend .header__lower_layer__navigation__list__item__link;
+
+            .header__lower_layer__navigation__list__item__link__icon {
+              color: var(--link-color);
+            }
+
+            p {
+              color: var(--link-color);
+            }
+          }
+        }
+      }
+    }
+  }
+}

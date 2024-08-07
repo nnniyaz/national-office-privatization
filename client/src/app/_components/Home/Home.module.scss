@@ -1,0 +1,115 @@
+.home {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .welcome_block {
+    width: 100%;
+    height: 360px;
+    padding: 0 20px;
+
+    .welcome_block__statement {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .welcome_block__statement__group {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 20px;
+        padding: 20px;
+
+        h2 {
+          font-weight: 600;
+          font-size: 33px;
+          line-height: 40px;
+          color: var(--primary-font-color);
+          text-transform: uppercase;
+        }
+
+        .welcome_block__statement__group__player {
+          position: relative;
+          width: 100%;
+          height: 175px;
+          border-radius: 10px;
+
+          .welcome_block__statement__group__player__cover {
+            width: 100%;
+            height: 100%;
+          }
+
+          .welcome_block__statement__group__player__btn__container {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+
+            .welcome_block__statement__group__player__btn {
+              transition: .1s linear;
+              cursor: pointer;
+
+              color: var(--primary-font-color);
+
+              &:hover {
+                transform: scale(1.05);
+                color: var(--link-color);
+              }
+
+              &:active {
+                transform: scale(0.95);
+                opacity: 0.8;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .mission {
+    width: 100%;
+    display: flex;
+    gap: 30px;
+
+    .mission__group {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+
+      .mission__group__text {
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 25px;
+        color: var(--primary-font-color);
+      }
+
+      .step {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+        .step__point {
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          background-color: var(--secondary-font-color);
+        }
+
+        .step__route {
+          width: 1px;
+          height: 107px;
+          border-right: 2px dotted var(--secondary-font-color);
+        }
+      }
+    }
+  }
+}
