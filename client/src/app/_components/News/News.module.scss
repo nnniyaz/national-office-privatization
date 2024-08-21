@@ -1,0 +1,15 @@
+.main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 40px 0 40px 0;
+
+  .title {
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 39px;
+    text-transform: uppercase;
+    color: #212121;
+  }
+}

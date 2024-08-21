@@ -133,3 +133,76 @@
     }
   }
 }
+
+@media only screen and (max-width: 1200px) {
+  .footer {
+
+    .footer__upper_layer {
+      flex-direction: column;
+      gap: 30px;
+
+      .footer__upper_layer__group {
+        padding: 10px;
+        border-right: none;
+
+        &:first-child {
+          display: none;
+        }
+
+        .footer__upper_layer__group__logo_block {
+
+          .footer__upper_layer__group__logo_block__gov_logo {
+
+            .footer__upper_layer__group__logo_block__gov_logo__link {
+
+            }
+          }
+
+          .footer__upper_layer__group__logo_block__nop_logo {
+
+            .footer__upper_layer__group__logo_block__nop_logo__link {
+
+              h2 {
+
+              }
+            }
+          }
+        }
+
+        .footer__upper_layer__group__links_list {
+
+          .footer__upper_layer__group__links_list__item {
+
+            .footer__upper_layer__group__links_list__item__link {
+
+              p {
+
+              }
+            }
+          }
+        }
+
+        .footer__upper_layer__group__contacts_list {
+
+          .footer__upper_layer__group__contacts_list__item {
+
+            .footer__upper_layer__group__contacts_list__item__link {
+
+              p {
+
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .footer__lower_layer {
+      height: 70px;
+
+      p {
+
+      }
+    }
+  }
+}

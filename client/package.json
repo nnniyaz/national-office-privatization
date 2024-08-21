@@ -10,18 +10,25 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@2gis/mapgl": "^1.49.0",
+    "@ant-design/icons": "^5.4.0",
     "@svgr/webpack": "^8.1.0",
+    "antd": "^5.20.1",
     "csv-parse": "^5.5.6",
+    "mongodb": "^6.8.0",
     "next": "14.2.5",
     "nextjs-toploader": "^1.6.12",
     "react": "^18",
+    "react-countup": "^6.5.3",
     "react-dom": "^18",
+    "react-transition-group": "^4.4.5",
     "swiper": "^11.1.9"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/react-transition-group": "^4.4.10",
     "sass": "^1.77.8",
     "typescript": "^5"
   }

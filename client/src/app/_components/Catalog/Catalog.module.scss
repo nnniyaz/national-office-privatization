@@ -1,0 +1,264 @@
+.main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 40px 0 40px 0;
+
+  .title {
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 39px;
+    text-transform: uppercase;
+    color: #212121;
+  }
+
+  .tab__bar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+
+    .tab {
+      width: calc((100% - 30px) / 4);
+      border-radius: 20px;
+      //padding: 10px 15px;
+
+      div {
+        border-radius: 20px;
+      }
+    }
+
+    .tab__active {
+      padding: 10px 15px;
+      border-radius: 20px;
+      border: 1px solid var(--link-color);
+      background-color: #005FF9;
+      transition: .1s linear;
+      cursor: pointer;
+
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 20px;
+      color: #FFFFFF;
+    }
+  }
+
+  .container {
+    width: 100%;
+    display: flex;
+    gap: 20px;
+
+    .group {
+      width: calc((100% - 20px) / 2);
+
+      .enterprises__group__list {
+        width: 100%;
+        height: 600px;
+        overflow-y: scroll;
+
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        list-style: none;
+
+        li {
+          .enterprise_item {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            border-top: 1px solid var(--border-color);
+            transition: .1s linear;
+            padding: 20px 10px 10px 10px;
+            cursor: pointer;
+
+            &:first-child {
+              border-top: none;
+            }
+
+            .enterprise_item__title {
+              margin-bottom: 10px;
+
+              font-weight: 600;
+              font-size: 20px;
+              line-height: 24px;
+              text-transform: uppercase;
+              color: var(--primary-font-color);
+            }
+
+            .enterprise_item__desc {
+              margin-bottom: 20px;
+
+              font-weight: 400;
+              font-size: 15px;
+              line-height: 18px;
+              color: var(--primary-font-color);
+            }
+
+            .enterprise_item__link {
+              font-weight: 400;
+              font-size: 15px;
+              line-height: 18px;
+              color: var(--link-color);
+              text-align: right;
+              cursor: pointer;
+              transition: .1s;
+
+              &:hover {
+                opacity: .7;
+                text-decoration: underline;
+              }
+            }
+
+            &:hover {
+              background-color: #F5F5F5;
+              transition: .1s linear;
+              border-radius: 10px;
+              border-top: 1px solid #F5F5F5;
+            }
+          }
+
+          .enterprise_item__active {
+            @extend .enterprise_item;
+            background-color: #F5F5F5;
+            transition: .1s linear;
+            padding: 10px;
+            border-radius: 10px;
+            border-top: none;
+
+            &:hover {
+              border-top: none;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.details {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+
+  h3 {
+    font-weight: 700;
+    font-size: 38px;
+    line-height: 46px;
+    text-transform: uppercase;
+    color: var(--primary-font-color);
+  }
+
+  .row {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    .row__label {
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 20px;
+      color: var(--primary-font-color);
+    }
+
+    .row__value {
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 20px;
+      color: var(--primary-font-color);
+    }
+  }
+}
+
+.modal {
+  display: none;
+}
+
+@media only screen and (max-width: 1200px) {
+  .main {
+
+    .title {
+
+    }
+
+    .tab__bar {
+      flex-direction: column;
+
+      .tab {
+        width: 100%;
+
+        div {
+
+        }
+      }
+
+      .tab__active {
+
+      }
+    }
+
+    .container {
+      flex-direction: column;
+
+      .group {
+        width: 100%;
+
+        &:last-child {
+          display: none;
+        }
+
+        .enterprises__group__list {
+          height: auto;
+
+          li {
+            .enterprise_item {
+
+              .enterprise_item__title {
+
+              }
+
+              .enterprise_item__desc {
+
+              }
+
+              .enterprise_item__link {
+
+              }
+            }
+
+            .enterprise_item__active {
+
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .details {
+
+    h3 {
+      font-size: 20px;
+      line-height: 23px;
+    }
+
+    .row {
+
+      .row__label {
+
+      }
+
+      .row__value {
+
+      }
+    }
+  }
+
+  .modal {
+    display: block;
+  }
+}

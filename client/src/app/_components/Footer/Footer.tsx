@@ -19,9 +19,9 @@ export default function Footer() {
                         </div>
                         <div className={classes.footer__upper_layer__group__logo_block__nop_logo}>
                             <a className={classes.footer__upper_layer__group__logo_block__nop_logo__link}>
-                                <h2>Жекешелендірудің ұлттық басқармасы</h2>
+                                <h2>Ұлттық жекешелендіру кеңсесі</h2>
                                 <h2>Национальный офис приватизации</h2>
-                                <h2>National Privatization Office</h2>
+                                <h2>National Office of Privatization</h2>
                             </a>
                         </div>
                     </div>
@@ -61,7 +61,7 @@ export default function Footer() {
                                 href={"tel:+77771234567"}
                                 className={classes.footer__upper_layer__group__contacts_list__item__link}
                             >
-                                <p>{`${translate("phone_number", langRetrieve())}: + 7 777 123 45 67`}</p>
+                                <p>{`${translate("phone_number", langRetrieve())}: +7 747 451 9942`}</p>
                             </a>
                         </li>
                         <li className={classes.footer__upper_layer__group__contacts_list__item}>

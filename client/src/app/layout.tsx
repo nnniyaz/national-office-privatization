@@ -10,7 +10,7 @@ import "./layout.scss";
 const montserrat = Montserrat({subsets: ["latin"]});
 
 export const metadata: Metadata = {
-    title: "Жекешелендірудің ұлттық басқармасы",
+    title: "Ұлттық жекешелендіру кеңсесі",
     description: "Мемлекеттiң кәсiпкерлiкке қатысуының мақсаттары ел экономикасын дамыту, оның бәсекеге қабiлеттiлiгiн, өнiмдiлiгi мен жұмыспен қамтылуын арттыру, ұлттық қауiпсiздiктi және Республика азаматтарының әлеуметтiк кепiлдiктерiн қамтамасыз ету болып табылады. Жекешелендірудің мақсаттары жеке кәсіпкерлікті кеңейту, мемлекеттік меншікті оңтайландыру, жекешелендірілген активтерді пайдалану шығындарын азайту және тиімділігін арттыру, сондай-ақ мемлекеттің реттеу саясатын жетілдіру арқылы ел экономикасының тиімділігін арттыру болып табылады."
 };
 
@@ -32,9 +32,9 @@ export default function RootLayout({children}: Readonly<{ children: React.ReactN
         </head>
         <body className={montserrat.className} suppressHydrationWarning={true}>
         <main className={"main"}>
+            <NextTopLoader color={"#005FF9"}/>
+            <Header/>
             <div className={"container"}>
-                <NextTopLoader color={"#005FF9"}/>
-                <Header/>
                 <div className={"content"}>{children}</div>
                 <Footer/>
             </div>

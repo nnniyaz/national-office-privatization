@@ -1,10 +1,16 @@
 .header {
+  position: sticky;
+  top: 0;
   width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  background-color: #FFFFFF;
+  padding-top: 20px;
+  z-index: 999;
 
   .header__upper_layer {
-    width: 100%;
+    width: 1200px;
     height: 61px;
     display: flex;
     align-items: center;
@@ -44,6 +50,7 @@
             flex-direction: column;
             justify-content: center;
             cursor: pointer;
+            text-decoration: none;
 
             h1 {
               font-weight: 600;
@@ -165,6 +172,10 @@
           }
         }
       }
+
+      .header__upper_layer__group__menu {
+        display: none;
+      }
     }
   }
 
@@ -173,9 +184,11 @@
     height: 60px;
     display: flex;
     align-items: center;
+    justify-content: center;
+    transition: .1s linear;
 
     .header__lower_layer__navigation {
-      width: 100%;
+      width: 1200px;
 
       .header__lower_layer__navigation__list {
         width: 100%;
@@ -227,6 +240,153 @@
 
             p {
               color: var(--link-color);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .header {
+    padding: 15px;
+    box-shadow: rgb(0 0 0 / 10%) 0 4px 8px 0;
+
+    .header__upper_layer {
+      width: 100%;
+      border-bottom: none;
+      height: 40px;
+
+      .header__upper_layer__group {
+
+        .header__upper_layer__group__logo_block {
+          border-right: none;
+          gap: 5px;
+
+          .header__upper_layer__group__logo_block__gov_logo {
+            width: 40px;
+            height: 40px;
+
+            .header__upper_layer__group__logo_block__gov_logo__link {
+
+            }
+          }
+
+          .header__upper_layer__group__logo_block__nop_logo {
+
+            .header__upper_layer__group__logo_block__nop_logo__link {
+
+              h1 {
+                font-size: 11px;
+                line-height: 14px;
+              }
+
+              h2 {
+                font-size: 11px;
+                line-height: 14px;
+              }
+            }
+          }
+        }
+
+        .header__upper_layer__group__contacts {
+          display: none;
+
+          .header__upper_layer__group__contacts__list {
+
+            .header__upper_layer__group__contacts__list__item {
+
+              .header__upper_layer__group__contacts__list__item__link {
+
+                .header__upper_layer__group__contacts__list__item__link__icon {
+
+                }
+
+                p {
+
+                }
+              }
+
+              .header__upper_layer__group__contacts__list__item__link__active {
+
+                p {
+
+                }
+              }
+            }
+          }
+        }
+
+        &:last-child {
+          align-items: center;
+        }
+
+        .header__upper_layer__group__langs {
+          display: none;
+
+          .header__upper_layer__group__langs__list {
+
+            .header__upper_layer__group__langs__list__item {
+
+              &:last-child {
+                border-right: none;
+              }
+
+              p {
+
+              }
+            }
+
+            .header__upper_layer__group__langs__list__item__active {
+              p {
+
+              }
+            }
+          }
+        }
+
+        .header__upper_layer__group__menu {
+          display: block;
+          width: 30px;
+          height: 30px;
+
+          color: var(--primary-font-color);
+        }
+      }
+    }
+
+    .header__lower_layer {
+      display: none;
+
+      .header__lower_layer__navigation {
+        width: 100%;
+        display: none;
+
+        .header__lower_layer__navigation__list {
+
+          .header__lower_layer__navigation__list__item {
+
+            .header__lower_layer__navigation__list__item__link {
+
+              .header__lower_layer__navigation__list__item__link__icon {
+
+              }
+
+              p {
+
+              }
+            }
+
+            .header__lower_layer__navigation__list__item__link__active {
+
+              .header__lower_layer__navigation__list__item__link__icon {
+
+              }
+
+              p {
+
+              }
             }
           }
         }

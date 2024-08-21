@@ -1,0 +1,208 @@
+.header__upper_layer__group__langs {
+  display: flex;
+  justify-self: flex-end;
+
+  .header__upper_layer__group__langs__list {
+    display: flex;
+    list-style: none;
+
+    .header__upper_layer__group__langs__list__item {
+      height: fit-content;
+      padding: 0 7px;
+      border-right: 1px solid var(--primary-font-color);
+
+      &:last-child {
+        border-right: none;
+      }
+
+      p {
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 16px;
+        color: var(--primary-font-color);
+        cursor: pointer;
+        transition: .1s linear;
+
+        &:hover {
+          color: var(--link-color);
+        }
+      }
+    }
+
+    .header__upper_layer__group__langs__list__item__active {
+      @extend .header__upper_layer__group__langs__list__item;
+
+      p {
+        color: var(--link-color);
+      }
+    }
+  }
+}
+
+.sidebar__container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  transition: .1s linear;
+  z-index: 999;
+
+  .sidebar {
+    width: 270px;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: var(--primary-bg-color);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    border-radius: 0 28px 28px 0;
+    padding: 16px;
+    opacity: 0;
+    transition: .1s linear;
+
+    .sidebar__header {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .sidebar__header__item {
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    ul {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      list-style: none;
+
+      .sidebar__item {
+        width: 100%;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 16px;
+        border-radius: 12px;
+        text-decoration: none;
+
+        svg {
+          width: 24px;
+          height: 24px;
+          color: var(--link-color);
+          transition: .2s linear;
+        }
+
+        .sidebar__item__text {
+          font-weight: 500;
+          font-size: 16px;
+          line-height: 19px;
+          color: var(--primary-font-color);
+          transition: .2s linear;
+        }
+
+        @media (hover: hover) {
+          &:hover {
+            background-color: var(--link-color);
+
+            svg {
+              color: var(--accent-font-color);
+            }
+
+            .sidebar__item__text {
+              color: var(--accent-font-color);
+            }
+          }
+        }
+      }
+
+      .sidebar__item__active {
+        width: 100%;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 16px;
+        border-radius: 12px;
+        background-color: var(--link-color);
+        text-decoration: none;
+
+        svg {
+          width: 24px;
+          height: 24px;
+          color: var(--primary-font-color);
+          transition: .2s linear;
+        }
+
+        .sidebar__item__text {
+          font-weight: 500;
+          font-size: 16px;
+          line-height: 19px;
+          color: var(--primary-bg-color);
+          transition: .2s linear;
+        }
+
+        @media (hover: hover) {
+          &:hover {
+            opacity: .8;
+          }
+        }
+      }
+    }
+  }
+}
+
+.sidebar__container__enter__active {
+  background-color: rgba(255, 255, 255, .6);
+  transition: .3s linear;
+}
+
+.sidebar__container__enter__done {
+  background-color: rgba(255, 255, 255, .6);
+  transition: .3s linear;
+
+  & .sidebar {
+    animation: slideInLeft .3s forwards;
+    opacity: 1;
+  }
+}
+
+.sidebar__container__exit__active {
+  transition: .3s linear;
+
+  & .sidebar {
+    animation: slideOutLeft .3s forwards;
+  }
+}
+
+.sidebar__container__exit__done {
+  background-color: rgba(255, 255, 255, 0);
+  transition: .3s linear;
+
+  & .sidebar {
+    opacity: 0;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutLeft {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
