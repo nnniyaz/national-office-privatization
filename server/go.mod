@@ -4,13 +4,14 @@ go 1.22.1
 
 require (
 	github.com/alexedwards/argon2id v1.0.0
-	github.com/aws/aws-sdk-go v1.55.5
-	github.com/go-chi/chi/v5 v5.1.0
+	github.com/go-chi/chi/v5 v5.0.12
 	github.com/go-chi/cors v1.2.1
 	github.com/google/uuid v1.6.0
 	github.com/swaggo/http-swagger v1.3.4
-	go.mongodb.org/mongo-driver v1.16.1
+	github.com/swaggo/swag v1.16.3
+	go.mongodb.org/mongo-driver v1.14.0
 	go.uber.org/zap v1.27.0
+	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 )
 
 require (

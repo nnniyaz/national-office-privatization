@@ -32,6 +32,7 @@
         font-size: 16px;
         line-height: 20px;
         color: var(--primary-font-color);
+        text-decoration: none;
         cursor: pointer;
         transition: .1s linear;
 
@@ -47,6 +48,7 @@
         font-size: 16px;
         line-height: 20px;
         color: var(--link-color);
+        text-decoration: none;
         cursor: pointer;
         transition: .1s linear;
 
@@ -161,6 +163,12 @@
   gap: 5px;
   text-decoration: none;
 
+  &:hover {
+    .news__title {
+      color: var(--link-color);
+    }
+  }
+
   .news__cover {
     width: 100%;
     height: 159px;
@@ -186,6 +194,7 @@
     font-size: 16px;
     line-height: 25px;
     color: var(--primary-font-color);
+    transition: .1s linear;
   }
 }
 
