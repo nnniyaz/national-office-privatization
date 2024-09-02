@@ -3,478 +3,230 @@
 package core
 
 const (
-	TXT_UNKNOWN_ERROR                                                          TxtKey = 1
-	TXT_EMPTY_FIRSTNAME                                                        TxtKey = 2
-	TXT_FIRSTNAME_TOO_SHORT                                                    TxtKey = 3
-	TXT_FIRSTNAME_TOO_LONG                                                     TxtKey = 4
-	TXT_EMPTY_LASTNAME                                                         TxtKey = 5
-	TXT_LASTNAME_TOO_SHORT                                                     TxtKey = 6
-	TXT_LASTNAME_TOO_LONG                                                      TxtKey = 7
-	TXT_EMPTY_PASSWORD                                                         TxtKey = 8
-	TXT_PASSWORD_TOO_SHORT                                                     TxtKey = 9
-	TXT_PASSWORD_TOO_LONG                                                      TxtKey = 10
-	TXT_INVALID_PASSWORD                                                       TxtKey = 11
-	TXT_SAME_PASSWORD                                                          TxtKey = 12
-	TXT_EMPTY_EMAIL                                                            TxtKey = 13
-	TXT_INVALID_EMAIL                                                          TxtKey = 14
-	TXT_EMAIL_DOESNT_EXIST                                                     TxtKey = 15
-	TXT_EMAIL_ALREADY_EXISTS                                                   TxtKey = 16
-	TXT_INVALID_USER_TYPE                                                      TxtKey = 17
-	TXT_USER_NOT_FOUND                                                         TxtKey = 18
-	TXT_ACCOUNT_NOT_ACTIVE                                                     TxtKey = 19
-	TXT_EMPTY_MERCHANT_ROLE                                                    TxtKey = 20
-	TXT_INVALID_MERCHANT_ROLE                                                  TxtKey = 21
-	TXT_EMPTY_CURRENCY                                                         TxtKey = 22
-	TXT_INVALID_CURRENCY                                                       TxtKey = 23
-	TXT_EMPTY_PHONE_NUMBER                                                     TxtKey = 24
-	TXT_EMPTY_ADDRESS                                                          TxtKey = 25
-	TXT_INVALID_PRODUCT_STATUS                                                 TxtKey = 26
-	TXT_INVALID_PRODUCT_PRICE                                                  TxtKey = 27
-	TXT_INVALID_PRODUCT_QUANTITY                                               TxtKey = 28
-	TXT_INVALID_PRODUCT_IMG_URL                                                TxtKey = 29
-	TXT_INVALID_REVIEW_RATING                                                  TxtKey = 30
-	TXT_INVALID_REVIEW_COMMENT                                                 TxtKey = 31
-	TXT_WRONG_MLSTRING_FORMAT                                                  TxtKey = 32
-	TXT_USER_AGENT_EMPTY                                                       TxtKey = 33
-	TXT_USER_SESSION_ALREADY_EXISTS                                            TxtKey = 34
-	TXT_USER_SESSION_NOT_FOUND                                                 TxtKey = 35
-	TXT_USER_ALREADY_EXISTS                                                    TxtKey = 36
-	TXT_UNAUTHORIZED                                                           TxtKey = 37
-	TXT_EMPTY_ORG_NAME                                                         TxtKey = 38
-	TXT_ORG_NAME_TOO_SHORT                                                     TxtKey = 39
-	TXT_ORG_NAME_TOO_LONG                                                      TxtKey = 40
-	TXT_DO_NOT_HAVE_AN_ACCESS                                                  TxtKey = 41
-	TXT_OLD_PASSWORD_DOES_NOT_MATCH                                            TxtKey = 42
-	TXT_EMPTY_ORG_LOGO                                                         TxtKey = 43
-	TXT_ORG_NOT_FOUND                                                          TxtKey = 44
-	TXT_USER_ALREADY_IN_ORG                                                    TxtKey = 45
-	TXT_FILE_IS_NIL                                                            TxtKey = 46
-	TXT_UPLOADED_IMG_INVALID                                                   TxtKey = 47
-	TXT_FILE_NOT_FOUND                                                         TxtKey = 48
-	TXT_EMPTY_LANG                                                             TxtKey = 49
-	TXT_INVALID_LANG                                                           TxtKey = 50
-	TXT_PRODUCT_ALREADY_EXISTS                                                 TxtKey = 51
-	TXT_PRODUCT_NOT_FOUND                                                      TxtKey = 52
-	TXT_EMPTY_PRODUCT_NAME                                                     TxtKey = 53
-	TXT_EMPTY_DELIVERY_ADDRESS                                                 TxtKey = 54
-	TXT_INVALID_ORDER_QUANTITY                                                 TxtKey = 55
-	TXT_INVALID_ORDER_PRICE                                                    TxtKey = 56
-	TXT_INVALID_ORDER_STATUS                                                   TxtKey = 57
-	TXT_EMPTY_CUSTOMER_NAME                                                    TxtKey = 58
-	TXT_EMPTY_CUSTOMER_PHONE                                                   TxtKey = 59
-	TXT_ORDER_ALREADY_EXISTS                                                   TxtKey = 60
-	TXT_ORDER_NOT_FOUND                                                        TxtKey = 61
-	TXT_WRONG_PRODUCTS_TOTAL_PRICE                                             TxtKey = 62
-	TXT_EMPTY_SECTION_NAME                                                     TxtKey = 63
-	TXT_EMPTY_CATEGORY_NAME                                                    TxtKey = 64
-	TXT_CATEGORY_ALREADY_EXISTS                                                TxtKey = 65
-	TXT_CATEGORY_NOT_FOUND                                                     TxtKey = 66
-	TXT_SECTION_ALREADY_EXISTS                                                 TxtKey = 67
-	TXT_SECTION_NOT_FOUND                                                      TxtKey = 68
-	TXT_UUID_INVALID_LENGTH                                                    TxtKey = 69
-	TXT_MAXIMUM_NUMBER_OF_CATALOGS                                             TxtKey = 70
-	TXT_DUPLICATE_SECTION                                                      TxtKey = 71
-	TXT_DUPLICATE_CATEGORY                                                     TxtKey = 72
-	TXT_DUPLICATE_PRODUCT                                                      TxtKey = 73
-	TXT_EMPTY_SLIDE_IMG                                                        TxtKey = 74
-	TXT_SLIDE_ALREADY_EXISTS                                                   TxtKey = 75
-	TXT_SLIDE_NOT_FOUND                                                        TxtKey = 76
-	TXT_CATALOG_NOT_FOUND                                                      TxtKey = 77
-	TXT_CATALOG_SECTION_NOT_FOUND                                              TxtKey = 78
-	TXT_CATALOG_CATEGORY_NOT_FOUND                                             TxtKey = 79
-	TXT_CATALOG_PRODUCT_NOT_FOUND                                              TxtKey = 80
-	TXT_INVALID_ORDER_DELIVERY_DATE                                            TxtKey = 81
-	TXT_NAME                                                                   TxtKey = 82
-	TXT_PRICE                                                                  TxtKey = 83
-	TXT_TOTAL                                                                  TxtKey = 84
-	TXT_RECEIPT                                                                TxtKey = 85
-	TXT_ORDER_NUMBER                                                           TxtKey = 86
-	TXT_EMPTY_COUNTRY_CODE                                                     TxtKey = 87
-	TXT_EMPTY_CUSTOMER_PHONE_COUNTRY_CODE                                      TxtKey = 88
-	TXT_INVALID_PRODUCT_UNIT                                                   TxtKey = 89
-	TXT_INVALID_PRODUCT_MOQ                                                    TxtKey = 90
-	TXT_MAX_FILE_SIZE_IS_1MB                                                   TxtKey = 91
-	TXT_USER_RECOVERY_NOT_POSSIBLE_BECAUSE_USER_WITH_THIS_EMAIL_ALREADY_EXISTS TxtKey = 92
-	TXT_EMPTY_SUPPLIER_ID                                                      TxtKey = 93
-	TXT_SUPPLIER_NAME_IS_EMPTY                                                 TxtKey = 94
+	TXT_UNKNOWN_ERROR                       TxtKey = 1
+	TXT_INVALID_PRIMARY_CONTACT             TxtKey = 2
+	TXT_INVALID_SECONDARY_CONTACT           TxtKey = 3
+	TXT_UNAUTHORIZED                        TxtKey = 4
+	TXT_EMPTY_PASSWORD                      TxtKey = 5
+	TXT_PASSWORD_TOO_SHORT                  TxtKey = 6
+	TXT_PASSWORD_TOO_LONG                   TxtKey = 7
+	TXT_INVALID_USER_ROLE                   TxtKey = 8
+	TXT_INVALID_USER_FIRST_NAME             TxtKey = 9
+	TXT_INVALID_USER_LAST_NAME              TxtKey = 10
+	TXT_INVALID_USER_LOGIN                  TxtKey = 11
+	TXT_USER_NOT_FOUND                      TxtKey = 12
+	TXT_USER_ALREADY_EXISTS_WITH_THIS_LOGIN TxtKey = 13
+	TXT_USER_AGENT_EMPTY                    TxtKey = 14
+	TXT_INVALID_USER_PASSWORD               TxtKey = 15
+	TXT_INVALID_PARTNER_NAME                TxtKey = 16
+	TXT_INVALID_PARTNER_LINK                TxtKey = 17
+	TXT_INVALID_DOCUMENT_FILENAME           TxtKey = 18
+	TXT_INVALID_DOCUMENT_TITLE              TxtKey = 19
+	TXT_INVALID_NPA_FILENAME                TxtKey = 20
+	TXT_INVALID_NPA_TITLE                   TxtKey = 21
+	TXT_INVALID_NEWS_TITLE                  TxtKey = 22
+	TXT_INVALID_NEWS_CONTENT                TxtKey = 23
+	TXT_INVALID_ENTERPRISE_NAME             TxtKey = 24
+	TXT_INVALID_ENTERPRISE_LOCATION         TxtKey = 25
+	TXT_INVALID_ENTERPRISE_GOV_SHARE        TxtKey = 26
+	TXT_INVALID_ENTERPRISE_INDUSTRY         TxtKey = 27
+	TXT_INVALID_EVENT_NAME                  TxtKey = 28
+	TXT_INVALID_APPLICATION_ENTERPRISE      TxtKey = 29
+	TXT_INVALID_APPLICATION_FIO             TxtKey = 30
+	TXT_INVALID_APPLICATION_BIN             TxtKey = 31
+	TXT_INVALID_APPLICATION_CONTACT         TxtKey = 32
+	TXT_INVALID_APPLICATION_MESSAGE         TxtKey = 33
+	TXT_MAX_FILE_SIZE_IS_1MB                TxtKey = 34
+	TXT_WRONG_MLSTRING_FORMAT               TxtKey = 35
+	TXT_INVALID_EMAIL                       TxtKey = 36
+	TXT_UUID_INVALID_LENGTH                 TxtKey = 37
 )
 
 var Txts = TxtResource{
 	TXT_UNKNOWN_ERROR: MlString{
+		KZ: `Белгісіз қате`,
 		RU: `Неизвестная ошибка`,
 		EN: `Unknown error`,
 	},
-	TXT_EMPTY_FIRSTNAME: MlString{
-		RU: `Имя не может быть пустым`,
-		EN: `First name can not be empty`,
+	TXT_INVALID_PRIMARY_CONTACT: MlString{
+		KZ: `Жарамсыз контакт`,
+		RU: `Неверный контакт`,
+		EN: `Invalid contact`,
 	},
-	TXT_FIRSTNAME_TOO_SHORT: MlString{
-		RU: `Имя должно быть не менее 6 символов`,
-		EN: `First name must be at least 6 characters`,
+	TXT_INVALID_SECONDARY_CONTACT: MlString{
+		KZ: `Жарамсыз қосымша контакт`,
+		RU: `Неверный дополнительный контакт`,
+		EN: `Invalid secondary contact`,
 	},
-	TXT_FIRSTNAME_TOO_LONG: MlString{
-		RU: `Имя должно быть не более 50 символов`,
-		EN: `First name must be no more than 50 characters`,
-	},
-	TXT_EMPTY_LASTNAME: MlString{
-		RU: `Фамилия не может быть пустой`,
-		EN: `Last name can not be empty`,
-	},
-	TXT_LASTNAME_TOO_SHORT: MlString{
-		RU: `Фамилия должна быть не менее 6 символов`,
-		EN: `Last name must be at least 6 characters`,
-	},
-	TXT_LASTNAME_TOO_LONG: MlString{
-		RU: `Фамилия должна быть не более 50 символов`,
-		EN: `Last name must be no more than 50 characters`,
+	TXT_UNAUTHORIZED: MlString{
+		KZ: `Құқықсыз`,
+		RU: `Неавторизованный`,
+		EN: `Unauthorized`,
 	},
 	TXT_EMPTY_PASSWORD: MlString{
-		RU: `Пароль не может быть пустым`,
-		EN: `Password can not be empty`,
+		KZ: `Пароль бос`,
+		RU: `Пароль пуст`,
+		EN: `Password is empty`,
 	},
 	TXT_PASSWORD_TOO_SHORT: MlString{
-		RU: `Пароль должен быть не менее 6 символов`,
-		EN: `Password must be at least 6 characters`,
+		KZ: `Пароль қысқа`,
+		RU: `Пароль слишком короткий`,
+		EN: `Password is too short`,
 	},
 	TXT_PASSWORD_TOO_LONG: MlString{
-		RU: `Пароль должен быть не более 32 символов`,
-		EN: `Password must be no more than 32 characters`,
+		KZ: `Пароль ұзын`,
+		RU: `Пароль слишком длинный`,
+		EN: `Password is too long`,
 	},
-	TXT_INVALID_PASSWORD: MlString{
-		RU: `Неверный пароль`,
-		EN: `Invalid password`,
+	TXT_INVALID_USER_ROLE: MlString{
+		KZ: `Жарамсыз пайдаланушы рөлі`,
+		RU: `Неверная роль пользователя`,
+		EN: `Invalid user role`,
 	},
-	TXT_SAME_PASSWORD: MlString{
-		RU: `Новый пароль не может совпадать со старым`,
-		EN: `New password can not be the same as the old one`,
+	TXT_INVALID_USER_FIRST_NAME: MlString{
+		KZ: `Жарамсыз пайдаланушы аты`,
+		RU: `Неверное имя пользователя`,
+		EN: `Invalid user first name`,
 	},
-	TXT_EMPTY_EMAIL: MlString{
-		RU: `Email не может быть пустым`,
-		EN: `Email can not be empty`,
+	TXT_INVALID_USER_LAST_NAME: MlString{
+		KZ: `Жарамсыз пайдаланушы тегі`,
+		RU: `Неверная фамилия пользователя`,
+		EN: `Invalid user last name`,
 	},
-	TXT_INVALID_EMAIL: MlString{
-		RU: `Неверный формат email`,
-		EN: `Invalid email`,
-	},
-	TXT_EMAIL_DOESNT_EXIST: MlString{
-		RU: `Пользователь с таким email не существует`,
-		EN: `User with this email does not exist`,
-	},
-	TXT_EMAIL_ALREADY_EXISTS: MlString{
-		RU: `Пользователь с таким email уже существует`,
-		EN: `User with this email already exists`,
-	},
-	TXT_INVALID_USER_TYPE: MlString{
-		RU: `Неверный тип пользователя`,
-		EN: `Invalid user type`,
+	TXT_INVALID_USER_LOGIN: MlString{
+		KZ: `Жарамсыз пайдаланушы логині`,
+		RU: `Неверный логин пользователя`,
+		EN: `Invalid user login`,
 	},
 	TXT_USER_NOT_FOUND: MlString{
+		KZ: `Пайдаланушы табылмады`,
 		RU: `Пользователь не найден`,
 		EN: `User not found`,
 	},
-	TXT_ACCOUNT_NOT_ACTIVE: MlString{
-		RU: `Аккаунт не активирован`,
-		EN: `Account not activated`,
-	},
-	TXT_EMPTY_MERCHANT_ROLE: MlString{
-		RU: `Роль не может быть пустой`,
-		EN: `Role can not be empty`,
-	},
-	TXT_INVALID_MERCHANT_ROLE: MlString{
-		RU: `Неверная роль`,
-		EN: `Invalid role`,
-	},
-	TXT_EMPTY_CURRENCY: MlString{
-		RU: `Валюта не может быть пустой`,
-		EN: `Currency can not be empty`,
-	},
-	TXT_INVALID_CURRENCY: MlString{
-		RU: `Неверная валюта`,
-		EN: `Invalid currency`,
-	},
-	TXT_EMPTY_PHONE_NUMBER: MlString{
-		RU: `Номер телефона не может быть пустым`,
-		EN: `Phone number can not be empty`,
-	},
-	TXT_EMPTY_ADDRESS: MlString{
-		RU: `Адрес не может быть пустым`,
-		EN: `Address can not be empty`,
-	},
-	TXT_INVALID_PRODUCT_STATUS: MlString{
-		RU: `Неверный статус продукта`,
-		EN: `Invalid product status`,
-	},
-	TXT_INVALID_PRODUCT_PRICE: MlString{
-		RU: `Неверная цена продукта`,
-		EN: `Invalid product price`,
-	},
-	TXT_INVALID_PRODUCT_QUANTITY: MlString{
-		RU: `Неверное количество продукта`,
-		EN: `Invalid product quantity`,
-	},
-	TXT_INVALID_PRODUCT_IMG_URL: MlString{
-		RU: `Неверный URL изображения продукта`,
-		EN: `Invalid product image URL`,
-	},
-	TXT_INVALID_REVIEW_RATING: MlString{
-		RU: `Рейтинг отзыва должен быть от 1 до 5`,
-		EN: `Review rating must be from 1 to 5`,
-	},
-	TXT_INVALID_REVIEW_COMMENT: MlString{
-		RU: `Комментарий отзыва должен быть не более 250 символов`,
-		EN: `Review comment must be no more than 250 characters`,
-	},
-	TXT_WRONG_MLSTRING_FORMAT: MlString{
-		RU: `Неверный формат mlstring`,
-		EN: `Wrong mlstring format`,
+	TXT_USER_ALREADY_EXISTS_WITH_THIS_LOGIN: MlString{
+		KZ: `Пайдаланушы бұл логинмен бар`,
+		RU: `Пользователь с таким логином уже существует`,
+		EN: `User already exists with this login`,
 	},
 	TXT_USER_AGENT_EMPTY: MlString{
-		RU: `User agent не может быть пустым`,
-		EN: `User agent can not be empty`,
+		KZ: `User-Agent бос`,
+		RU: `User-Agent пуст`,
+		EN: `User-Agent is empty`,
 	},
-	TXT_USER_SESSION_ALREADY_EXISTS: MlString{
-		RU: `Сессия уже существует`,
-		EN: `Session already exists`,
+	TXT_INVALID_USER_PASSWORD: MlString{
+		KZ: `Жарамсыз пайдаланушы паролі`,
+		RU: `Неверный пароль пользователя`,
+		EN: `Invalid user password`,
 	},
-	TXT_USER_SESSION_NOT_FOUND: MlString{
-		RU: `Сессия не найдена`,
-		EN: `Session not found`,
+	TXT_INVALID_PARTNER_NAME: MlString{
+		KZ: `Жарамсыз партнер аты`,
+		RU: `Неверное имя партнера`,
+		EN: `Invalid partner name`,
 	},
-	TXT_USER_ALREADY_EXISTS: MlString{
-		RU: `Пользователь уже существует`,
-		EN: `User already exists`,
+	TXT_INVALID_PARTNER_LINK: MlString{
+		KZ: `Жарамсыз партнер сілтемесі`,
+		RU: `Неверная ссылка партнера`,
+		EN: `Invalid partner link`,
 	},
-	TXT_UNAUTHORIZED: MlString{
-		RU: `Неавторизованный запрос`,
-		EN: `Unauthorized request`,
+	TXT_INVALID_DOCUMENT_FILENAME: MlString{
+		KZ: `Жарамсыз документ файл аты`,
+		RU: `Неверное имя файла документа`,
+		EN: `Invalid document file name`,
 	},
-	TXT_EMPTY_ORG_NAME: MlString{
-		RU: `Название организации не может быть пустым`,
-		EN: `Organization name can not be empty`,
+	TXT_INVALID_DOCUMENT_TITLE: MlString{
+		KZ: `Жарамсыз документ атауы`,
+		RU: `Неверное название документа`,
+		EN: `Invalid document title`,
 	},
-	TXT_ORG_NAME_TOO_SHORT: MlString{
-		RU: `Название организации должно быть не менее 3 символов`,
-		EN: `Organization name must be at least 6 characters`,
+	TXT_INVALID_NPA_FILENAME: MlString{
+		KZ: `Жарамсыз НПА файл аты`,
+		RU: `Неверное имя файла НПА`,
+		EN: `Invalid NPA file name`,
 	},
-	TXT_ORG_NAME_TOO_LONG: MlString{
-		RU: `Название организации должно быть не более 50 символов`,
-		EN: `Organization name must be no more than 50 characters`,
+	TXT_INVALID_NPA_TITLE: MlString{
+		KZ: `Жарамсыз НПА атауы`,
+		RU: `Неверное название НПА`,
+		EN: `Invalid NPA title`,
 	},
-	TXT_DO_NOT_HAVE_AN_ACCESS: MlString{
-		RU: `У вас нет доступа`,
-		EN: `You do not have an access`,
+	TXT_INVALID_NEWS_TITLE: MlString{
+		KZ: `Жарамсыз жаңалық атауы`,
+		RU: `Неверное название новости`,
+		EN: `Invalid news title`,
 	},
-	TXT_OLD_PASSWORD_DOES_NOT_MATCH: MlString{
-		RU: `Старый пароль не совпадает`,
-		EN: `Old password does not match`,
+	TXT_INVALID_NEWS_CONTENT: MlString{
+		KZ: `Жарамсыз жаңалық мазмұны`,
+		RU: `Неверное содержание новости`,
+		EN: `Invalid news content`,
 	},
-	TXT_EMPTY_ORG_LOGO: MlString{
-		RU: `Логотип организаций не может быть пустым`,
-		EN: `Organization logo can not be empty`,
+	TXT_INVALID_ENTERPRISE_NAME: MlString{
+		KZ: `Жарамсыз кәсіпорын атауы`,
+		RU: `Неверное название предприятия`,
+		EN: `Invalid enterprise name`,
 	},
-	TXT_ORG_NOT_FOUND: MlString{
-		RU: `Организация не найдена`,
-		EN: `Organization not found`,
+	TXT_INVALID_ENTERPRISE_LOCATION: MlString{
+		KZ: `Жарамсыз кәсіпорын орналасуы`,
+		RU: `Неверное местоположение предприятия`,
+		EN: `Invalid enterprise location`,
 	},
-	TXT_USER_ALREADY_IN_ORG: MlString{
-		RU: `Пользователь уже состоит в организации`,
-		EN: `User already in organization`,
+	TXT_INVALID_ENTERPRISE_GOV_SHARE: MlString{
+		KZ: `Жарамсыз кәсіпорын державалық пайы`,
+		RU: `Неверная государственная доля предприятия`,
+		EN: `Invalid enterprise government share`,
 	},
-	TXT_FILE_IS_NIL: MlString{
-		RU: `Файл не может быть пустым`,
-		EN: `File can not be empty`,
+	TXT_INVALID_ENTERPRISE_INDUSTRY: MlString{
+		KZ: `Жарамсыз кәсіпорын саласы`,
+		RU: `Неверная отрасль предприятия`,
+		EN: `Invalid enterprise industry`,
 	},
-	TXT_UPLOADED_IMG_INVALID: MlString{
-		RU: `Загруженное изображение неверно`,
-		EN: `Uploaded image is invalid`,
+	TXT_INVALID_EVENT_NAME: MlString{
+		KZ: `Жарамсыз іс атауы`,
+		RU: `Неверное название события`,
+		EN: `Invalid event name`,
 	},
-	TXT_FILE_NOT_FOUND: MlString{
-		RU: `Файл не найден`,
-		EN: `File not found`,
+	TXT_INVALID_APPLICATION_ENTERPRISE: MlString{
+		KZ: `Жарамсыз өтініш кәсіпорын`,
+		RU: `Неверное предприятие заявки`,
+		EN: `Invalid application enterprise`,
 	},
-	TXT_EMPTY_LANG: MlString{
-		RU: `Предпочитаемый язык интерфейса не может быть пустым`,
-		EN: `Preferred language of web-interface can not be empty`,
+	TXT_INVALID_APPLICATION_FIO: MlString{
+		KZ: `Жарамсыз өтініш аты`,
+		RU: `Неверное ФИО заявки`,
+		EN: `Invalid application FIO`,
 	},
-	TXT_INVALID_LANG: MlString{
-		RU: `Данный язык отсутствует в системе`,
-		EN: `This language is not available in the system`,
+	TXT_INVALID_APPLICATION_BIN: MlString{
+		KZ: `Жарамсыз өтініш БИН`,
+		RU: `Неверный БИН заявки`,
+		EN: `Invalid application BIN`,
 	},
-	TXT_PRODUCT_ALREADY_EXISTS: MlString{
-		RU: `Продукт уже существует`,
-		EN: `Product already exists`,
+	TXT_INVALID_APPLICATION_CONTACT: MlString{
+		KZ: `Жарамсыз өтініш контакт`,
+		RU: `Неверный контакт заявки`,
+		EN: `Invalid application contact`,
 	},
-	TXT_PRODUCT_NOT_FOUND: MlString{
-		RU: `Продукт не найден`,
-		EN: `Product not found`,
-	},
-	TXT_EMPTY_PRODUCT_NAME: MlString{
-		RU: `Название продукта не может быть пустым`,
-		EN: `Product name can not be empty`,
-	},
-	TXT_EMPTY_DELIVERY_ADDRESS: MlString{
-		RU: `Адрес доставки не может быть пустым`,
-		EN: `Delivery address can not be empty`,
-	},
-	TXT_INVALID_ORDER_QUANTITY: MlString{
-		RU: `Неверное количество заказа`,
-		EN: `Invalid order quantity`,
-	},
-	TXT_INVALID_ORDER_PRICE: MlString{
-		RU: `Неверное количество заказа`,
-		EN: `Invalid order quantity`,
-	},
-	TXT_INVALID_ORDER_STATUS: MlString{
-		RU: `Неверный статус заказа`,
-		EN: `Invalid order status`,
-	},
-	TXT_EMPTY_CUSTOMER_NAME: MlString{
-		RU: `Имя клиента не может быть пустым`,
-		EN: `Customer name can not be empty`,
-	},
-	TXT_EMPTY_CUSTOMER_PHONE: MlString{
-		RU: `Телефон клиента не может быть пустым`,
-		EN: `Customer phone can not be empty`,
-	},
-	TXT_ORDER_ALREADY_EXISTS: MlString{
-		RU: `Заказ уже существует`,
-		EN: `Order already exists`,
-	},
-	TXT_ORDER_NOT_FOUND: MlString{
-		RU: `Заказ не найден`,
-		EN: `Order not found`,
-	},
-	TXT_WRONG_PRODUCTS_TOTAL_PRICE: MlString{
-		RU: `Неверная итоговая цена продуктов`,
-		EN: `Wrong products total price`,
-	},
-	TXT_EMPTY_SECTION_NAME: MlString{
-		RU: `Название раздела не может быть пустым`,
-		EN: `Section name can not be empty`,
-	},
-	TXT_EMPTY_CATEGORY_NAME: MlString{
-		RU: `Название категории не может быть пустым`,
-		EN: `Category name can not be empty`,
-	},
-	TXT_CATEGORY_ALREADY_EXISTS: MlString{
-		RU: `Категория уже существует`,
-		EN: `Category already exists`,
-	},
-	TXT_CATEGORY_NOT_FOUND: MlString{
-		RU: `Категория не найдена`,
-		EN: `Category not found`,
-	},
-	TXT_SECTION_ALREADY_EXISTS: MlString{
-		RU: `Раздел уже существует`,
-		EN: `Section already exists`,
-	},
-	TXT_SECTION_NOT_FOUND: MlString{
-		RU: `Раздел не найден`,
-		EN: `Section not found`,
-	},
-	TXT_UUID_INVALID_LENGTH: MlString{
-		RU: `Неверная длина UUID`,
-		EN: `Invalid UUID length`,
-	},
-	TXT_MAXIMUM_NUMBER_OF_CATALOGS: MlString{
-		RU: `Достигнуто максимальное количество каталогов`,
-		EN: `Maximum number of catalogs reached`,
-	},
-	TXT_DUPLICATE_SECTION: MlString{
-		RU: `Дубликат раздела`,
-		EN: `Duplicate section`,
-	},
-	TXT_DUPLICATE_CATEGORY: MlString{
-		RU: `Дубликат категории`,
-		EN: `Duplicate category`,
-	},
-	TXT_DUPLICATE_PRODUCT: MlString{
-		RU: `Дубликат продукта`,
-		EN: `Duplicate product`,
-	},
-	TXT_EMPTY_SLIDE_IMG: MlString{
-		RU: `Изображение слайда не может быть пустым`,
-		EN: `Slide image can not be empty`,
-	},
-	TXT_SLIDE_ALREADY_EXISTS: MlString{
-		RU: `Слайд уже существует`,
-		EN: `Slide already exists`,
-	},
-	TXT_SLIDE_NOT_FOUND: MlString{
-		RU: `Слайд не найден`,
-		EN: `Slide not found`,
-	},
-	TXT_CATALOG_NOT_FOUND: MlString{
-		RU: `Каталог не найден`,
-		EN: `Catalog not found`,
-	},
-	TXT_CATALOG_SECTION_NOT_FOUND: MlString{
-		RU: `Раздел каталога не найден`,
-		EN: `Catalog section not found`,
-	},
-	TXT_CATALOG_CATEGORY_NOT_FOUND: MlString{
-		RU: `Категория каталога не найдена`,
-		EN: `Catalog category not found`,
-	},
-	TXT_CATALOG_PRODUCT_NOT_FOUND: MlString{
-		RU: `Продукт каталога не найден`,
-		EN: `Catalog product not found`,
-	},
-	TXT_INVALID_ORDER_DELIVERY_DATE: MlString{
-		RU: `Неверная дата доставки`,
-		EN: `Invalid delivery date`,
-	},
-	TXT_NAME: MlString{
-		RU: `Наименование`,
-		EN: `Name`,
-	},
-	TXT_PRICE: MlString{
-		RU: `Цена`,
-		EN: `Price`,
-	},
-	TXT_TOTAL: MlString{
-		RU: `Итого`,
-		EN: `Total`,
-	},
-	TXT_RECEIPT: MlString{
-		RU: `Чек`,
-		EN: `Receipt`,
-	},
-	TXT_ORDER_NUMBER: MlString{
-		RU: `Номер заказа`,
-		EN: `Order number`,
-	},
-	TXT_EMPTY_COUNTRY_CODE: MlString{
-		RU: `Код страны не может быть пустым`,
-		EN: `Country code can not be empty`,
-	},
-	TXT_EMPTY_CUSTOMER_PHONE_COUNTRY_CODE: MlString{
-		RU: `Код страны телефона клиента не может быть пустым`,
-		EN: `Customer phone country code can not be empty`,
-	},
-	TXT_INVALID_PRODUCT_UNIT: MlString{
-		RU: `Неверная единица измерения продукта`,
-		EN: `Invalid product unit`,
-	},
-	TXT_INVALID_PRODUCT_MOQ: MlString{
-		RU: `Неверное минимальное количество продукта`,
-		EN: `Invalid product MOQ`,
+	TXT_INVALID_APPLICATION_MESSAGE: MlString{
+		KZ: `Жарамсыз өтініш хабарлама`,
+		RU: `Неверное сообщение заявки`,
+		EN: `Invalid application message`,
 	},
 	TXT_MAX_FILE_SIZE_IS_1MB: MlString{
-		RU: `Максимальный размер файла 1MB`,
-		EN: `Maximum file size is 1MB`,
+		KZ: `Файл 1 МБ-дан асады`,
+		RU: `Файл не должен превышать 1 МБ`,
+		EN: `File should not exceed 1 MB`,
 	},
-	TXT_USER_RECOVERY_NOT_POSSIBLE_BECAUSE_USER_WITH_THIS_EMAIL_ALREADY_EXISTS: MlString{
-		RU: `Восстановление невозможно, так как пользователь с таким email уже существует`,
-		EN: `Recovery is not possible because user with this email already exists`,
+	TXT_WRONG_MLSTRING_FORMAT: MlString{
+		KZ: `Жарамсыз MLString пішімі`,
+		RU: `Неверный формат MLString`,
+		EN: `Invalid MLString format`,
 	},
-	TXT_EMPTY_SUPPLIER_ID: MlString{
-		RU: `ID поставщика не может быть пустым`,
-		EN: `Supplier ID can not be empty`,
+	TXT_INVALID_EMAIL: MlString{
+		KZ: `Жарамсыз email`,
+		RU: `Неверный email`,
+		EN: `Invalid email`,
 	},
-	TXT_SUPPLIER_NAME_IS_EMPTY: MlString{
-		RU: `Имя поставщика не может быть пустым`,
-		EN: `Supplier name can not be empty`,
+	TXT_UUID_INVALID_LENGTH: MlString{
+		KZ: `UUID ұзындығы жарамсыз`,
+		RU: `Неверная длина UUID`,
+		EN: `Invalid UUID length`,
 	},
 }
 
@@ -482,192 +234,78 @@ func GetTxtKeyAsString(k TxtKey) string {
 	switch k {
 	case TXT_UNKNOWN_ERROR:
 		return "unknown_error"
-	case TXT_EMPTY_FIRSTNAME:
-		return "empty_firstname"
-	case TXT_FIRSTNAME_TOO_SHORT:
-		return "firstname_too_short"
-	case TXT_FIRSTNAME_TOO_LONG:
-		return "firstname_too_long"
-	case TXT_EMPTY_LASTNAME:
-		return "empty_lastname"
-	case TXT_LASTNAME_TOO_SHORT:
-		return "lastname_too_short"
-	case TXT_LASTNAME_TOO_LONG:
-		return "lastname_too_long"
+	case TXT_INVALID_PRIMARY_CONTACT:
+		return "invalid_primary_contact"
+	case TXT_INVALID_SECONDARY_CONTACT:
+		return "invalid_secondary_contact"
+	case TXT_UNAUTHORIZED:
+		return "unauthorized"
 	case TXT_EMPTY_PASSWORD:
 		return "empty_password"
 	case TXT_PASSWORD_TOO_SHORT:
 		return "password_too_short"
 	case TXT_PASSWORD_TOO_LONG:
 		return "password_too_long"
-	case TXT_INVALID_PASSWORD:
-		return "invalid_password"
-	case TXT_SAME_PASSWORD:
-		return "same_password"
-	case TXT_EMPTY_EMAIL:
-		return "empty_email"
-	case TXT_INVALID_EMAIL:
-		return "invalid_email"
-	case TXT_EMAIL_DOESNT_EXIST:
-		return "email_doesnt_exist"
-	case TXT_EMAIL_ALREADY_EXISTS:
-		return "email_already_exists"
-	case TXT_INVALID_USER_TYPE:
-		return "invalid_user_type"
+	case TXT_INVALID_USER_ROLE:
+		return "invalid_user_role"
+	case TXT_INVALID_USER_FIRST_NAME:
+		return "invalid_user_first_name"
+	case TXT_INVALID_USER_LAST_NAME:
+		return "invalid_user_last_name"
+	case TXT_INVALID_USER_LOGIN:
+		return "invalid_user_login"
 	case TXT_USER_NOT_FOUND:
 		return "user_not_found"
-	case TXT_ACCOUNT_NOT_ACTIVE:
-		return "account_not_active"
-	case TXT_EMPTY_MERCHANT_ROLE:
-		return "empty_merchant_role"
-	case TXT_INVALID_MERCHANT_ROLE:
-		return "invalid_merchant_role"
-	case TXT_EMPTY_CURRENCY:
-		return "empty_currency"
-	case TXT_INVALID_CURRENCY:
-		return "invalid_currency"
-	case TXT_EMPTY_PHONE_NUMBER:
-		return "empty_phone_number"
-	case TXT_EMPTY_ADDRESS:
-		return "empty_address"
-	case TXT_INVALID_PRODUCT_STATUS:
-		return "invalid_product_status"
-	case TXT_INVALID_PRODUCT_PRICE:
-		return "invalid_product_price"
-	case TXT_INVALID_PRODUCT_QUANTITY:
-		return "invalid_product_quantity"
-	case TXT_INVALID_PRODUCT_IMG_URL:
-		return "invalid_product_img_url"
-	case TXT_INVALID_REVIEW_RATING:
-		return "invalid_review_rating"
-	case TXT_INVALID_REVIEW_COMMENT:
-		return "invalid_review_comment"
-	case TXT_WRONG_MLSTRING_FORMAT:
-		return "wrong_mlstring_format"
+	case TXT_USER_ALREADY_EXISTS_WITH_THIS_LOGIN:
+		return "user_already_exists_with_this_login"
 	case TXT_USER_AGENT_EMPTY:
 		return "user_agent_empty"
-	case TXT_USER_SESSION_ALREADY_EXISTS:
-		return "user_session_already_exists"
-	case TXT_USER_SESSION_NOT_FOUND:
-		return "user_session_not_found"
-	case TXT_USER_ALREADY_EXISTS:
-		return "user_already_exists"
-	case TXT_UNAUTHORIZED:
-		return "unauthorized"
-	case TXT_EMPTY_ORG_NAME:
-		return "empty_org_name"
-	case TXT_ORG_NAME_TOO_SHORT:
-		return "org_name_too_short"
-	case TXT_ORG_NAME_TOO_LONG:
-		return "org_name_too_long"
-	case TXT_DO_NOT_HAVE_AN_ACCESS:
-		return "do_not_have_an_access"
-	case TXT_OLD_PASSWORD_DOES_NOT_MATCH:
-		return "old_password_does_not_match"
-	case TXT_EMPTY_ORG_LOGO:
-		return "empty_org_logo"
-	case TXT_ORG_NOT_FOUND:
-		return "org_not_found"
-	case TXT_USER_ALREADY_IN_ORG:
-		return "user_already_in_org"
-	case TXT_FILE_IS_NIL:
-		return "file_is_nil"
-	case TXT_UPLOADED_IMG_INVALID:
-		return "uploaded_img_invalid"
-	case TXT_FILE_NOT_FOUND:
-		return "file_not_found"
-	case TXT_EMPTY_LANG:
-		return "empty_lang"
-	case TXT_INVALID_LANG:
-		return "invalid_lang"
-	case TXT_PRODUCT_ALREADY_EXISTS:
-		return "product_already_exists"
-	case TXT_PRODUCT_NOT_FOUND:
-		return "product_not_found"
-	case TXT_EMPTY_PRODUCT_NAME:
-		return "empty_product_name"
-	case TXT_EMPTY_DELIVERY_ADDRESS:
-		return "empty_delivery_address"
-	case TXT_INVALID_ORDER_QUANTITY:
-		return "invalid_order_quantity"
-	case TXT_INVALID_ORDER_PRICE:
-		return "invalid_order_price"
-	case TXT_INVALID_ORDER_STATUS:
-		return "invalid_order_status"
-	case TXT_EMPTY_CUSTOMER_NAME:
-		return "empty_customer_name"
-	case TXT_EMPTY_CUSTOMER_PHONE:
-		return "empty_customer_phone"
-	case TXT_ORDER_ALREADY_EXISTS:
-		return "order_already_exists"
-	case TXT_ORDER_NOT_FOUND:
-		return "order_not_found"
-	case TXT_WRONG_PRODUCTS_TOTAL_PRICE:
-		return "wrong_products_total_price"
-	case TXT_EMPTY_SECTION_NAME:
-		return "empty_section_name"
-	case TXT_EMPTY_CATEGORY_NAME:
-		return "empty_category_name"
-	case TXT_CATEGORY_ALREADY_EXISTS:
-		return "category_already_exists"
-	case TXT_CATEGORY_NOT_FOUND:
-		return "category_not_found"
-	case TXT_SECTION_ALREADY_EXISTS:
-		return "section_already_exists"
-	case TXT_SECTION_NOT_FOUND:
-		return "section_not_found"
-	case TXT_UUID_INVALID_LENGTH:
-		return "uuid_invalid_length"
-	case TXT_MAXIMUM_NUMBER_OF_CATALOGS:
-		return "maximum_number_of_catalogs"
-	case TXT_DUPLICATE_SECTION:
-		return "duplicate_section"
-	case TXT_DUPLICATE_CATEGORY:
-		return "duplicate_category"
-	case TXT_DUPLICATE_PRODUCT:
-		return "duplicate_product"
-	case TXT_EMPTY_SLIDE_IMG:
-		return "empty_slide_img"
-	case TXT_SLIDE_ALREADY_EXISTS:
-		return "slide_already_exists"
-	case TXT_SLIDE_NOT_FOUND:
-		return "slide_not_found"
-	case TXT_CATALOG_NOT_FOUND:
-		return "catalog_not_found"
-	case TXT_CATALOG_SECTION_NOT_FOUND:
-		return "catalog_section_not_found"
-	case TXT_CATALOG_CATEGORY_NOT_FOUND:
-		return "catalog_category_not_found"
-	case TXT_CATALOG_PRODUCT_NOT_FOUND:
-		return "catalog_product_not_found"
-	case TXT_INVALID_ORDER_DELIVERY_DATE:
-		return "invalid_order_delivery_date"
-	case TXT_NAME:
-		return "name"
-	case TXT_PRICE:
-		return "price"
-	case TXT_TOTAL:
-		return "total"
-	case TXT_RECEIPT:
-		return "receipt"
-	case TXT_ORDER_NUMBER:
-		return "order_number"
-	case TXT_EMPTY_COUNTRY_CODE:
-		return "empty_country_code"
-	case TXT_EMPTY_CUSTOMER_PHONE_COUNTRY_CODE:
-		return "empty_customer_phone_country_code"
-	case TXT_INVALID_PRODUCT_UNIT:
-		return "invalid_product_unit"
-	case TXT_INVALID_PRODUCT_MOQ:
-		return "invalid_product_moq"
+	case TXT_INVALID_USER_PASSWORD:
+		return "invalid_user_password"
+	case TXT_INVALID_PARTNER_NAME:
+		return "invalid_partner_name"
+	case TXT_INVALID_PARTNER_LINK:
+		return "invalid_partner_link"
+	case TXT_INVALID_DOCUMENT_FILENAME:
+		return "invalid_document_filename"
+	case TXT_INVALID_DOCUMENT_TITLE:
+		return "invalid_document_title"
+	case TXT_INVALID_NPA_FILENAME:
+		return "invalid_npa_filename"
+	case TXT_INVALID_NPA_TITLE:
+		return "invalid_npa_title"
+	case TXT_INVALID_NEWS_TITLE:
+		return "invalid_news_title"
+	case TXT_INVALID_NEWS_CONTENT:
+		return "invalid_news_content"
+	case TXT_INVALID_ENTERPRISE_NAME:
+		return "invalid_enterprise_name"
+	case TXT_INVALID_ENTERPRISE_LOCATION:
+		return "invalid_enterprise_location"
+	case TXT_INVALID_ENTERPRISE_GOV_SHARE:
+		return "invalid_enterprise_gov_share"
+	case TXT_INVALID_ENTERPRISE_INDUSTRY:
+		return "invalid_enterprise_industry"
+	case TXT_INVALID_EVENT_NAME:
+		return "invalid_event_name"
+	case TXT_INVALID_APPLICATION_ENTERPRISE:
+		return "invalid_application_enterprise"
+	case TXT_INVALID_APPLICATION_FIO:
+		return "invalid_application_fio"
+	case TXT_INVALID_APPLICATION_BIN:
+		return "invalid_application_bin"
+	case TXT_INVALID_APPLICATION_CONTACT:
+		return "invalid_application_contact"
+	case TXT_INVALID_APPLICATION_MESSAGE:
+		return "invalid_application_message"
 	case TXT_MAX_FILE_SIZE_IS_1MB:
 		return "max_file_size_is_1mb"
-	case TXT_USER_RECOVERY_NOT_POSSIBLE_BECAUSE_USER_WITH_THIS_EMAIL_ALREADY_EXISTS:
-		return "user_recovery_not_possible_because_user_with_this_email_already_exists"
-	case TXT_EMPTY_SUPPLIER_ID:
-		return "empty_supplier_id"
-	case TXT_SUPPLIER_NAME_IS_EMPTY:
-		return "supplier_name_is_empty"
+	case TXT_WRONG_MLSTRING_FORMAT:
+		return "wrong_mlstring_format"
+	case TXT_INVALID_EMAIL:
+		return "invalid_email"
+	case TXT_UUID_INVALID_LENGTH:
+		return "uuid_invalid_length"
 
 	default:
 		return ""

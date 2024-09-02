@@ -1,0 +1,24 @@
+{
+    "schemes": [
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "Detailed info about all endpoints",
+        "title": "Ardo Backend API",
+        "contact": {
+            "name": "API Support",
+            "url": "https://t.me/nassyrovich"
+        },
+        "version": "0.0.1"
+    },
+    "host": "https://api.nop.kz",
+    "paths": {},
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Cookie",
+            "in": "header"
+        }
+    }
+}

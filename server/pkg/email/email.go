@@ -1,7 +1,8 @@
 package email
 
 import (
-	"github/nnniyaz/nop/config"
+	"github.com/nnniyaz/nop/config"
+	"gopkg.in/gomail.v2"
 )
 
 type Email interface {

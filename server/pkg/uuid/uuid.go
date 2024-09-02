@@ -2,7 +2,7 @@ package uuid
 
 import (
 	"fmt"
-	"github/nnniyaz/ardo/domain/base/uuid"
+	"github.com/nnniyaz/nop/domain/base/uuid"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/bsoncodec"
 	"go.mongodb.org/mongo-driver/bson/bsonrw"

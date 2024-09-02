@@ -1,0 +1,17 @@
+host: https://api.nop.kz
+info:
+  contact:
+    name: API Support
+    url: https://t.me/nassyrovich
+  description: Detailed info about all endpoints
+  title: Ardo Backend API
+  version: 0.0.1
+paths: {}
+schemes:
+- https
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Cookie
+    type: apiKey
+swagger: "2.0"

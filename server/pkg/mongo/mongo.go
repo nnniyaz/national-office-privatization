@@ -2,7 +2,7 @@ package mongo
 
 import (
 	"context"
-	"github/nnniyaz/ardo/pkg/uuid"
+	"github.com/nnniyaz/nop/pkg/uuid"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"

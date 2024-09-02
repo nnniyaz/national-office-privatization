@@ -7,10 +7,12 @@ import (
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
+	"github.com/nnniyaz/nop"
 	"github.com/nnniyaz/nop/config"
 	"github.com/nnniyaz/nop/handler/http"
 	"github.com/nnniyaz/nop/pkg/email"
 	"github.com/nnniyaz/nop/pkg/env"
+	"github.com/nnniyaz/nop/pkg/format"
 	"github.com/nnniyaz/nop/pkg/logger"
 	"github.com/nnniyaz/nop/pkg/mongo"
 	"github.com/nnniyaz/nop/repo"
@@ -31,7 +33,7 @@ const port = 8080
 //	@contact.name	API Support
 //	@contact.url	https://t.me/nassyrovich
 
-//	@host		https://api.ardogroup.org
+//	@host		https://api.nop.kz
 //	@schemes	https
 
 // @securityDefinitions.apikey	ApiKeyAuth
@@ -54,8 +56,6 @@ func main() {
 		env.MustGetEnv("SMTP_PASS"),
 		env.MustGetEnv("SMTP_HOST"),
 		env.MustGetEnv("MONGO_URI"),
-		env.MustGetEnv("API_URI"),
-		env.MustGetEnv("CLIENT_URI"),
 		env.MustGetEnv("SPACE_KEY"),
 		env.MustGetEnv("SPACE_SECRET"),
 		env.MustGetEnv("SPACE_ENDPOINT"),
@@ -103,9 +103,9 @@ func main() {
 
 	repos := repo.NewRepository(db)
 	services := service.NewService(repos, cfg, lg, emailService, s3Client)
-	handlers := http.NewHandler(db, cfg.GetClientUri(), services, lg)
+	handlers := http.NewHandler(db, services, lg)
 
-	srv := new(ardo.Server)
+	srv := new(nop.Server)
 	go func() {
 		if err = srv.Run(port, handlers.InitRoutes(cfg.GetIsDevMode()), start); err != nil && err != nHttp.ErrServerClosed {
 			lg.Fatal("error occurred while running http server: ", zap.Error(err))

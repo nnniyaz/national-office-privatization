@@ -1,0 +1,67 @@
+package document
+
+import (
+	"context"
+	"github.com/nnniyaz/nop/domain/base/uuid"
+	"github.com/nnniyaz/nop/domain/document"
+	"github.com/nnniyaz/nop/pkg/logger"
+	"github.com/nnniyaz/nop/repo"
+)
+
+type DocumentService interface {
+	Get(ctx context.Context) ([]*document.Document, error)
+	GetById(ctx context.Context, documentId string) (*document.Document, error)
+	Create(ctx context.Context, title, filename string) error
+	Update(ctx context.Context, documentId, title, filename string) error
+	Delete(ctx context.Context, documentId string) error
+}
+
+type documentService struct {
+	logger       logger.Logger
+	documentRepo repo.Document
+}
+
+func NewDocumentService(l logger.Logger, repo repo.Document) DocumentService {
+	return &documentService{logger: l, documentRepo: repo}
+}
+
+func (s *documentService) Get(ctx context.Context) ([]*document.Document, error) {
+	return s.documentRepo.Get(ctx)
+}
+
+func (s *documentService) GetById(ctx context.Context, documentId string) (*document.Document, error) {
+	convertedId, err := uuid.UUIDFromString(documentId)
+	if err != nil {
+		return nil, err
+	}
+	return s.documentRepo.GetById(ctx, convertedId)
+}
+
+func (s *documentService) Create(ctx context.Context, title, filename string) error {
+	d, err := document.NewDocument(title, filename)
+	if err != nil {
+		return err
+	}
+	return s.documentRepo.Create(ctx, d)
+}
+
+func (s *documentService) Update(ctx context.Context, documentId, title, filename string) error {
+	convertedId, err := uuid.UUIDFromString(documentId)
+	if err != nil {
+		return err
+	}
+	foundDocument, err := s.documentRepo.GetById(ctx, convertedId)
+	if err != nil {
+		return err
+	}
+	foundDocument.Update(title, filename)
+	return s.documentRepo.Update(ctx, foundDocument)
+}
+
+func (s *documentService) Delete(ctx context.Context, documentId string) error {
+	convertedId, err := uuid.UUIDFromString(documentId)
+	if err != nil {
+		return err
+	}
+	return s.documentRepo.Delete(ctx, convertedId)
+}

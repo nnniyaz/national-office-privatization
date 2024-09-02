@@ -8,7 +8,7 @@ COPY . .
 
 RUN go run cmd/i18n/gen.go --csv errors.csv --out pkg/core/i18ngen.go --pkg core
 
-RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -trimpath -o /ardo-backend cmd/api/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -trimpath -o /server cmd/api/main.go
 
 # Deploy
 FROM alpine
@@ -16,8 +16,8 @@ FROM alpine
 # Essentials
 RUN apk add -U tzdata
 
-COPY --from=builder ardo-backend .
+COPY --from=builder server .
 
 EXPOSE 8080
 
-CMD ["./ardo-backend"]
+CMD ["./server"]
