@@ -1,7 +1,7 @@
 package email
 
 import (
-	"github.com/nnniyaz/nop/pkg/core"
+	"github.com/nnniyaz/nop/server/pkg/core"
 	"net/mail"
 )
 

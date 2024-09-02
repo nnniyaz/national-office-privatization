@@ -3,9 +3,9 @@ package user
 import (
 	"context"
 	"errors"
-	"github.com/nnniyaz/nop/domain/base/uuid"
-	"github.com/nnniyaz/nop/domain/user"
-	"github.com/nnniyaz/nop/domain/user/valueobject"
+	"github.com/nnniyaz/nop/server/domain/base/uuid"
+	"github.com/nnniyaz/nop/server/domain/user"
+	"github.com/nnniyaz/nop/server/domain/user/valueobject"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"time"

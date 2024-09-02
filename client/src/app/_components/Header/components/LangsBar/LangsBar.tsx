@@ -1,6 +1,6 @@
 'use client'
 
-import {Langs} from "@domain/mlString/mlString";
+import {Langs} from "@domain/base/mlString/mlString";
 import {usePathname} from "next/navigation";
 import classes from "@components/Header/Header.module.scss";
 
@@ -9,7 +9,7 @@ export default function LangsBar({lang}: { lang: Langs }) {
 
     const currentPath = (lang: Langs) => {
         return pathname.split("/")?.length > 2
-            ? `/${lang.toLowerCase()}/${pathname.split("/")[1]}`
+            ? `/${lang.toLowerCase()}/${pathname.split("/")[2]}`
             : `/${lang.toLowerCase()}`
     }
 

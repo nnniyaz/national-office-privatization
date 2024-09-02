@@ -1,8 +1,8 @@
 package partner
 
 import (
-	"github.com/nnniyaz/nop/domain/base/uuid"
-	"github.com/nnniyaz/nop/domain/partner/exceptions"
+	"github.com/nnniyaz/nop/server/domain/base/uuid"
+	"github.com/nnniyaz/nop/server/domain/partner/exceptions"
 )
 
 type Partner struct {

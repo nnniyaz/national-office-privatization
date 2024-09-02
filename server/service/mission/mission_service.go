@@ -2,9 +2,9 @@ package mission
 
 import (
 	"context"
-	"github.com/nnniyaz/nop/domain/mission"
-	"github.com/nnniyaz/nop/pkg/logger"
-	"github.com/nnniyaz/nop/repo"
+	"github.com/nnniyaz/nop/server/domain/mission"
+	"github.com/nnniyaz/nop/server/pkg/logger"
+	"github.com/nnniyaz/nop/server/repo"
 )
 
 type MissionService interface {

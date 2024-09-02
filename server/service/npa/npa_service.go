@@ -2,10 +2,10 @@ package npa
 
 import (
 	"context"
-	"github.com/nnniyaz/nop/domain/base/uuid"
-	"github.com/nnniyaz/nop/domain/npa"
-	"github.com/nnniyaz/nop/pkg/logger"
-	"github.com/nnniyaz/nop/repo"
+	"github.com/nnniyaz/nop/server/domain/base/uuid"
+	"github.com/nnniyaz/nop/server/domain/npa"
+	"github.com/nnniyaz/nop/server/pkg/logger"
+	"github.com/nnniyaz/nop/server/repo"
 )
 
 type NpaService interface {

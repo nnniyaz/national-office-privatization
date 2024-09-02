@@ -1,8 +1,8 @@
 package event
 
 import (
-	"github.com/nnniyaz/nop/domain/base/uuid"
-	"github.com/nnniyaz/nop/domain/event/exceptions"
+	"github.com/nnniyaz/nop/server/domain/base/uuid"
+	"github.com/nnniyaz/nop/server/domain/event/exceptions"
 	"time"
 )
 

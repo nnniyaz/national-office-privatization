@@ -1,6 +1,6 @@
 package employee
 
-import "github.com/nnniyaz/nop/domain/base/uuid"
+import "github.com/nnniyaz/nop/server/domain/base/uuid"
 
 type Employee struct {
 	id    uuid.UUID

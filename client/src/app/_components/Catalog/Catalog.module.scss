@@ -22,7 +22,7 @@
     border-bottom: 1px solid var(--border-color);
 
     .tab {
-      width: calc((100% - 30px) / 4);
+      width: calc((100% - 30px) / 3);
       border-radius: 20px;
       //padding: 10px 15px;
 
@@ -116,7 +116,6 @@
               background-color: #F5F5F5;
               transition: .1s linear;
               border-radius: 10px;
-              border-top: 1px solid #F5F5F5;
             }
           }
 
@@ -126,7 +125,6 @@
             transition: .1s linear;
             padding: 10px;
             border-radius: 10px;
-            border-top: none;
 
             &:hover {
               border-top: none;

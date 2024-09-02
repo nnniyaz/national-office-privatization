@@ -3,19 +3,68 @@
 import React, {useEffect, useState} from "react";
 import Map from "@components/ui/Map/Map";
 import DocSVG from "@assets/document-text.svg";
-import {Langs} from "@domain/mlString/mlString";
+import {Langs} from "@domain/base/mlString/mlString";
 import classes from "./About.module.scss";
+import {translate} from "@/pkg/translate/translate";
+import {Partner, PartnerData} from "@domain/partner/partner";
+import {ErrorResponse, SuccessResponse} from "@domain/base/response/response";
+import {Contacts} from "@domain/contacts/contacts";
+import {Npa, NpaData} from "@domain/npa/npa";
+import {Employee, EmployeeData} from "@domain/employee/employee";
 
 export default function About({lang}: { lang: Langs }) {
     const [isMounted, setMounted] = useState(false);
     const [currentTab, setCurrentTab] = useState("office");
-    const [currentSubTab, setCurrentSubTab] = useState(1);
+    const [currentSubTab, setCurrentSubTab] = useState("1");
     const sideTabs: { [key: string]: string } = {
-        "office": "Об офисе",
-        "team": "Состав",
-        "npa": "НПА",
-        "contacts": "Контакты"
+        "office": translate("about_office", lang),
+        "team": translate("team", lang),
+        "npa": translate("npa", lang),
+        "contacts": translate("contacts", lang),
     }
+
+    const [contacts, setContacts] = useState<Contacts>({} as Contacts);
+    const [employee, setEmployee] = useState<Employee[]>([]);
+    const [npa, setNpa] = useState<Npa[]>([]);
+
+    const fetchContacts = async (): Promise<SuccessResponse<Contacts> | ErrorResponse> => {
+        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/contacts");
+        return await response.json();
+    }
+
+    const fetchEmployees = async (): Promise<SuccessResponse<EmployeeData> | ErrorResponse> => {
+        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/employee");
+        return await response.json();
+    }
+
+    const fetchNpas = async (): Promise<SuccessResponse<NpaData> | ErrorResponse> => {
+        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/npa");
+        return await response.json();
+    }
+
+    useEffect(() => {
+        const getContacts = async () => {
+            const partners = await fetchContacts();
+            if (partners.success) {
+                setContacts(partners.data)
+            }
+        }
+        const getEmployees = async () => {
+            const employees = await fetchEmployees();
+            if (employees.success) {
+                setEmployee(employees.data.employees)
+            }
+        }
+        const getNpas = async () => {
+            const npas = await fetchNpas();
+            if (npas.success) {
+                setNpa(npas.data.npas)
+            }
+        }
+        getContacts();
+        getEmployees();
+        getNpas();
+    }, []);
 
     useEffect(() => {
         if (isMounted) {
@@ -28,7 +77,7 @@ export default function About({lang}: { lang: Langs }) {
     return (
         <div className={classes.main}>
             <h2 className={classes.title}>
-                О нас
+                {translate("about_us", lang)}
             </h2>
             <div className={classes.container}>
                 <div className={classes.sidebar}>
@@ -54,7 +103,7 @@ export default function About({lang}: { lang: Langs }) {
                             {currentTab === "office" && (
                                 <>
                                     <h2 className={classes.content__title}>
-                                        Миссия “Национального Офиса Приватизации”
+                                        {translate("office_of_nop", lang)}
                                     </h2>
                                     <p className={classes.mission__text}>
                                         В соответствии с Указом Национальный офис до 31 декабря 2024 года должен
@@ -111,229 +160,84 @@ export default function About({lang}: { lang: Langs }) {
                             {currentTab === "team" && (
                                 <>
                                     <h2 className={classes.content__title}>
-                                        Состав
+                                        {translate("team", lang)}
                                     </h2>
                                     <div className={classes.tab__bar}>
                                         <div
-                                            className={currentSubTab === 1 ? classes.tab__active : classes.tab}
-                                            onClick={() => setCurrentSubTab(1)}
+                                            className={currentSubTab === "1" ? classes.tab__active : classes.tab}
+                                            onClick={() => setCurrentSubTab("1")}
                                         >
-                                            Основная группа
+                                            {translate("main_group", lang)}
                                         </div>
                                         <div
-                                            className={currentSubTab === 2 ? classes.tab__active : classes.tab}
-                                            onClick={() => setCurrentSubTab(2)}
+                                            className={currentSubTab === "2" ? classes.tab__active : classes.tab}
+                                            onClick={() => setCurrentSubTab("2")}
                                         >
-                                            I подгруппа
+                                            {translate("first_sub_group", lang)}
                                         </div>
                                         <div
-                                            className={currentSubTab === 3 ? classes.tab__active : classes.tab}
-                                            onClick={() => setCurrentSubTab(3)}
+                                            className={currentSubTab === "3" ? classes.tab__active : classes.tab}
+                                            onClick={() => setCurrentSubTab("3")}
                                         >
-                                            II подгруппа
+                                            {translate("second_sub_group", lang)}
                                         </div>
                                     </div>
 
-                                    {currentSubTab === 1 && (
-                                        <ol className={classes.staff}>
-                                            <li>Министр финансов Республики Казахстан</li>
-                                            <li>Первый заместитель Министра национальной экономики Республики Казахстан
-                                                (по
-                                                согласованию)
-                                            </li>
-                                            <li>Заместитель Министра юстиции Республики Казахстан (по согласованию)</li>
-                                            <li>Заместитель Председателя Агентства по стратегическому планированию и
-                                                реформам
-                                                Республики Казахстан Республики Казахстан (по согласованию)
-                                            </li>
-                                            <li>Заместитель Председателя Агентства по защите и развитию конкуренции
-                                                Республики
-                                                Казахстан, исполнительный секретарь
-                                            </li>
-                                            <li>Депутаты Мажилиса Парламента Республики Казахстан (по согласованию)</li>
-                                            <li>Члены экспертного сообщества (по согласованию)</li>
-                                            <li>Председатель правления акционерного общества «Самрук-Қазына» (по
-                                                согласованию)
-                                            </li>
-                                            <li>Председатель правления акционерного общества «Национальный управляющий
-                                                холдинг
-                                                «Байтерек» (по согласованию)
-                                            </li>
-                                            <li>Председатель Национальной палаты предпринимателей Республики Казахстан
-                                                «Атамекен»
-                                                (по согласованию)
-                                            </li>
-                                        </ol>
-                                    )}
-                                    {currentSubTab === 2 && (
-                                        <ol className={classes.staff}>
-                                            <li>Заместитель Генерального прокурора Республики Казахстан (по
-                                                согласованию)
-                                            </li>
-                                            <li>Заместитель Председателя Комитета национальной безопасности Республики
-                                                Казахстан (по
-                                                согласованию)
-                                            </li>
-                                            <li>Заместитель Председателя Национального Банка Республики Казахстан (по
-                                                согласованию)
-                                            </li>
-                                            <li>Заместитель Председателя Агентства Республики Казахстан по
-                                                противодействию коррупции
-                                                (по согласованию)
-                                            </li>
-                                            <li>Заместитель Управляющего Делами Президента Республики Казахстан (по
-                                                согласованию)
-                                            </li>
-                                            <li>Заместитель Председателя Агентства Республики Казахстан по делам
-                                                государственной
-                                                службы (по согласованию)
-                                            </li>
-                                            <li>Заместитель Министра иностранных дел Республики Казахстан (по
-                                                согласованию)
-                                            </li>
-                                            <li>Вице-министр национальной экономики Республики Казахстан (по
-                                                согласованию)
-                                            </li>
-                                            <li>Вице-министр финансов Республики Казахстан (по согласованию)</li>
-                                            <li>Вице-министр по чрезвычайным ситуациям Республики Казахстан (по
-                                                согласованию)
-                                            </li>
-                                            <li>Заместитель Министра обороны Республики Казахстан (по согласованию)</li>
-                                            <li>Вице-министр здравоохранения Республики Казахстан (по согласованию)</li>
-                                            <li>Вице-министр культуры и информации Республики Казахстан (по
-                                                согласованию)
-                                            </li>
-                                            <li>Вице-министр цифрового развития, инноваций и аэрокосмической
-                                                промышленности
-                                                Республики Казахстан (по согласованию)
-                                            </li>
-                                            <li>Вице-министр науки и высшего образования Республики Казахстан (по
-                                                согласованию)
-                                            </li>
-                                            <li>Вице-министр просвещения Республики Казахстан (по согласованию)</li>
-                                            <li>Вице-министр туризма и спорта Республики Казахстан (по согласованию)
-                                            </li>
-                                            <li>Вице-министр промышленности и строительства Республики Казахстан (по
-                                                согласованию)
-                                            </li>
-                                            <li>Вице-министр транспорта Республики Казахстан (по согласованию)</li>
-                                            <li>Вице-министр водных ресурсов и ирригации Республики Казахстан (по
-                                                согласованию)
-                                            </li>
-                                            <li>Вице-министр сельского хозяйства Республики Казахстан (по
-                                                согласованию)
-                                            </li>
-                                            <li>Вице-министр торговли и интеграции Республики Казахстан (по
-                                                согласованию)
-                                            </li>
-                                            <li>Вице-министр труда и социальной защиты населения Республики Казахстан
-                                                (по
-                                                согласованию)
-                                            </li>
-                                            <li>Вице-министр экологии и природных ресурсов Республики Казахстан (по
-                                                согласованию)
-                                            </li>
-                                            <li>Вице-министр энергетики Республики Казахстан (по согласованию)</li>
-                                        </ol>
-                                    )}
-                                    {currentSubTab === 3 && (
-                                        <ol className={classes.staff}>
-                                            <li>Заместитель акима города Астаны (по согласованию)</li>
-                                            <li>Заместитель акима города Алматы (по согласованию)</li>
-                                            <li>Заместитель акима Алматинской области (по согласованию)</li>
-                                            <li>Заместитель акима Акмолинской области (по согласованию)</li>
-                                            <li>Заместитель акима Актюбинской области (по согласованию)</li>
-                                            <li>Заместитель акима Атырауской области (по согласованию)</li>
-                                            <li>Заместитель акима Западно-Казахстанской области (по согласованию)</li>
-                                            <li>Заместитель акима Костанайской области (по согласованию)</li>
-                                            <li>Заместитель акима Павлодарской области (по согласованию)</li>
-                                            <li>Заместитель акима Северо-Казахстанской области (по согласованию)</li>
-                                            <li>Заместитель акима по области Жетису (по согласованию)</li>
-                                            <li>Заместитель акима по области Улытау (по согласованию)</li>
-                                            <li>Заместитель акима Карагандинской области (по согласованию)</li>
-                                            <li>Заместитель акима города Шымкент (по согласованию)</li>
-                                            <li>Заместитель акима Туркестанской области (по согласованию)</li>
-                                            <li>Заместитель акима по области Абай (по согласованию)</li>
-                                            <li>Заместитель акима Кызылординской области (по согласованию)</li>
-                                            <li>Заместитель акима Восточно-Казахстанской области (по согласованию)</li>
-                                            <li>Заместитель акима Жамбылской области (по согласованию)</li>
-                                            <li>Заместитель акима Мангистауской области (по согласованию)</li>
-                                        </ol>
-                                    )}
+                                    <ol className={classes.staff}>
+                                        {
+                                            employee.filter(item => item.group === currentSubTab).map((item, index) => (
+                                                <li key={index}>{item.name}</li>
+                                            ))
+                                        }
+                                    </ol>
                                 </>
                             )}
 
                             {currentTab === "npa" && (
                                 <>
                                     <h2 className={classes.content__title}>
-                                        НПА
+                                        {translate("npa", lang)}
                                     </h2>
-                                    <div className={classes.doc}>
-                                        <div className={classes.doc__group}>
-                                            <div className={classes.doc__title}>
-                                                Указ Президента
+                                    {
+                                        npa.map((item, index) => (
+                                            <div className={classes.doc} key={index}>
+                                                <div className={classes.doc__group}>
+                                                    <div className={classes.doc__title}>
+                                                        {item.title}
+                                                    </div>
+                                                    <DocSVG className={classes.doc__symbol}/>
+                                                </div>
+                                                <a
+                                                    className={classes.doc__download}
+                                                    href={item.filename}
+                                                    target={"_blank"}
+                                                >
+                                                    {translate("download", lang)}
+                                                </a>
                                             </div>
-                                            <DocSVG className={classes.doc__symbol}/>
-                                        </div>
-                                        {/*<a*/}
-                                        {/*    className={classes.doc__download}*/}
-                                        {/*    href={""}*/}
-                                        {/*    target={"_blank"}*/}
-                                        {/*>*/}
-                                        {/*    Скачать*/}
-                                        {/*</a>*/}
-                                    </div>
-                                    <div className={classes.doc}>
-                                        <div className={classes.doc__group}>
-                                            <div className={classes.doc__title}>
-                                                Приказ о создание
-                                            </div>
-                                            <DocSVG className={classes.doc__symbol}/>
-                                        </div>
-                                        <a
-                                            className={classes.doc__download}
-                                            href={"https://ardodev.fra1.cdn.digitaloceanspaces.com/nop/%D0%9F%D1%80%D0%B8%D0%BA%D0%B0%D0%B7%20%D0%BE%20%D1%81%D0%BE%D0%B7%D0%B4%20%D0%A0%D0%93%20%D0%9D%D0%B0%D1%86%20%D0%BE%D1%84%D0%B8%D1%81.pdf"}
-                                            target={"_blank"}
-                                        >
-                                            Скачать
-                                        </a>
-                                    </div>
-                                    <div className={classes.doc}>
-                                        <div className={classes.doc__group}>
-                                            <div className={classes.doc__title}>
-                                                Методика
-                                            </div>
-                                            <DocSVG className={classes.doc__symbol}/>
-                                        </div>
-                                        <a
-                                            className={classes.doc__download}
-                                            href={"https://ardodev.fra1.cdn.digitaloceanspaces.com/nop/%D0%9C%D0%B5%D1%82%D0%BE%D0%B4%D0%B8%D0%BA%D0%B0-%D1%80%D1%83%D1%81.docx.pdf"}
-                                            target={"_blank"}
-                                        >
-                                            Скачать
-                                        </a>
-                                    </div>
+                                        ))
+                                    }
                                 </>
                             )}
 
                             {currentTab === "contacts" && (
                                 <>
-                                    <h2 className={classes.content__title}>Контакты</h2>
+                                    <h2 className={classes.content__title}>
+                                        {translate("contacts", lang)}
+                                    </h2>
                                     <div className={classes.map__info}>
                                         <div>
-                                            <strong>Рабочий номер телефона:</strong>
-                                            <p>
-                                                74-93-68
-                                            </p>
+                                            <strong>{`${translate("main_phone", lang)}:`}</strong>
+                                            <p>{`${contacts.primaryContact}`}</p>
                                         </div>
 
                                         <div>
-                                            <strong>Доп. номер телефон:</strong>
-                                            <p>+7 747 451 9942</p>
+                                            <strong>{`${translate("additional_phone", lang)}:`}</strong>
+                                            <p>{`${contacts.secondaryContactPerson} - ${contacts.secondaryContact}`}</p>
                                         </div>
 
                                         <div>
-                                            <strong>Адрес:</strong>
+                                            <strong>{`${translate("address", lang)}:`}</strong>
                                             <p>Проспект Мангилик Ел, 8, Есиль район, г.Астана</p>
                                         </div>
                                     </div>

@@ -2,7 +2,7 @@ package uuid
 
 import (
 	"github.com/google/uuid"
-	"github.com/nnniyaz/nop/pkg/core"
+	"github.com/nnniyaz/nop/server/pkg/core"
 )
 
 var Nil = UUID(uuid.Nil)

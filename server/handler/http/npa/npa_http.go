@@ -3,10 +3,10 @@ package npa
 import (
 	"encoding/json"
 	"github.com/go-chi/chi/v5"
-	"github.com/nnniyaz/nop/domain/npa"
-	"github.com/nnniyaz/nop/handler/http/response"
-	"github.com/nnniyaz/nop/pkg/logger"
-	npaService "github.com/nnniyaz/nop/service/npa"
+	"github.com/nnniyaz/nop/server/domain/npa"
+	"github.com/nnniyaz/nop/server/handler/http/response"
+	"github.com/nnniyaz/nop/server/pkg/logger"
+	npaService "github.com/nnniyaz/nop/server/service/npa"
 	"net/http"
 	"time"
 )

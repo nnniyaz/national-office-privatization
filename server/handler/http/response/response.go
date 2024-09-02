@@ -2,8 +2,8 @@ package response
 
 import (
 	"encoding/json"
-	"github.com/nnniyaz/nop/pkg/logger"
-	"github.com/nnniyaz/nop/pkg/web"
+	"github.com/nnniyaz/nop/server/pkg/logger"
+	"github.com/nnniyaz/nop/server/pkg/web"
 	"go.uber.org/zap"
 	"net/http"
 	"strconv"

@@ -2,9 +2,9 @@ package mission
 
 import (
 	"encoding/json"
-	"github.com/nnniyaz/nop/handler/http/response"
-	"github.com/nnniyaz/nop/pkg/logger"
-	"github.com/nnniyaz/nop/service/mission"
+	"github.com/nnniyaz/nop/server/handler/http/response"
+	"github.com/nnniyaz/nop/server/pkg/logger"
+	"github.com/nnniyaz/nop/server/service/mission"
 	"net/http"
 )
 

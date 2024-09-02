@@ -1,9 +1,9 @@
 package valueobject
 
 import (
-	"github.com/nnniyaz/nop/pkg/core"
-	"github.com/nnniyaz/nop/pkg/crypto"
-	"github.com/nnniyaz/nop/pkg/hash"
+	"github.com/nnniyaz/nop/server/pkg/core"
+	"github.com/nnniyaz/nop/server/pkg/crypto"
+	"github.com/nnniyaz/nop/server/pkg/hash"
 	"unicode/utf8"
 )
 

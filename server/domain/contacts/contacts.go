@@ -1,9 +1,9 @@
 package contacts
 
 import (
-	"github.com/nnniyaz/nop/domain/base/email"
-	"github.com/nnniyaz/nop/domain/base/uuid"
-	"github.com/nnniyaz/nop/domain/contacts/exceptions"
+	"github.com/nnniyaz/nop/server/domain/base/email"
+	"github.com/nnniyaz/nop/server/domain/base/uuid"
+	"github.com/nnniyaz/nop/server/domain/contacts/exceptions"
 )
 
 type Contacts struct {

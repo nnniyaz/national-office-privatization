@@ -1,6 +1,6 @@
 package mission
 
-import "github.com/nnniyaz/nop/domain/base/uuid"
+import "github.com/nnniyaz/nop/server/domain/base/uuid"
 
 type Mission struct {
 	id   uuid.UUID

@@ -2,8 +2,8 @@ package application
 
 import (
 	"context"
-	"github.com/nnniyaz/nop/domain/application"
-	"github.com/nnniyaz/nop/domain/base/uuid"
+	"github.com/nnniyaz/nop/server/domain/application"
+	"github.com/nnniyaz/nop/server/domain/base/uuid"
 	"go.mongodb.org/mongo-driver/mongo"
 	"time"
 )

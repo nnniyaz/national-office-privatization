@@ -1,0 +1,107 @@
+import {useNavigate, useParams} from "react-router-dom";
+import {useTypedSelector} from "../../../../shared/hooks/useTypedSelector.ts";
+import {useActions} from "../../../../shared/hooks/useActions.ts";
+import {Button, Card, Divider, Form, Input} from "antd";
+import {translate} from "../../../../shared/translate/translate.ts";
+import {useEffect} from "react";
+
+export default function NpaEdit() {
+    const {id} = useParams();
+    const navigate = useNavigate();
+    const {lang} = useTypedSelector(state => state.system);
+    const {isLoading, npa} = useTypedSelector(state => state.npa);
+    const {
+        getOneNpaById,
+        updateNpa,
+        deleteNpa,
+    } = useActions();
+
+    const [form] = Form.useForm();
+
+    const onFinish = () => {
+        if (!id) return;
+        updateNpa({
+            id: id,
+            ...form.getFieldsValue()
+        }, id, {navigate});
+    }
+
+    const onFinishDelete = () => {
+        if (!id) return;
+        deleteNpa(id, {navigate});
+    }
+
+    useEffect(() => {
+        if (!id) return;
+        getOneNpaById(id, {navigate});
+    }, [id]);
+
+    useEffect(() => {
+        if (!npa) return;
+        form.setFieldsValue({
+            title: npa.title,
+            filename: npa.filename,
+        });
+    }, [npa]);
+
+    return (
+        <Card bodyStyle={{padding: "10px"}} style={{maxWidth: "500px"}} loading={isLoading}>
+            <h2>{npa?.id}</h2>
+            <p>{`${translate("title", lang)}: `}<i>{npa?.title}</i></p>
+            <p>{`${translate("filename", lang)}: `}<i>{npa?.filename}</i></p>
+            <p>{`${translate("created_at", lang)}: `}<i>{new Date(npa?.createdAt || "").toLocaleString()}</i></p>
+            <p>{`${translate("updated_at", lang)}: `}<i>{new Date(npa?.updatedAt || "").toLocaleString()}</i></p>
+
+            <Divider/>
+
+            <Form
+                form={form}
+                layout={"vertical"}
+                onFinish={onFinish}
+            >
+                <Form.Item
+                    label={translate("title", lang)}
+                    name={"title"}
+                    rules={[{required: true, message: translate("please_enter_title", lang)}]}
+                >
+                    <Input placeholder={translate("enter_title", lang)}/>
+                </Form.Item>
+                <Form.Item
+                    label={translate("filename", lang)}
+                    name={"filename"}
+                    rules={[{required: true, message: translate("please_enter_filename", lang)}]}
+                >
+                    <Input placeholder={translate("enter_filename", lang)}/>
+                </Form.Item>
+                <Form.Item style={{
+                    marginBottom: "0",
+                    display: "flex",
+                    justifyContent: "flex-end"
+                }}>
+                    <div style={{
+                        display: "flex",
+                        gap: "10px"
+                    }}>
+                        <Button
+                            onClick={onFinishDelete}
+                            danger={true}
+                            type={"primary"}
+                            loading={isLoading}
+                            disabled={isLoading}
+                        >
+                            {translate("delete", lang)}
+                        </Button>
+                        <Button
+                            htmlType={"submit"}
+                            type={"primary"}
+                            loading={isLoading}
+                            disabled={isLoading}
+                        >
+                            {translate("save", lang)}
+                        </Button>
+                    </div>
+                </Form.Item>
+            </Form>
+        </Card>
+    )
+}

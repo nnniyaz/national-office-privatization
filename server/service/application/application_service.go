@@ -3,12 +3,12 @@ package application
 import (
 	"context"
 	"fmt"
-	"github.com/nnniyaz/nop/domain/application"
-	"github.com/nnniyaz/nop/domain/base/uuid"
-	"github.com/nnniyaz/nop/pkg/email"
-	"github.com/nnniyaz/nop/pkg/logger"
-	"github.com/nnniyaz/nop/repo"
-	"github.com/nnniyaz/nop/service/enterprise"
+	"github.com/nnniyaz/nop/server/domain/application"
+	"github.com/nnniyaz/nop/server/domain/base/uuid"
+	"github.com/nnniyaz/nop/server/pkg/email"
+	"github.com/nnniyaz/nop/server/pkg/logger"
+	"github.com/nnniyaz/nop/server/repo"
+	"github.com/nnniyaz/nop/server/service/enterprise"
 )
 
 type ApplicationService interface {

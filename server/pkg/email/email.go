@@ -1,7 +1,7 @@
 package email
 
 import (
-	"github.com/nnniyaz/nop/config"
+	"github.com/nnniyaz/nop/server/config"
 	"gopkg.in/gomail.v2"
 )
 

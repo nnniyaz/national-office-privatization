@@ -6,7 +6,7 @@ import {useEffect, useState} from "react";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
 import {translate} from "@/pkg/translate/translate";
-import {Langs} from "@domain/mlString/mlString";
+import {Langs} from "@domain/base/mlString/mlString";
 import MenuSVG from "@assets/menu.svg";
 import {Transition} from "react-transition-group";
 import LangsBar from "@components/Header/components/LangsBar/LangsBar";

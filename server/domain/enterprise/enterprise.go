@@ -1,8 +1,8 @@
 package enterprise
 
 import (
-	"github.com/nnniyaz/nop/domain/base/uuid"
-	"github.com/nnniyaz/nop/domain/enterprise/exceptions"
+	"github.com/nnniyaz/nop/server/domain/base/uuid"
+	"github.com/nnniyaz/nop/server/domain/enterprise/exceptions"
 	"time"
 )
 

@@ -40,7 +40,8 @@ export default function Player() {
                     style={{
                         width: "100%",
                         height: "100%",
-                        borderRadius: "10px"
+                        borderRadius: "10px",
+                        objectFit: "cover"
                     }}
                     src={"https://ardodev.fra1.cdn.digitaloceanspaces.com/%D0%A0%D0%BE%D0%BB%D0%B8%D0%BA.mp4"}
                 />

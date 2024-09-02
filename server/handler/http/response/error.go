@@ -2,8 +2,8 @@ package response
 
 import (
 	"context"
-	"github.com/nnniyaz/nop/pkg/core"
-	"github.com/nnniyaz/nop/pkg/logger"
+	"github.com/nnniyaz/nop/server/pkg/core"
+	"github.com/nnniyaz/nop/server/pkg/logger"
 	"go.uber.org/zap"
 	"net/http"
 )

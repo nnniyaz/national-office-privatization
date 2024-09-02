@@ -2,17 +2,18 @@
 
 import React, {useEffect, useState} from "react";
 import Image from "next/image";
-import {Langs} from "@domain/mlString/mlString";
+import {Langs} from "@domain/base/mlString/mlString";
 import classes from "./Media.module.scss";
+import {translate} from "@/pkg/translate/translate";
 
 export default function Media({lang}: { lang: Langs }) {
     const [isMounted, setMounted] = useState(false);
     const [currentTab, setCurrentTab] = useState("news");
     const [currentSubTab, setCurrentSubTab] = useState(1);
     const sideTabs: { [key: string]: string } = {
-        "news": "Новости",
-        "meetings": "Мероприятия",
-        "documents": "Отчеты и документы",
+        "news": translate("news", lang),
+        "meetings": translate("events", lang),
+        "documents": translate("reports_and_documents", lang)
     }
 
     useEffect(() => {
@@ -26,7 +27,7 @@ export default function Media({lang}: { lang: Langs }) {
     return (
         <div className={classes.main}>
             <h2 className={classes.title}>
-                Медиа пространство
+                {translate("media_space", lang)}
             </h2>
             <div className={classes.container}>
                 <div className={classes.sidebar}>
@@ -52,7 +53,7 @@ export default function Media({lang}: { lang: Langs }) {
                             {currentTab === "news" && (
                                 <>
                                     <h2 className={classes.content__title}>
-                                        Новости
+                                        {translate("news", lang)}
                                     </h2>
                                     <div className={classes.list}>
                                         <News
@@ -79,40 +80,40 @@ export default function Media({lang}: { lang: Langs }) {
                             {currentTab === "meetings" && (
                                 <>
                                     <h2 className={classes.content__title}>
-                                        Мероприятия
+                                        {translate("events", lang)}
                                     </h2>
                                     <div className={classes.tab__bar}>
                                         <div
                                             className={currentSubTab === 1 ? classes.tab__active : classes.tab}
                                             onClick={() => setCurrentSubTab(1)}
                                         >
-                                            Предстоящие
+                                            {translate("upcoming", lang)}
                                         </div>
                                         <div
                                             className={currentSubTab === 2 ? classes.tab__active : classes.tab}
                                             onClick={() => setCurrentSubTab(2)}
                                         >
-                                            Прошедшие
+                                            {translate("past", lang)}
                                         </div>
                                         <div
                                             className={currentSubTab === 3 ? classes.tab__active : classes.tab}
                                             onClick={() => setCurrentSubTab(3)}
                                         >
-                                            График мероприятий на предстоящий
+                                            {translate("all", lang)}
                                         </div>
                                     </div>
                                     <h3 style={{marginTop: "30px"}}>
-                                        Мероприятия еще не опубликованы
+                                        {translate("events_not_found", lang)}
                                     </h3>
                                 </>
                             )}
                             {currentTab === "documents" && (
                                 <>
                                     <h2 className={classes.content__title}>
-                                        Отчеты и документы
+                                        {translate("reports_and_documents", lang)}
                                     </h2>
                                     <h3 style={{marginTop: "30px"}}>
-                                        Документы еще не опубликованы
+                                        {translate("documents_not_found", lang)}
                                     </h3>
                                 </>
                             )}

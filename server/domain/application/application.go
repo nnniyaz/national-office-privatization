@@ -1,8 +1,8 @@
 package application
 
 import (
-	"github.com/nnniyaz/nop/domain/base/uuid"
-	"github.com/nnniyaz/nop/service/application/exceptions"
+	"github.com/nnniyaz/nop/server/domain/base/uuid"
+	"github.com/nnniyaz/nop/server/service/application/exceptions"
 	"time"
 )
 

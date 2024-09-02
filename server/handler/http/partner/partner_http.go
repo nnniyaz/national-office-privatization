@@ -3,10 +3,10 @@ package partner
 import (
 	"encoding/json"
 	"github.com/go-chi/chi/v5"
-	"github.com/nnniyaz/nop/domain/partner"
-	"github.com/nnniyaz/nop/handler/http/response"
-	"github.com/nnniyaz/nop/pkg/logger"
-	partnerService "github.com/nnniyaz/nop/service/partner"
+	"github.com/nnniyaz/nop/server/domain/partner"
+	"github.com/nnniyaz/nop/server/handler/http/response"
+	"github.com/nnniyaz/nop/server/pkg/logger"
+	partnerService "github.com/nnniyaz/nop/server/service/partner"
 	"net/http"
 )
 

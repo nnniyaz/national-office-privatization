@@ -3,10 +3,10 @@ package document
 import (
 	"encoding/json"
 	"github.com/go-chi/chi/v5"
-	"github.com/nnniyaz/nop/domain/document"
-	"github.com/nnniyaz/nop/handler/http/response"
-	"github.com/nnniyaz/nop/pkg/logger"
-	documentService "github.com/nnniyaz/nop/service/document"
+	"github.com/nnniyaz/nop/server/domain/document"
+	"github.com/nnniyaz/nop/server/handler/http/response"
+	"github.com/nnniyaz/nop/server/pkg/logger"
+	documentService "github.com/nnniyaz/nop/server/service/document"
 	"net/http"
 	"time"
 )

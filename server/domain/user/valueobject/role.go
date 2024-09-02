@@ -1,6 +1,6 @@
 package valueobject
 
-import "github.com/nnniyaz/nop/domain/user/exceptions"
+import "github.com/nnniyaz/nop/server/domain/user/exceptions"
 
 const (
 	RoleAdmin = "admin"

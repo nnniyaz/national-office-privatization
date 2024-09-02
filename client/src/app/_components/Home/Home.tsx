@@ -4,15 +4,29 @@ import Block from "@components/ui/Block/Block";
 import Button from "@components/ui/Button/Button";
 import CarouselNews from "@components/ui/CarouselNews/CarouselNews";
 import {translate} from "@/pkg/translate/translate";
-import {Langs} from "@domain/mlString/mlString";
-import PlaySVG from "@assets/play.svg";
-import KzSVG from "@assets/kz 1.svg";
+import {Langs} from "@domain/base/mlString/mlString";
 import classes from "./Home.module.scss";
 import CarouselPartners from "@components/ui/CarouselPartners/CarouselPartners";
 import Enterprises from "@components/ui/Enterprises/Enterprises";
 import Player from "@components/ui/Player/Player";
+import {useEffect, useState} from "react";
+import {LoadingOutlined} from "@ant-design/icons";
 
 export default function Home({lang}: { lang: Langs }) {
+    const [mounted, setMounted] = useState<boolean>(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, [mounted]);
+
+    if (!mounted) {
+        return (
+            <div className={"loader_wrapper"}>
+                <div className={"loader"}></div>
+            </div>
+        )
+    }
+
     return (
         <div className={classes.home}>
             <div className={classes.welcome_block}>
@@ -79,11 +93,7 @@ export default function Home({lang}: { lang: Langs }) {
                                         <p>08.05.2024</p>
                                     </div>
                                     <div className={classes.step__point__right__info}>
-                                        <p>
-                                            В соответствии с подпунктом 3, пункта 2, указа Президента Республики
-                                            Казахстан
-                                            #542 “О мерах по либерализации эконоки”.
-                                        </p>
+                                        <p>{translate("first_event", lang)}</p>
                                     </div>
                                 </div>
                             </div>
@@ -94,9 +104,7 @@ export default function Home({lang}: { lang: Langs }) {
                                         <p>17.05.2024</p>
                                     </div>
                                     <div className={classes.step__point__left__info}>
-                                        <p>
-                                            Обьявление о создание Национального Офиса Приватизации.
-                                        </p>
+                                        <p>{translate("second_event", lang)}</p>
                                     </div>
                                 </div>
                             </div>
@@ -107,9 +115,7 @@ export default function Home({lang}: { lang: Langs }) {
                                         <p>01.06.2024</p>
                                     </div>
                                     <div className={classes.step__point__right__info}>
-                                        <p>
-                                            Создание Национального Офиса Приватизации.
-                                        </p>
+                                        <p>{translate("third_event", lang)}</p>
                                     </div>
                                 </div>
                             </div>

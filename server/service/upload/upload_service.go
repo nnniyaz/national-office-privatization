@@ -4,9 +4,9 @@ import (
 	"bytes"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/s3"
-	"github.com/nnniyaz/nop/domain/base/uuid"
-	"github.com/nnniyaz/nop/pkg/core"
-	"github.com/nnniyaz/nop/pkg/logger"
+	"github.com/nnniyaz/nop/server/domain/base/uuid"
+	"github.com/nnniyaz/nop/server/pkg/core"
+	"github.com/nnniyaz/nop/server/pkg/logger"
 	"io"
 	"mime/multipart"
 )

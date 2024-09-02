@@ -3,10 +3,10 @@ package news
 import (
 	"encoding/json"
 	"github.com/go-chi/chi/v5"
-	"github.com/nnniyaz/nop/domain/news"
-	"github.com/nnniyaz/nop/handler/http/response"
-	"github.com/nnniyaz/nop/pkg/logger"
-	newsService "github.com/nnniyaz/nop/service/news"
+	"github.com/nnniyaz/nop/server/domain/news"
+	"github.com/nnniyaz/nop/server/handler/http/response"
+	"github.com/nnniyaz/nop/server/pkg/logger"
+	newsService "github.com/nnniyaz/nop/server/service/news"
 	"net/http"
 	"time"
 )

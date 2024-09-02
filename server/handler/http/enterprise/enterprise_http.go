@@ -3,10 +3,10 @@ package enterprise
 import (
 	"encoding/json"
 	"github.com/go-chi/chi/v5"
-	"github.com/nnniyaz/nop/domain/enterprise"
-	"github.com/nnniyaz/nop/handler/http/response"
-	"github.com/nnniyaz/nop/pkg/logger"
-	enterpriseService "github.com/nnniyaz/nop/service/enterprise"
+	"github.com/nnniyaz/nop/server/domain/enterprise"
+	"github.com/nnniyaz/nop/server/handler/http/response"
+	"github.com/nnniyaz/nop/server/pkg/logger"
+	enterpriseService "github.com/nnniyaz/nop/server/service/enterprise"
 	"net/http"
 	"time"
 )

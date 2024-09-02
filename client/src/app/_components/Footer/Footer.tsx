@@ -2,9 +2,10 @@ import {headers} from "next/headers";
 import GerbSVG from "@assets/gerb.svg";
 import {lang} from "@/pkg/lang/lang";
 import {translate} from "@/pkg/translate/translate";
+import {Contacts} from "@domain/contacts/contacts";
 import classes from "./Footer.module.scss";
 
-export default function Footer() {
+export default function Footer({contacts}: {contacts: Contacts}) {
     const headersList = headers();
     const langRetrieve = () => lang(headersList)
     return (
@@ -58,18 +59,18 @@ export default function Footer() {
                     <ul className={classes.footer__upper_layer__group__contacts_list}>
                         <li className={classes.footer__upper_layer__group__contacts_list__item}>
                             <a
-                                href={"tel:+77771234567"}
+                                href={`tel:${contacts.primaryContact.replace(/ /g, "")}`}
                                 className={classes.footer__upper_layer__group__contacts_list__item__link}
                             >
-                                <p>{`${translate("phone_number", langRetrieve())}: +7 747 451 9942`}</p>
+                                <p>{`${translate("phone_number", langRetrieve())}: ${contacts.primaryContact}`}</p>
                             </a>
                         </li>
                         <li className={classes.footer__upper_layer__group__contacts_list__item}>
                             <a
-                                href={"mailto:example@mail.kz"}
+                                href={`mailto:${contacts.email}`}
                                 className={classes.footer__upper_layer__group__contacts_list__item__link}
                             >
-                                <p>{`${translate("email", langRetrieve())}: example@mail.kz`}</p>
+                                <p>{`${translate("email", langRetrieve())}: ${contacts.email}`}</p>
                             </a>
                         </li>
                     </ul>

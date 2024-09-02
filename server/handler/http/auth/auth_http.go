@@ -2,11 +2,11 @@ package auth
 
 import (
 	"encoding/json"
-	"github.com/nnniyaz/nop/domain/user"
-	"github.com/nnniyaz/nop/handler/http/response"
-	"github.com/nnniyaz/nop/pkg/logger"
-	"github.com/nnniyaz/nop/pkg/web"
-	"github.com/nnniyaz/nop/service/auth"
+	"github.com/nnniyaz/nop/server/domain/user"
+	"github.com/nnniyaz/nop/server/handler/http/response"
+	"github.com/nnniyaz/nop/server/pkg/logger"
+	"github.com/nnniyaz/nop/server/pkg/web"
+	"github.com/nnniyaz/nop/server/service/auth"
 	"net/http"
 	"time"
 )

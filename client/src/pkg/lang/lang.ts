@@ -1,5 +1,5 @@
 import {ReadonlyHeaders} from "next/dist/server/web/spec-extension/adapters/headers";
-import {Langs} from "@domain/mlString/mlString";
+import {Langs} from "@domain/base/mlString/mlString";
 
 export function lang(headers: ReadonlyHeaders) {
     let langFromThePath = headers.get("x-pathname")?.split("/")?.[1]?.toUpperCase() as Langs;

@@ -1,8 +1,8 @@
 package session
 
 import (
-	"github.com/nnniyaz/nop/domain/base/uuid"
-	"github.com/nnniyaz/nop/domain/session/valueobject"
+	"github.com/nnniyaz/nop/server/domain/base/uuid"
+	"github.com/nnniyaz/nop/server/domain/session/valueobject"
 	"time"
 )
 

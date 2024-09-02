@@ -3,10 +3,10 @@ package application
 import (
 	"encoding/json"
 	"github.com/go-chi/chi/v5"
-	"github.com/nnniyaz/nop/domain/application"
-	"github.com/nnniyaz/nop/handler/http/response"
-	"github.com/nnniyaz/nop/pkg/logger"
-	applicationService "github.com/nnniyaz/nop/service/application"
+	"github.com/nnniyaz/nop/server/domain/application"
+	"github.com/nnniyaz/nop/server/handler/http/response"
+	"github.com/nnniyaz/nop/server/pkg/logger"
+	applicationService "github.com/nnniyaz/nop/server/service/application"
 	"net/http"
 	"time"
 )

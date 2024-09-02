@@ -1,7 +1,7 @@
 package response
 
 import (
-	"github.com/nnniyaz/nop/pkg/logger"
+	"github.com/nnniyaz/nop/server/pkg/logger"
 	"go.uber.org/zap"
 	"net/http"
 )

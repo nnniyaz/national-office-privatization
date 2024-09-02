@@ -1,4 +1,4 @@
-import {Langs, MlString} from "@/domain/mlString/mlString";
+import {Langs, MlString} from "@domain/base/mlString/mlString";
 import {txts} from "@/pkg/core/txts";
 
 export function translate(word: string | MlString, lang: Langs): string {

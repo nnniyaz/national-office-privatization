@@ -3,10 +3,10 @@ package event
 import (
 	"encoding/json"
 	"github.com/go-chi/chi/v5"
-	"github.com/nnniyaz/nop/domain/event"
-	"github.com/nnniyaz/nop/handler/http/response"
-	"github.com/nnniyaz/nop/pkg/logger"
-	eventService "github.com/nnniyaz/nop/service/event"
+	"github.com/nnniyaz/nop/server/domain/event"
+	"github.com/nnniyaz/nop/server/handler/http/response"
+	"github.com/nnniyaz/nop/server/pkg/logger"
+	eventService "github.com/nnniyaz/nop/server/service/event"
 	"net/http"
 	"time"
 )

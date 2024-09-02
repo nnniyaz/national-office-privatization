@@ -2,7 +2,7 @@
 
 import {useEffect, useState} from "react";
 import {translate} from "@/pkg/translate/translate";
-import {Langs} from "@domain/mlString/mlString";
+import {Langs} from "@domain/base/mlString/mlString";
 import ArrowDownSVG from "@assets/chevron-down.svg";
 import classes from "@components/Header/Header.module.scss";
 

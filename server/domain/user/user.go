@@ -1,9 +1,9 @@
 package user
 
 import (
-	"github.com/nnniyaz/nop/domain/base/uuid"
-	"github.com/nnniyaz/nop/domain/user/exceptions"
-	"github.com/nnniyaz/nop/domain/user/valueobject"
+	"github.com/nnniyaz/nop/server/domain/base/uuid"
+	"github.com/nnniyaz/nop/server/domain/user/exceptions"
+	"github.com/nnniyaz/nop/server/domain/user/valueobject"
 	"time"
 )
 

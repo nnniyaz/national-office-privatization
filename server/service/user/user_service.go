@@ -2,11 +2,11 @@ package user
 
 import (
 	"context"
-	"github.com/nnniyaz/nop/domain/base/uuid"
-	"github.com/nnniyaz/nop/domain/user"
-	"github.com/nnniyaz/nop/domain/user/exceptions"
-	"github.com/nnniyaz/nop/pkg/logger"
-	"github.com/nnniyaz/nop/repo"
+	"github.com/nnniyaz/nop/server/domain/base/uuid"
+	"github.com/nnniyaz/nop/server/domain/user"
+	"github.com/nnniyaz/nop/server/domain/user/exceptions"
+	"github.com/nnniyaz/nop/server/pkg/logger"
+	"github.com/nnniyaz/nop/server/repo"
 )
 
 type UserService interface {

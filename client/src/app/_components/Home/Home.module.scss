@@ -34,7 +34,7 @@
         .welcome_block__statement__group__player {
           position: relative;
           width: 100%;
-          height: 250px;
+          height: 310px;
           border-radius: 10px;
           cursor: pointer;
 
@@ -190,6 +190,37 @@
     width: 100%;
     display: flex;
     gap: 20px;
+
+    .big_city {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      .big_city__item {
+        width: fit-content;
+        padding: 10px;
+        border-radius: 10px;
+
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 22px;
+        text-transform: uppercase;
+        color: var(--primary-font-color);
+        transition: .1s linear;
+        cursor: pointer;
+
+        &:hover {
+          background-color: var(--link-color);
+          color: #FFFFFF;
+        }
+      }
+
+      .big_city__item__active {
+        @extend .big_city__item;
+        background-color: var(--link-color);
+        color: #FFFFFF;
+      }
+    }
 
     .enterprises__group {
       width: 50%;
@@ -383,7 +414,7 @@
           }
 
           .welcome_block__statement__group__player {
-            height: 175px;
+            height: 195px;
 
             .welcome_block__statement__group__player__cover {
 

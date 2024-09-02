@@ -1,0 +1,31 @@
+.layout {
+  width: 100%;
+  min-height: 100dvh;
+  display: flex;
+
+  .layout__content {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+
+    .layout__sidebar__btn {
+      display: none;
+      width: fit-content;
+      font-size: 30px;
+      opacity: .5;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .layout {
+    .layout__content {
+      padding: 20px 10px;
+
+      .layout__sidebar__btn {
+        display: block;
+      }
+    }
+  }
+}

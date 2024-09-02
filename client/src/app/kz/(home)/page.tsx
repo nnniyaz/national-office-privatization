@@ -1,5 +1,5 @@
 import Home from "@components/Home/Home";
-import {Langs} from "@domain/mlString/mlString";
+import {Langs} from "@domain/base/mlString/mlString";
 
 export default function HomeParent() {
     return <Home lang={Langs.KZ}/>

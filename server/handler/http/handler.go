@@ -4,23 +4,23 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
-	_ "github.com/nnniyaz/nop/docs"
-	"github.com/nnniyaz/nop/handler/http/application"
-	"github.com/nnniyaz/nop/handler/http/auth"
-	"github.com/nnniyaz/nop/handler/http/contacts"
-	"github.com/nnniyaz/nop/handler/http/document"
-	"github.com/nnniyaz/nop/handler/http/employee"
-	"github.com/nnniyaz/nop/handler/http/enterprise"
-	"github.com/nnniyaz/nop/handler/http/event"
-	middleware2 "github.com/nnniyaz/nop/handler/http/middleware"
-	"github.com/nnniyaz/nop/handler/http/mission"
-	"github.com/nnniyaz/nop/handler/http/news"
-	"github.com/nnniyaz/nop/handler/http/npa"
-	"github.com/nnniyaz/nop/handler/http/partner"
-	"github.com/nnniyaz/nop/handler/http/upload"
-	"github.com/nnniyaz/nop/handler/http/user"
-	"github.com/nnniyaz/nop/pkg/logger"
-	"github.com/nnniyaz/nop/service"
+	_ "github.com/nnniyaz/nop/server/docs"
+	"github.com/nnniyaz/nop/server/handler/http/application"
+	"github.com/nnniyaz/nop/server/handler/http/auth"
+	"github.com/nnniyaz/nop/server/handler/http/contacts"
+	"github.com/nnniyaz/nop/server/handler/http/document"
+	"github.com/nnniyaz/nop/server/handler/http/employee"
+	"github.com/nnniyaz/nop/server/handler/http/enterprise"
+	"github.com/nnniyaz/nop/server/handler/http/event"
+	middleware2 "github.com/nnniyaz/nop/server/handler/http/middleware"
+	"github.com/nnniyaz/nop/server/handler/http/mission"
+	"github.com/nnniyaz/nop/server/handler/http/news"
+	"github.com/nnniyaz/nop/server/handler/http/npa"
+	"github.com/nnniyaz/nop/server/handler/http/partner"
+	"github.com/nnniyaz/nop/server/handler/http/upload"
+	"github.com/nnniyaz/nop/server/handler/http/user"
+	"github.com/nnniyaz/nop/server/pkg/logger"
+	"github.com/nnniyaz/nop/server/service"
 	httpSwagger "github.com/swaggo/http-swagger"
 	"go.mongodb.org/mongo-driver/mongo"
 	"net/http"
@@ -198,12 +198,11 @@ func (h *Handler) InitRoutes(isDevMode bool) *chi.Mux {
 	})
 
 	r.Route("/application", func(r chi.Router) {
-		r.Use(h.Middleware.UserAuth)
-		r.Get("/", h.Application.GetApplications)
-		r.Get("/{application_id}", h.Application.GetApplicationById)
 		r.Post("/", h.Application.CreateApplication)
-		r.Put("/", h.Application.UpdateApplication)
-		r.Delete("/{application_id}", h.Application.DeleteApplication)
+		r.With(h.Middleware.UserAuth).Get("/", h.Application.GetApplications)
+		r.With(h.Middleware.UserAuth).Get("/{application_id}", h.Application.GetApplicationById)
+		r.With(h.Middleware.UserAuth).Put("/", h.Application.UpdateApplication)
+		r.With(h.Middleware.UserAuth).Delete("/{application_id}", h.Application.DeleteApplication)
 	})
 
 	r.Route("/upload", func(r chi.Router) {

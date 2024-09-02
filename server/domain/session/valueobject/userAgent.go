@@ -1,6 +1,6 @@
 package valueobject
 
-import "github.com/nnniyaz/nop/pkg/core"
+import "github.com/nnniyaz/nop/server/pkg/core"
 
 var ErrUserAgentEmpty = core.NewI18NError(core.EINVALID, core.TXT_USER_AGENT_EMPTY)
 

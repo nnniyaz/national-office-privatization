@@ -9,7 +9,7 @@ import ArrowRight from "@assets/chevron-right.svg";
 import 'swiper/css';
 import {Autoplay} from 'swiper/modules';
 import classes from "./CarouselNews.module.scss";
-import {Langs} from "@domain/mlString/mlString";
+import {Langs} from "@domain/base/mlString/mlString";
 
 function getWindowDimensions() {
     const {innerWidth: width} = window;

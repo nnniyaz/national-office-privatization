@@ -3,10 +3,10 @@ package user
 import (
 	"encoding/json"
 	"github.com/go-chi/chi/v5"
-	"github.com/nnniyaz/nop/domain/user"
-	"github.com/nnniyaz/nop/handler/http/response"
-	"github.com/nnniyaz/nop/pkg/logger"
-	userService "github.com/nnniyaz/nop/service/user"
+	"github.com/nnniyaz/nop/server/domain/user"
+	"github.com/nnniyaz/nop/server/handler/http/response"
+	"github.com/nnniyaz/nop/server/pkg/logger"
+	userService "github.com/nnniyaz/nop/server/service/user"
 	"net/http"
 	"time"
 )
