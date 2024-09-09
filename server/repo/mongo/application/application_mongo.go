@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/nnniyaz/nop/server/domain/application"
 	"github.com/nnniyaz/nop/server/domain/base/uuid"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"time"
 )
@@ -47,7 +48,7 @@ func (m *mongoApplication) ToAggregate() *application.Application {
 }
 
 func (r *RepoApplication) Get(ctx context.Context) ([]*application.Application, error) {
-	cursor, err := r.Coll().Find(ctx, nil)
+	cursor, err := r.Coll().Find(ctx, bson.D{})
 	if err != nil {
 		return nil, err
 	}
