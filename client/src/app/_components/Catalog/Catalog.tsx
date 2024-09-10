@@ -18,7 +18,7 @@ function getWindowDimensions() {
 
 export default function Catalog({lang}: { lang: Langs }) {
     const [objects, setObjects] = useState<Enterprise[]>([]);
-    const [selectedItem, setSelectedItem] = useState<string>("0");
+    const [selectedItem, setSelectedItem] = useState<string>("");
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
     const [mounted, setMounted] = useState(false);
 

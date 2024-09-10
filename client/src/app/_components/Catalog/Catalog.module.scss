@@ -105,6 +105,8 @@
               text-align: right;
               cursor: pointer;
               transition: .1s;
+              padding-bottom: 10px;
+              border-bottom: 1px solid var(--border-color);
 
               &:hover {
                 opacity: .7;
