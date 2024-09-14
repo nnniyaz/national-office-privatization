@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /not-found/
+
+Sitemap: https://azrk.nop.kz/sitemap.xml
+Host: https://azrk.nop.kz

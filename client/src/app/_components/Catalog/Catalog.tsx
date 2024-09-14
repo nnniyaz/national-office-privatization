@@ -245,9 +245,9 @@ export default function Catalog({lang}: { lang: Langs }) {
                 windowDimensions < 1200 && (
                     <Modal
                         open={!!selectedItem}
-                        onCancel={() => setSelectedItem("0")}
+                        onCancel={() => setSelectedItem("")}
                         footer={[
-                            <AntdButton key={"close"} onClick={() => setSelectedItem("0")}>
+                            <AntdButton key={"close"} onClick={() => setSelectedItem("")}>
                                 Закрыть
                             </AntdButton>,
                         ]}
