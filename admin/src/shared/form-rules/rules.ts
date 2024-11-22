@@ -8,6 +8,7 @@ interface IRules {
     email: (message: string) => FormRule,
     minmaxLen: (message: string, min: number, max: number) => FormRule,
     matchPass: (form: FormInstance, lang: Langs) => FormRule,
+    invalidAuth: (error: string | null, message: string) => FormRule,
 }
 
 export const rules: IRules = {
@@ -44,5 +45,13 @@ export const rules: IRules = {
             }
             return Promise.reject(new Error(txts.password_does_not_match[lang]));
         },
+    }),
+    invalidAuth: (error: string | null, message: string) => ({
+        validator() {
+            if (error) {
+                return Promise.reject(message);
+            }
+            return Promise.resolve();
+        }
     }),
 }

@@ -33,7 +33,7 @@ export const NewsActionCreator = {
     }),
 
     getNews: (controller: AbortController) => async (dispatch: AppDispatch, getState: () => RootState) => {
-        const {lang} = getState().system;
+        const {lang, notificationApi} = getState().system;
         try {
             dispatch(NewsActionCreator.setLoading(true));
             const res = await NewsService.getNews(controller);
@@ -42,12 +42,15 @@ export const NewsActionCreator = {
             } else {
                 dispatch(NewsActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("news_module", lang),
+                    message: translate("news_list_failed", lang),
                     httpStatus: res.status,
                 });
             }
         } catch (e: any) {
             httpHandler({
+                notificationApi: notificationApi!,
                 error: e,
                 httpStatus: e?.response?.status,
                 dispatch: dispatch,
@@ -59,7 +62,7 @@ export const NewsActionCreator = {
     },
 
     getOneNewsById: (newsId: string, navigationCallback: NavigateCallback) => async (dispatch: AppDispatch, getState: () => RootState) => {
-        const {lang} = getState().system;
+        const {lang, notificationApi} = getState().system;
         try {
             dispatch(NewsActionCreator.setLoading(true));
             const res = await NewsService.getOneNewsById(newsId);
@@ -68,12 +71,15 @@ export const NewsActionCreator = {
             } else {
                 dispatch(NewsActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("news_module", lang),
+                    message: translate("news_get_failed", lang),
                     httpStatus: res.status,
                 });
             }
         } catch (e: any) {
             httpHandler({
+                notificationApi: notificationApi!,
                 error: e,
                 httpStatus: e?.response?.status,
                 dispatch: dispatch,
@@ -100,12 +106,15 @@ export const NewsActionCreator = {
             } else {
                 dispatch(NewsActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("news_module", lang),
+                    message: translate("news_create_failed", lang),
                     httpStatus: res.status,
                 });
             }
         } catch (e: any) {
             httpHandler({
+                notificationApi: notificationApi!,
                 error: e,
                 httpStatus: e?.response?.status,
                 dispatch: dispatch,
@@ -132,12 +141,15 @@ export const NewsActionCreator = {
             } else {
                 dispatch(NewsActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("news_module", lang),
+                    message: translate("news_update_failed", lang),
                     httpStatus: res.status,
                 });
             }
         } catch (e: any) {
             httpHandler({
+                notificationApi: notificationApi!,
                 error: e,
                 httpStatus: e?.response?.status,
                 dispatch: dispatch,
@@ -164,12 +176,15 @@ export const NewsActionCreator = {
             } else {
                 dispatch(NewsActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("news_module", lang),
+                    message: translate("news_delete_failed", lang),
                     httpStatus: res.status,
                 });
             }
         } catch (e: any) {
             httpHandler({
+                notificationApi: notificationApi!,
                 error: e,
                 httpStatus: e?.response?.status,
                 dispatch: dispatch,

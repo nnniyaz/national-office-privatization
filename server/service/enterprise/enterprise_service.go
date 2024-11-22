@@ -9,7 +9,7 @@ import (
 )
 
 type EnterpriseService interface {
-	Get(ctx context.Context) ([]*enterprise.Enterprise, error)
+	Get(ctx context.Context, offset, limit int64, search string) ([]*enterprise.Enterprise, int64, error)
 	GetById(ctx context.Context, enterpriseId string) (*enterprise.Enterprise, error)
 	Create(ctx context.Context, name, location, industry string, governmentShare float64) error
 	Update(ctx context.Context, enterpriseId, name, location, industry string, governmentShare float64) error
@@ -25,8 +25,8 @@ func NewEnterpriseService(l logger.Logger, repo repo.Enterprise) EnterpriseServi
 	return &enterpriseService{logger: l, enterpriseRepo: repo}
 }
 
-func (s *enterpriseService) Get(ctx context.Context) ([]*enterprise.Enterprise, error) {
-	return s.enterpriseRepo.Get(ctx)
+func (s *enterpriseService) Get(ctx context.Context, offset, limit int64, search string) ([]*enterprise.Enterprise, int64, error) {
+	return s.enterpriseRepo.Get(ctx, offset, limit, search)
 }
 
 func (s *enterpriseService) GetById(ctx context.Context, enterpriseId string) (*enterprise.Enterprise, error) {

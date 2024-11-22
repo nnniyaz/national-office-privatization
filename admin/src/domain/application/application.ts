@@ -8,7 +8,8 @@ export interface Application {
     enterpriseId: string
     fio: string
     bin: string
-    contact: string
+    phone: string
+    email: string
     message: string
     createdAt: string
     updatedAt: string

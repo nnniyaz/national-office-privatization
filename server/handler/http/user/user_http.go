@@ -83,24 +83,6 @@ func (hd *HttpDelivery) GetUserById(w http.ResponseWriter, r *http.Request) {
 	response.NewSuccess(hd.logger, w, r, NewUser(u))
 }
 
-type GetUserByLoginIn struct {
-	Login string `json:"login"`
-}
-
-func (hd *HttpDelivery) GetUserByLogin(w http.ResponseWriter, r *http.Request) {
-	in := GetUserByLoginIn{}
-	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
-		response.NewError(hd.logger, w, r, err)
-		return
-	}
-	u, err := hd.service.GetByLogin(r.Context(), in.Login)
-	if err != nil {
-		response.NewError(hd.logger, w, r, err)
-		return
-	}
-	response.NewSuccess(hd.logger, w, r, NewUser(u))
-}
-
 // -----------------------------------------------------------------------------
 // Commands
 // -----------------------------------------------------------------------------

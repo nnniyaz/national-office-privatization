@@ -4,19 +4,26 @@ import {useActions} from "../../../../shared/hooks/useActions.ts";
 import {Button, Card, Divider, Form, Input} from "antd";
 import {translate} from "../../../../shared/translate/translate.ts";
 import {useEffect} from "react";
+import {Upload} from "../../../../shared/ui/Upload/Upload.tsx";
+import {useWatch} from "antd/es/form/Form";
 
 export default function NpaEdit() {
     const {id} = useParams();
     const navigate = useNavigate();
     const {lang} = useTypedSelector(state => state.system);
     const {isLoading, npa} = useTypedSelector(state => state.npa);
+    const uploadState = useTypedSelector(state => state.upload);
     const {
         getOneNpaById,
         updateNpa,
         deleteNpa,
+        uploadNpa,
     } = useActions();
 
     const [form] = Form.useForm();
+
+    // @ts-ignore
+    const values = useWatch([], form);
 
     const onFinish = () => {
         if (!id) return;
@@ -29,6 +36,15 @@ export default function NpaEdit() {
     const onFinishDelete = () => {
         if (!id) return;
         deleteNpa(id, {navigate});
+    }
+
+    const upload = async (file: File) => {
+        const formData = new FormData();
+        formData.append("file", file);
+        const filename: any = await uploadNpa(formData);
+        if (filename) {
+            form.setFieldValue("filename", filename);
+        }
     }
 
     useEffect(() => {
@@ -48,7 +64,6 @@ export default function NpaEdit() {
         <Card bodyStyle={{padding: "10px"}} style={{maxWidth: "500px"}} loading={isLoading}>
             <h2>{npa?.id}</h2>
             <p>{`${translate("title", lang)}: `}<i>{npa?.title}</i></p>
-            <p>{`${translate("filename", lang)}: `}<i>{npa?.filename}</i></p>
             <p>{`${translate("created_at", lang)}: `}<i>{new Date(npa?.createdAt || "").toLocaleString()}</i></p>
             <p>{`${translate("updated_at", lang)}: `}<i>{new Date(npa?.updatedAt || "").toLocaleString()}</i></p>
 
@@ -67,11 +82,21 @@ export default function NpaEdit() {
                     <Input placeholder={translate("enter_title", lang)}/>
                 </Form.Item>
                 <Form.Item
-                    label={translate("filename", lang)}
+                    label={translate("file", lang)}
                     name={"filename"}
-                    rules={[{required: true, message: translate("please_enter_filename", lang)}]}
+                    rules={[{required: true, message: translate("please_upload_document", lang)}]}
                 >
-                    <Input placeholder={translate("enter_filename", lang)}/>
+                    {!!form.getFieldValue("filename") && (
+                        <Button style={{marginBottom: "20px"}} onClick={() => form.setFieldValue("filename", "")}>
+                            {translate("remove", lang)}
+                        </Button>
+                    )}
+                    <Upload
+                        imgSrc={form.getFieldValue("filename") || ""}
+                        onUpload={upload}
+                        loading={uploadState.isLoading}
+                        isDocument={true}
+                    />
                 </Form.Item>
                 <Form.Item style={{
                     marginBottom: "0",

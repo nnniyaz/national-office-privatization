@@ -25,7 +25,8 @@ type Application struct {
 	EnterpriseId string `json:"enterpriseId"`
 	Fio          string `json:"fio"`
 	Bin          string `json:"bin"`
-	Contact      string `json:"contact"`
+	Phone        string `json:"phone"`
+	Email        string `json:"email"`
 	Message      string `json:"message"`
 	CreatedAt    string `json:"createdAt"`
 	UpdatedAt    string `json:"updatedAt"`
@@ -37,7 +38,8 @@ func NewApplication(d *application.Application) *Application {
 		EnterpriseId: d.GetEnterpriseId(),
 		Fio:          d.GetFio(),
 		Bin:          d.GetBin(),
-		Contact:      d.GetContact(),
+		Phone:        d.GetPhone(),
+		Email:        d.GetEmail(),
 		Message:      d.GetMessage(),
 		CreatedAt:    d.GetCreatedAt().Format(time.RFC3339),
 		UpdatedAt:    d.GetUpdatedAt().Format(time.RFC3339),
@@ -91,7 +93,8 @@ type CreateApplicationIn struct {
 	EnterpriseId string `json:"enterpriseId"`
 	Fio          string `json:"fio"`
 	Bin          string `json:"bin"`
-	Contact      string `json:"contact"`
+	Phone        string `json:"phone"`
+	Email        string `json:"email"`
 	Message      string `json:"message"`
 }
 
@@ -101,7 +104,7 @@ func (hd *HttpDelivery) CreateApplication(w http.ResponseWriter, r *http.Request
 		response.NewError(hd.logger, w, r, err)
 		return
 	}
-	if err := hd.service.Create(r.Context(), in.EnterpriseId, in.Fio, in.Bin, in.Contact, in.Message); err != nil {
+	if err := hd.service.Create(r.Context(), in.EnterpriseId, in.Fio, in.Bin, in.Phone, in.Email, in.Message); err != nil {
 		response.NewError(hd.logger, w, r, err)
 		return
 	}
@@ -113,7 +116,8 @@ type UpdateApplicationIn struct {
 	EnterpriseId string `json:"enterpriseId"`
 	Fio          string `json:"fio"`
 	Bin          string `json:"bin"`
-	Contact      string `json:"contact"`
+	Phone        string `json:"phone"`
+	Email        string `json:"email"`
 	Message      string `json:"message"`
 }
 
@@ -123,7 +127,7 @@ func (hd *HttpDelivery) UpdateApplication(w http.ResponseWriter, r *http.Request
 		response.NewError(hd.logger, w, r, err)
 		return
 	}
-	if err := hd.service.Update(r.Context(), in.Id, in.EnterpriseId, in.Fio, in.Bin, in.Contact, in.Message); err != nil {
+	if err := hd.service.Update(r.Context(), in.Id, in.EnterpriseId, in.Fio, in.Bin, in.Phone, in.Email, in.Message); err != nil {
 		response.NewError(hd.logger, w, r, err)
 		return
 	}

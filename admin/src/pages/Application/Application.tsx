@@ -22,51 +22,30 @@ export default function Application() {
             render: (_, record) => (
                 <div>
                     <Link to={RouteNames.APPLICATION_EDIT.replace(":id", record.id)}>
-                        {txts.edit[lang]}
+                        {translate("details", lang)}
                     </Link>
                 </div>
             ),
         },
         {
-            key: "id",
-            title: "ID",
-            dataIndex: "id",
+            key: "fio",
+            title: translate("fio", lang),
+            dataIndex: "fio",
         },
         {
-            key: "firstName",
-            title: txts.first_name[lang],
-            dataIndex: "firstName",
-        },
-        {
-            key: "lastName",
-            title: txts.last_name[lang],
-            dataIndex: "lastName",
-        },
-        {
-            key: "login",
-            title: txts.login[lang],
-            dataIndex: "login",
-        },
-        {
-            key: "role",
-            title: txts.role[lang],
-            dataIndex: "role",
-        },
-        {
-            key: "disabled",
-            title: txts.disabled[lang],
-            dataIndex: "disabled",
-            render: (disabled: boolean) => disabled ? txts.yes[lang] : txts.no[lang],
+            key: "bin",
+            title: translate("bin", lang),
+            dataIndex: "bin",
         },
         {
             key: "created_at",
-            title: txts.created_at[lang],
+            title: translate("created_at", lang),
             dataIndex: "createdAt",
             render: (createdAt: string) => new Date(createdAt).toLocaleString(),
         },
         {
             key: "updated_at",
-            title: txts.updated_at[lang],
+            title: translate("updated_at", lang),
             dataIndex: "updatedAt",
             render: (updatedAt: string) => new Date(updatedAt).toLocaleString(),
         },
@@ -78,7 +57,8 @@ export default function Application() {
             enterpriseId: application.enterpriseId,
             fio: application.fio,
             bin: application.bin,
-            contact: application.contact,
+            phone: application.phone,
+            email: application.email,
             message: application.message,
             createdAt: application.createdAt,
             updatedAt: application.updatedAt,

@@ -6,6 +6,7 @@ import (
 	"github.com/nnniyaz/nop/server/domain/document"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"time"
 )
 
@@ -44,7 +45,7 @@ func (m *mongoDocument) ToAggregate() *document.Document {
 }
 
 func (r *RepoDocument) Get(ctx context.Context) ([]*document.Document, error) {
-	cursor, err := r.Coll().Find(ctx, bson.D{})
+	cursor, err := r.Coll().Find(ctx, bson.D{}, options.Find().SetSort(bson.D{{"createdAt", -1}}))
 	if err != nil {
 		return nil, err
 	}

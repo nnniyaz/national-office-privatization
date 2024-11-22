@@ -3,7 +3,8 @@ import {useTypedSelector} from "../../../../shared/hooks/useTypedSelector.ts";
 import {useActions} from "../../../../shared/hooks/useActions.ts";
 import {Button, Card, Divider, Form, Input} from "antd";
 import {translate} from "../../../../shared/translate/translate.ts";
-import {useEffect} from "react";
+import {useEffect, useMemo} from "react";
+import {getRegion} from "../../../../shared/utils/regions.ts";
 
 export default function EnterpriseEdit() {
     const {id} = useParams();
@@ -17,6 +18,36 @@ export default function EnterpriseEdit() {
     } = useActions();
 
     const [form] = Form.useForm();
+
+    const data: {[key: string]: {label: string, value: any}} = useMemo(() => {
+        if (!enterprise) return {} as {[key: string]: {label: string, value: any}};
+        return {
+            name: {
+                label: translate("name", lang),
+                value: enterprise?.name || "-"
+            },
+            location: {
+                label: translate("location", lang),
+                value: getRegion(enterprise?.location, lang) || "-"
+            },
+            industry: {
+                label: translate("industry", lang),
+                value: enterprise?.industry || "-"
+            },
+            governmentShare: {
+                label: translate("government_share", lang),
+                value: enterprise?.governmentShare || "-"
+            },
+            createdAt: {
+                label: translate("created_at", lang),
+                value: new Date(enterprise?.createdAt).toLocaleString() || "-"
+            },
+            updatedAt: {
+                label: translate("updated_at", lang),
+                value: new Date(enterprise?.updatedAt).toLocaleString() || "-"
+            },
+        }
+    }, [enterprise]);
 
     const onFinish = () => {
         if (!id) return;
@@ -50,13 +81,46 @@ export default function EnterpriseEdit() {
 
     return (
         <Card bodyStyle={{padding: "10px"}} style={{maxWidth: "500px"}} loading={isLoading}>
-            <h2>{enterprise?.id}</h2>
-            <p>{`${translate("name", lang)}: `}<i>{enterprise?.name}</i></p>
-            <p>{`${translate("location", lang)}: `}<i>{enterprise?.location}</i></p>
-            <p>{`${translate("industry", lang)}: `}<i>{enterprise?.industry}</i></p>
-            <p>{`${translate("government_share", lang)}: `}<i>{enterprise?.governmentShare}</i></p>
-            <p>{`${translate("created_at", lang)}: `}<i>{new Date(enterprise?.createdAt || "").toLocaleString()}</i></p>
-            <p>{`${translate("updated_at", lang)}: `}<i>{new Date(enterprise?.updatedAt || "").toLocaleString()}</i></p>
+            <h2>{`${translate("enterprise_id", lang)}:`}</h2>
+            <h2 style={{marginBottom: "20px"}}>{enterprise?.id}</h2>
+
+            <div
+                style={{
+                    border: "1px solid rgb(240, 240, 240)",
+                    borderRadius: "5px",
+                    marginBottom: "20px"
+                }}
+            >
+                {
+                    Object.keys(data).map((key, index) => (
+                        <div
+                            key={index}
+                            style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                borderBottom: Object.keys(data).length - 1 === index ? "" : "1px solid rgb(240, 240, 240)",
+                            }}
+                        >
+                            <div style={{
+                                width: "30%",
+                                padding: "10px",
+                                borderRight: "1px solid rgb(240, 240, 240)",
+                                backgroundColor: "#fafafa",
+                                borderTopLeftRadius: index === 0 ? "4px" : "",
+                                borderBottomLeftRadius: Object.keys(data).length - 1 === index ? "4px" : "",
+                            }}>
+                                {data[key].label}
+                            </div>
+                            <div style={{
+                                width: "70%",
+                                padding: "10px",
+                            }}>
+                                {data[key].value}
+                            </div>
+                        </div>
+                    ))
+                }
+            </div>
 
             <Divider/>
 

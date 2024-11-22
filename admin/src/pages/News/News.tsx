@@ -29,24 +29,9 @@ export default function News() {
             ),
         },
         {
-            key: "id",
-            title: "ID",
-            dataIndex: "id",
-        },
-        {
             key: "title",
             title: translate("title", lang),
             dataIndex: "title",
-        },
-        {
-            key: "content",
-            title: translate("content", lang),
-            dataIndex: "content",
-        },
-        {
-            key: "imgUrl",
-            title: translate("img_url", lang),
-            dataIndex: "imgUrl",
         },
         {
             key: "createdAt",

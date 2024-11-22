@@ -30,11 +30,6 @@ export default function Partner() {
             ),
         },
         {
-            key: "id",
-            title: "ID",
-            dataIndex: "id",
-        },
-        {
             key: "name",
             title: txts.name[lang],
             dataIndex: "name",

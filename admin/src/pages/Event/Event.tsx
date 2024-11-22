@@ -29,24 +29,9 @@ export default function Event() {
             ),
         },
         {
-            key: "id",
-            title: "ID",
-            dataIndex: "id",
-        },
-        {
             key: "name",
             title: translate("name", lang),
             dataIndex: "name",
-        },
-        {
-            key: "desc",
-            title: translate("desc", lang),
-            dataIndex: "desc",
-        },
-        {
-            key: "imgUrl",
-            title: translate("img_url", lang),
-            dataIndex: "imgUrl",
         },
         {
             key: "plannedAt",

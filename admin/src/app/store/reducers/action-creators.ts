@@ -11,6 +11,7 @@ import {NewsActionCreator} from "./news/action-creator.ts";
 import {NpaActionCreator} from "./npa/action-creator.ts";
 import {PartnerActionCreator} from "./partner/action-creator.ts";
 import {AuthActionCreator} from "./auth/action-creator.ts";
+import {UploadActionCreator} from "./upload/action-creator.ts";
 
 export const allActionCreators = {
     ...SystemActionCreator,
@@ -26,4 +27,5 @@ export const allActionCreators = {
     ...NpaActionCreator,
     ...PartnerActionCreator,
     ...AuthActionCreator,
+    ...UploadActionCreator
 }

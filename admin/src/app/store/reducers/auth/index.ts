@@ -3,6 +3,7 @@ import {AuthAction, AuthActionEnum, AuthState} from "./types.ts";
 const initialState: AuthState = {
     isAuth: false,
     isLoading: false,
+    isLoadingCurrentUser: true,
     error: null,
     user: null,
 };
@@ -15,6 +16,8 @@ export default function authReducer(state = initialState, action: AuthAction): A
             return {...state, error: action.payload};
         case AuthActionEnum.SET_LOADING_AUTH:
             return {...state, isLoading: action.payload};
+        case AuthActionEnum.SET_LOADING_CURRENT_USER:
+            return {...state, isLoadingCurrentUser: action.payload};
         case AuthActionEnum.SET_USER_AUTH:
             return {...state, user: action.payload};
         default:

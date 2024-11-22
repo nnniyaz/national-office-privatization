@@ -3,17 +3,32 @@ import {useTypedSelector} from "../../../../shared/hooks/useTypedSelector.ts";
 import {useActions} from "../../../../shared/hooks/useActions.ts";
 import {useNavigate} from "react-router-dom";
 import {translate} from "../../../../shared/translate/translate.ts";
+import {Upload} from "../../../../shared/ui/Upload/Upload.tsx";
+import {useWatch} from "antd/es/form/Form";
 
 export default function NpaCreate() {
     const navigate = useNavigate();
     const {lang} = useTypedSelector(state => state.system);
     const {isLoading} = useTypedSelector(state => state.npa);
-    const {createNpa} = useActions();
+    const uploadState = useTypedSelector(state => state.upload);
+    const {createNpa, uploadNpa} = useActions();
 
     const [form] = Form.useForm();
 
+    // @ts-ignore
+    const values = useWatch([], form);
+
     const onFinish = () => {
         createNpa({...form.getFieldsValue()}, {navigate});
+    }
+
+    const upload = async (file: File) => {
+        const formData = new FormData();
+        formData.append("file", file);
+        const filename: any = await uploadNpa(formData);
+        if (filename) {
+            form.setFieldValue("filename", filename);
+        }
     }
 
     return (
@@ -31,11 +46,21 @@ export default function NpaCreate() {
                     <Input placeholder={translate("enter_title", lang)}/>
                 </Form.Item>
                 <Form.Item
-                    label={translate("filename", lang)}
+                    label={translate("file", lang)}
                     name={"filename"}
-                    rules={[{required: true, message: translate("please_enter_filename", lang)}]}
+                    rules={[{required: true, message: translate("please_upload_document", lang)}]}
                 >
-                    <Input placeholder={translate("enter_filename", lang)}/>
+                    {!!form.getFieldValue("filename") && (
+                        <Button style={{marginBottom: "20px"}} onClick={() => form.setFieldValue("filename", "")}>
+                            {translate("remove", lang)}
+                        </Button>
+                    )}
+                    <Upload
+                        imgSrc={form.getFieldValue("filename") || ""}
+                        onUpload={upload}
+                        loading={uploadState.isLoading}
+                        isDocument={true}
+                    />
                 </Form.Item>
                 <Form.Item style={{
                     marginBottom: "0",

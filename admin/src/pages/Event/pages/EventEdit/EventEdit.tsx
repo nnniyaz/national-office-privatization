@@ -4,19 +4,26 @@ import {useActions} from "../../../../shared/hooks/useActions.ts";
 import {Button, Card, Divider, Form, Input} from "antd";
 import {translate} from "../../../../shared/translate/translate.ts";
 import {useEffect} from "react";
+import {Upload} from "../../../../shared/ui/Upload/Upload.tsx";
+import {useWatch} from "antd/es/form/Form";
 
 export default function EventEdit() {
     const {id} = useParams();
     const navigate = useNavigate();
     const {lang} = useTypedSelector(state => state.system);
     const {isLoading, event} = useTypedSelector(state => state.event);
+    const uploadState = useTypedSelector(state => state.upload);
     const {
         getOneEventById,
         updateEvent,
         deleteEvent,
+        uploadEventImage
     } = useActions();
 
     const [form] = Form.useForm();
+
+    // @ts-ignore
+    const values = useWatch([], form);
 
     const onFinish = () => {
         if (!id) return;
@@ -29,6 +36,15 @@ export default function EventEdit() {
     const onFinishDelete = () => {
         if (!id) return;
         deleteEvent(id, {navigate});
+    }
+
+    const upload = async (file: File) => {
+        const formData = new FormData();
+        formData.append("file", file);
+        const filename: any = await uploadEventImage(formData);
+        if (filename) {
+            form.setFieldValue("imgUrl", filename);
+        }
     }
 
     useEffect(() => {
@@ -49,12 +65,12 @@ export default function EventEdit() {
     return (
         <Card bodyStyle={{padding: "10px"}} style={{maxWidth: "500px"}} loading={isLoading}>
             <h2>{event?.id}</h2>
-            <p>{`${translate("name", lang)}: `}<i>{event?.name}</i></p>
-            <p>{`${translate("desc", lang)}: `}<i>{event?.desc}</i></p>
-            <p>{`${translate("img_url", lang)}: `}<i>{event?.imgUrl}</i></p>
-            <p>{`${translate("planned_at", lang)}: `}<i>{event?.plannedAt}</i></p>
-            <p>{`${translate("created_at", lang)}: `}<i>{new Date(event?.createdAt || "").toLocaleString()}</i></p>
-            <p>{`${translate("updated_at", lang)}: `}<i>{new Date(event?.updatedAt || "").toLocaleString()}</i></p>
+            <p style={{marginBottom: "5px"}}><b>{`${translate("name", lang)}: `}</b><i>{event?.name}</i></p>
+            <p style={{marginBottom: "5px"}}><b>{`${translate("planned_at", lang)}: `}</b><i>{new Date(event?.plannedAt || "").toLocaleString()}</i></p>
+            <p style={{marginBottom: "5px"}}><b>{`${translate("created_at", lang)}: `}</b><i>{new Date(event?.createdAt || "").toLocaleString()}</i></p>
+            <p style={{marginBottom: "5px"}}><b>{`${translate("updated_at", lang)}: `}</b><i>{new Date(event?.updatedAt || "").toLocaleString()}</i></p>
+            <p style={{marginBottom: "5px"}}><b>{`${translate("desc", lang)}: `}</b></p>
+            <p><i>{event?.desc}</i></p>
 
             <Divider/>
 
@@ -79,11 +95,24 @@ export default function EventEdit() {
                     <Input placeholder={translate("enter_desc", lang)}/>
                 </Form.Item>
                 <Form.Item
-                    label={translate("img_url", lang)}
+                    label={translate("file", lang)}
                     name={"imgUrl"}
-                    rules={[{required: true, message: translate("please_enter_img_url", lang)}]}
+                    rules={[{required: true, message: translate("please_upload_image", lang)}]}
                 >
-                    <Input placeholder={translate("enter_img_url", lang)}/>
+                    {!!form.getFieldValue("imgUrl") && (
+                        <Button style={{marginBottom: "20px"}} onClick={() => form.setFieldValue("imgUrl", "")}>
+                            {translate("remove", lang)}
+                        </Button>
+                    )}
+                    <Upload
+                        imgSrc={
+                            form.getFieldValue("imgUrl") ?
+                                `${import.meta.env.VITE_SPACE_HOST}/event/${form.getFieldValue("imgUrl")}`
+                                : ""
+                        }
+                        onUpload={upload}
+                        loading={uploadState.isLoading}
+                    />
                 </Form.Item>
                 <Form.Item
                     label={translate("planned_at", lang)}

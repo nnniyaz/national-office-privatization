@@ -32,7 +32,7 @@ export const ContactsActionCreator = {
     }),
 
     getContacts: () => async (dispatch: AppDispatch, getState: () => RootState) => {
-        const {lang} = getState().system;
+        const {lang, notificationApi} = getState().system;
         try {
             dispatch(ContactsActionCreator.setLoading(true));
             const res = await ContactsService.getContacts();
@@ -41,7 +41,9 @@ export const ContactsActionCreator = {
             } else {
                 dispatch(ContactsActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    title: translate("contacts_module", lang),
+                    message: translate("contacts_failed_to_retrieve", lang),
+                    notificationApi: notificationApi!,
                     httpStatus: res.status,
                 });
             }
@@ -51,6 +53,7 @@ export const ContactsActionCreator = {
                 httpStatus: e?.response?.status,
                 dispatch: dispatch,
                 currentLang: lang,
+                notificationApi: notificationApi!,
             });
         } finally {
             dispatch(ContactsActionCreator.setLoading(false));
@@ -72,7 +75,9 @@ export const ContactsActionCreator = {
             } else {
                 dispatch(ContactsActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    title: translate("contacts_module", lang),
+                    message: translate("contacts_failed_to_create", lang),
+                    notificationApi: notificationApi!,
                     httpStatus: res.status,
                 });
             }
@@ -83,6 +88,7 @@ export const ContactsActionCreator = {
                 dispatch: dispatch,
                 currentLang: lang,
                 navigateCallback: navigationCallback,
+                notificationApi: notificationApi!,
             });
         } finally {
             dispatch(ContactsActionCreator.setLoading(false));
@@ -103,7 +109,9 @@ export const ContactsActionCreator = {
             } else {
                 dispatch(ContactsActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    title: translate("contacts_module", lang),
+                    message: translate("contacts_failed_to_update", lang),
+                    notificationApi: notificationApi!,
                     httpStatus: res.status,
                 });
             }
@@ -114,6 +122,7 @@ export const ContactsActionCreator = {
                 dispatch: dispatch,
                 currentLang: lang,
                 navigateCallback: navigationCallback,
+                notificationApi: notificationApi!,
             });
         } finally {
             dispatch(ContactsActionCreator.setLoading(false));

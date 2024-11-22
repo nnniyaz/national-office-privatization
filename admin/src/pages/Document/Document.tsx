@@ -29,19 +29,19 @@ export default function Document() {
             ),
         },
         {
-            key: "id",
-            title: "ID",
-            dataIndex: "id",
-        },
-        {
             key: "title",
             title: translate("title", lang),
             dataIndex: "title",
         },
         {
-            key: "filename",
-            title: translate("filename", lang),
+            key: "file",
+            title: translate("file", lang),
             dataIndex: "filename",
+            render: (filename: string) => (
+                <a href={`${import.meta.env.VITE_SPACE_HOST}/document/${filename}`} target={"_blank"}>
+                    {translate("view_file", lang)}
+                </a>
+            ),
         },
         {
             key: "created_at",

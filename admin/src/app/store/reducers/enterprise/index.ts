@@ -2,6 +2,7 @@ import {EnterpriseAction, EnterpriseActionEnum, EnterpriseState} from "./types.t
 
 const initialState: EnterpriseState = {
     enterprises: [],
+    count: 0,
     enterprise: null,
     isLoading: false,
     error: null,
@@ -11,6 +12,8 @@ export default function enterpriseReducer(state = initialState, action: Enterpri
     switch (action.type) {
         case EnterpriseActionEnum.SET_ENTERPRISES:
             return {...state, enterprises: action.payload};
+        case EnterpriseActionEnum.SET_COUNT:
+            return {...state, count: action.payload};
         case EnterpriseActionEnum.SET_ENTERPRISE:
             return {...state, enterprise: action.payload};
         case EnterpriseActionEnum.SET_LOADING_ENTERPRISES:

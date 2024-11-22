@@ -28,7 +28,7 @@ export const MissionActionCreator = {
     }),
 
     getMission: () => async (dispatch: AppDispatch, getState: () => RootState) => {
-        const {lang} = getState().system;
+        const {lang, notificationApi} = getState().system;
         try {
             dispatch(MissionActionCreator.setLoading(true));
             const res = await MissionService.getMission();
@@ -37,12 +37,15 @@ export const MissionActionCreator = {
             } else {
                 dispatch(MissionActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("mission_module", lang),
+                    message: translate("failed_to_get_mission", lang),
                     httpStatus: res.status,
                 });
             }
         } catch (e: any) {
             httpHandler({
+                notificationApi: notificationApi!,
                 error: e,
                 httpStatus: e?.response?.status,
                 dispatch: dispatch,
@@ -68,12 +71,15 @@ export const MissionActionCreator = {
             } else {
                 dispatch(MissionActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("mission_module", lang),
+                    message: translate("failed_to_create_mission", lang),
                     httpStatus: res.status,
                 });
             }
         } catch (e: any) {
             httpHandler({
+                notificationApi: notificationApi!,
                 error: e,
                 httpStatus: e?.response?.status,
                 dispatch: dispatch,
@@ -100,12 +106,15 @@ export const MissionActionCreator = {
             } else {
                 dispatch(MissionActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("mission_module", lang),
+                    message: translate("failed_to_update_mission", lang),
                     httpStatus: res.status,
                 });
             }
         } catch (e: any) {
             httpHandler({
+                notificationApi: notificationApi!,
                 error: e,
                 httpStatus: e?.response?.status,
                 dispatch: dispatch,

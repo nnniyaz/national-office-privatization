@@ -33,7 +33,7 @@ export const EventActionCreator = {
     }),
 
     getEvents: (controller: AbortController) => async (dispatch: AppDispatch, getState: () => RootState) => {
-        const {lang} = getState().system;
+        const {lang, notificationApi} = getState().system;
         try {
             dispatch(EventActionCreator.setLoading(true));
             const res = await EventService.getEvents(controller);
@@ -42,12 +42,15 @@ export const EventActionCreator = {
             } else {
                 dispatch(EventActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("event_module", lang),
+                    message: translate("failed_to_fetch_events", lang),
                     httpStatus: res.status,
                 });
             }
         } catch (e: any) {
             httpHandler({
+                notificationApi: notificationApi!,
                 error: e,
                 httpStatus: e?.response?.status,
                 dispatch: dispatch,
@@ -59,7 +62,7 @@ export const EventActionCreator = {
     },
 
     getOneEventById: (eventId: string, navigationCallback: NavigateCallback) => async (dispatch: AppDispatch, getState: () => RootState) => {
-        const {lang} = getState().system;
+        const {lang, notificationApi} = getState().system;
         try {
             dispatch(EventActionCreator.setLoading(true));
             const res = await EventService.getOneEventById(eventId);
@@ -68,12 +71,15 @@ export const EventActionCreator = {
             } else {
                 dispatch(EventActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("event_module", lang),
+                    message: translate("failed_to_fetch_event", lang),
                     httpStatus: res.status,
                 });
             }
         } catch (e: any) {
             httpHandler({
+                notificationApi: notificationApi!,
                 error: e,
                 httpStatus: e?.response?.status,
                 dispatch: dispatch,
@@ -100,12 +106,15 @@ export const EventActionCreator = {
             } else {
                 dispatch(EventActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("event_module", lang),
+                    message: translate("failed_to_create_event", lang),
                     httpStatus: res.status,
                 });
             }
         } catch (e: any) {
             httpHandler({
+                notificationApi: notificationApi!,
                 error: e,
                 httpStatus: e?.response?.status,
                 dispatch: dispatch,
@@ -132,12 +141,15 @@ export const EventActionCreator = {
             } else {
                 dispatch(EventActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("event_module", lang),
+                    message: translate("failed_to_update_event", lang),
                     httpStatus: res.status,
                 });
             }
         } catch (e: any) {
             httpHandler({
+                notificationApi: notificationApi!,
                 error: e,
                 httpStatus: e?.response?.status,
                 dispatch: dispatch,
@@ -164,12 +176,15 @@ export const EventActionCreator = {
             } else {
                 dispatch(EventActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("event_module", lang),
+                    message: translate("failed_to_delete_event", lang),
                     httpStatus: res.status,
                 });
             }
         } catch (e: any) {
             httpHandler({
+                notificationApi: notificationApi!,
                 error: e,
                 httpStatus: e?.response?.status,
                 dispatch: dispatch,

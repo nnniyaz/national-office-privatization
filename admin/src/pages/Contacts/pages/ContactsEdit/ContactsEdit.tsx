@@ -45,7 +45,6 @@ export default function ContactsEdit() {
                 <Form.Item
                     label={translate("primary_contact_person", lang)}
                     name={"primaryContactPerson"}
-                    rules={[{required: true, message: translate("please_enter_primary_contact_person", lang)}]}
                 >
                     <Input placeholder={translate("enter_primary_contact_person", lang)}/>
                 </Form.Item>

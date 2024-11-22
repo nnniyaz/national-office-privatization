@@ -11,6 +11,7 @@ import news from "./news";
 import npa from "./npa";
 import partner from "./partner";
 import auth from "./auth";
+import upload from "./upload";
 
 export default {
     system,
@@ -26,4 +27,5 @@ export default {
     npa,
     partner,
     auth,
+    upload
 }

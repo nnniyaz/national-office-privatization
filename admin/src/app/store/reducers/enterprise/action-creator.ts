@@ -4,8 +4,13 @@ import {
     SetEnterpriseAction,
     SetLoadingAction,
     SetErrorAction,
+    SetCountAction,
 } from './types';
-import {Enterprise as EnterpriseService, EnterpriseCreateReq, EnterpriseUpdateReq} from "../../../api/enterprise/enterprise_http.ts";
+import {
+    Enterprise as EnterpriseService,
+    EnterpriseCreateReq,
+    EnterpriseUpdateReq, Pagination
+} from "../../../api/enterprise/enterprise_http.ts";
 import {AppDispatch, RootState} from "../../index.ts";
 import {httpHandler, FailedResponseHandler} from "../../../../shared/http-handler/httpHandler.ts";
 import {NavigateCallback} from "../../../../domain/base/navigateCallback.ts";
@@ -17,6 +22,10 @@ import {translate} from "../../../../shared/translate/translate.ts";
 export const EnterpriseActionCreator = {
     setEnterprises: (payload: Enterprise[]): SetEnterprisesAction => ({
         type: EnterpriseActionEnum.SET_ENTERPRISES,
+        payload
+    }),
+    setCount: (payload: number): SetCountAction => ({
+        type: EnterpriseActionEnum.SET_COUNT,
         payload
     }),
     setEnterprise: (payload: Enterprise | null): SetEnterpriseAction => ({
@@ -32,17 +41,20 @@ export const EnterpriseActionCreator = {
         payload
     }),
 
-    getEnterprises: (controller: AbortController) => async (dispatch: AppDispatch, getState: () => RootState) => {
-        const {lang} = getState().system;
+    getEnterprises: (controller: AbortController, pagination: Pagination) => async (dispatch: AppDispatch, getState: () => RootState) => {
+        const {lang, notificationApi} = getState().system;
         try {
             dispatch(EnterpriseActionCreator.setLoading(true));
-            const res = await EnterpriseService.getEnterprises(controller);
+            const res = await EnterpriseService.getEnterprises(controller, pagination);
             if (res.data.success) {
                 dispatch(EnterpriseActionCreator.setEnterprises(res.data.data?.enterprises))
+                dispatch(EnterpriseActionCreator.setCount(res.data.data?.count))
             } else {
                 dispatch(EnterpriseActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("enterprise_module", lang),
+                    message: translate("failed_to_fetch_enterprises", lang),
                     httpStatus: res.status,
                 });
             }
@@ -52,6 +64,7 @@ export const EnterpriseActionCreator = {
                 httpStatus: e?.response?.status,
                 dispatch: dispatch,
                 currentLang: lang,
+                notificationApi: notificationApi!,
             });
         } finally {
             dispatch(EnterpriseActionCreator.setLoading(false));
@@ -59,7 +72,7 @@ export const EnterpriseActionCreator = {
     },
 
     getOneEnterpriseById: (enterpriseId: string, navigationCallback: NavigateCallback) => async (dispatch: AppDispatch, getState: () => RootState) => {
-        const {lang} = getState().system;
+        const {lang, notificationApi} = getState().system;
         try {
             dispatch(EnterpriseActionCreator.setLoading(true));
             const res = await EnterpriseService.getOneEnterpriseById(enterpriseId);
@@ -68,7 +81,9 @@ export const EnterpriseActionCreator = {
             } else {
                 dispatch(EnterpriseActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("enterprise_module", lang),
+                    message: translate("failed_to_fetch_enterprise", lang),
                     httpStatus: res.status,
                 });
             }
@@ -79,6 +94,7 @@ export const EnterpriseActionCreator = {
                 dispatch: dispatch,
                 currentLang: lang,
                 navigateCallback: navigationCallback,
+                notificationApi: notificationApi!,
             });
         } finally {
             dispatch(EnterpriseActionCreator.setLoading(false));
@@ -100,7 +116,9 @@ export const EnterpriseActionCreator = {
             } else {
                 dispatch(EnterpriseActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("enterprise_module", lang),
+                    message: translate("enterprise_created_failed", lang),
                     httpStatus: res.status,
                 });
             }
@@ -111,6 +129,7 @@ export const EnterpriseActionCreator = {
                 dispatch: dispatch,
                 currentLang: lang,
                 navigateCallback: navigationCallback,
+                notificationApi: notificationApi!,
             });
         } finally {
             dispatch(EnterpriseActionCreator.setLoading(false));
@@ -132,7 +151,9 @@ export const EnterpriseActionCreator = {
             } else {
                 dispatch(EnterpriseActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("enterprise_module", lang),
+                    message: translate("enterprise_updated_failed", lang),
                     httpStatus: res.status,
                 });
             }
@@ -143,6 +164,7 @@ export const EnterpriseActionCreator = {
                 dispatch: dispatch,
                 currentLang: lang,
                 navigateCallback: navigationCallback,
+                notificationApi: notificationApi!,
             });
         } finally {
             dispatch(EnterpriseActionCreator.setLoading(false));
@@ -164,7 +186,9 @@ export const EnterpriseActionCreator = {
             } else {
                 dispatch(EnterpriseActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("enterprise_module", lang),
+                    message: translate("enterprise_deleted_failed", lang),
                     httpStatus: res.status,
                 });
             }
@@ -175,6 +199,7 @@ export const EnterpriseActionCreator = {
                 dispatch: dispatch,
                 currentLang: lang,
                 navigateCallback: navigationCallback,
+                notificationApi: notificationApi!,
             });
         } finally {
             dispatch(EnterpriseActionCreator.setLoading(false));

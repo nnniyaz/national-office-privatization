@@ -121,7 +121,6 @@ func (h *Handler) InitRoutes(isDevMode bool) *chi.Mux {
 		r.Use(h.Middleware.UserAuth)
 		r.Get("/", h.User.GetUsers)
 		r.Get("/{user_id}", h.User.GetUserById)
-		r.Post("/login", h.User.GetUserByLogin)
 		r.Post("/", h.User.CreateUser)
 		r.Put("/", h.User.UpdateUser)
 		r.Put("/password", h.User.UpdateUserPassword)
@@ -174,7 +173,7 @@ func (h *Handler) InitRoutes(isDevMode bool) *chi.Mux {
 	})
 
 	r.Route("/enterprise", func(r chi.Router) {
-		r.Get("/", h.Enterprise.GetEnterprises)
+		r.With(h.Middleware.PaginationParams).Get("/", h.Enterprise.GetEnterprises)
 		r.Get("/{enterprise_id}", h.Enterprise.GetEnterpriseById)
 		r.With(h.Middleware.UserAuth).Post("/", h.Enterprise.CreateEnterprise)
 		r.With(h.Middleware.UserAuth).Put("/", h.Enterprise.UpdateEnterprise)
@@ -198,9 +197,9 @@ func (h *Handler) InitRoutes(isDevMode bool) *chi.Mux {
 	})
 
 	r.Route("/application", func(r chi.Router) {
-		r.Post("/", h.Application.CreateApplication)
 		r.With(h.Middleware.UserAuth).Get("/", h.Application.GetApplications)
 		r.With(h.Middleware.UserAuth).Get("/{application_id}", h.Application.GetApplicationById)
+		r.Post("/", h.Application.CreateApplication)
 		r.With(h.Middleware.UserAuth).Put("/", h.Application.UpdateApplication)
 		r.With(h.Middleware.UserAuth).Delete("/{application_id}", h.Application.DeleteApplication)
 	})

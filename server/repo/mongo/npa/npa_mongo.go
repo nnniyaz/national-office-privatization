@@ -6,6 +6,7 @@ import (
 	"github.com/nnniyaz/nop/server/domain/npa"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"time"
 )
 
@@ -44,7 +45,7 @@ func (m *mongoNpa) ToAggregate() *npa.Npa {
 }
 
 func (r *RepoNpa) Get(ctx context.Context) ([]*npa.Npa, error) {
-	cursor, err := r.Coll().Find(ctx, bson.D{})
+	cursor, err := r.Coll().Find(ctx, bson.D{}, options.Find().SetSort(bson.D{{"createdAt", -1}}))
 	if err != nil {
 		return nil, err
 	}

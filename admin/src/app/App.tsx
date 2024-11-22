@@ -9,7 +9,7 @@ import {notification} from "antd";
 const Context = React.createContext({name: 'Default'});
 
 function App() {
-    const {isLoading} = useTypedSelector(state => state.auth);
+    const {isLoadingCurrentUser} = useTypedSelector(state => state.auth);
     const {getCurrentUser, setNotificationApi} = useActions();
     const [api, contextHolder] = notification.useNotification();
 
@@ -20,7 +20,7 @@ function App() {
         setNotificationApi(api);
     }, []);
 
-    if (isLoading) {
+    if (isLoadingCurrentUser) {
         return (
             <div style={{
                 width: "100%",

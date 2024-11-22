@@ -34,12 +34,13 @@ const (
 	TXT_INVALID_APPLICATION_ENTERPRISE      TxtKey = 29
 	TXT_INVALID_APPLICATION_FIO             TxtKey = 30
 	TXT_INVALID_APPLICATION_BIN             TxtKey = 31
-	TXT_INVALID_APPLICATION_CONTACT         TxtKey = 32
-	TXT_INVALID_APPLICATION_MESSAGE         TxtKey = 33
-	TXT_MAX_FILE_SIZE_IS_1MB                TxtKey = 34
-	TXT_WRONG_MLSTRING_FORMAT               TxtKey = 35
-	TXT_INVALID_EMAIL                       TxtKey = 36
-	TXT_UUID_INVALID_LENGTH                 TxtKey = 37
+	TXT_INVALID_APPLICATION_PHONE           TxtKey = 32
+	TXT_INVALID_APPLICATION_EMAIL           TxtKey = 33
+	TXT_INVALID_APPLICATION_MESSAGE         TxtKey = 34
+	TXT_MAX_FILE_SIZE_IS_1MB                TxtKey = 35
+	TXT_WRONG_MLSTRING_FORMAT               TxtKey = 36
+	TXT_INVALID_EMAIL                       TxtKey = 37
+	TXT_UUID_INVALID_LENGTH                 TxtKey = 38
 )
 
 var Txts = TxtResource{
@@ -198,10 +199,15 @@ var Txts = TxtResource{
 		RU: `Неверный БИН заявки`,
 		EN: `Invalid application BIN`,
 	},
-	TXT_INVALID_APPLICATION_CONTACT: MlString{
-		KZ: `Жарамсыз өтініш контакт`,
-		RU: `Неверный контакт заявки`,
-		EN: `Invalid application contact`,
+	TXT_INVALID_APPLICATION_PHONE: MlString{
+		KZ: `Жарамсыз өтініш телефон`,
+		RU: `Неверный телефон заявки`,
+		EN: `Invalid application phone`,
+	},
+	TXT_INVALID_APPLICATION_EMAIL: MlString{
+		KZ: `Жарамсыз өтініш email`,
+		RU: `Неверный email заявки`,
+		EN: `Invalid application email`,
 	},
 	TXT_INVALID_APPLICATION_MESSAGE: MlString{
 		KZ: `Жарамсыз өтініш хабарлама`,
@@ -294,8 +300,10 @@ func GetTxtKeyAsString(k TxtKey) string {
 		return "invalid_application_fio"
 	case TXT_INVALID_APPLICATION_BIN:
 		return "invalid_application_bin"
-	case TXT_INVALID_APPLICATION_CONTACT:
-		return "invalid_application_contact"
+	case TXT_INVALID_APPLICATION_PHONE:
+		return "invalid_application_phone"
+	case TXT_INVALID_APPLICATION_EMAIL:
+		return "invalid_application_email"
 	case TXT_INVALID_APPLICATION_MESSAGE:
 		return "invalid_application_message"
 	case TXT_MAX_FILE_SIZE_IS_1MB:

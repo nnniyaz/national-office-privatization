@@ -17,9 +17,15 @@ export interface EnterpriseUpdateReq {
     "governmentShare": number
 }
 
+export interface Pagination {
+    offset: number
+    limit: number
+    search?: string
+}
+
 export class Enterprise {
-    static async getEnterprises(controller: AbortController): Promise<AxiosResponse<SuccessResponse<EnterpriseData> | ErrorResponse>> {
-        return $api.get(ApiRoutes.GET_ALL_ENTERPRISES, {signal: controller.signal})
+    static async getEnterprises(controller: AbortController, pagination: Pagination ): Promise<AxiosResponse<SuccessResponse<EnterpriseData> | ErrorResponse>> {
+        return $api.get(ApiRoutes.GET_ALL_ENTERPRISES, {signal: controller.signal, params: pagination})
     }
 
     static async getOneEnterpriseById(enterpriseId: string): Promise<AxiosResponse<SuccessResponse<EnterpriseModel> | ErrorResponse>> {

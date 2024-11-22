@@ -11,13 +11,14 @@ type Application struct {
 	enterpriseId string
 	fio          string
 	bin          string
-	contact      string
+	phone        string
+	email        string
 	message      string
 	createdAt    time.Time
 	updatedAt    time.Time
 }
 
-func NewApplication(enterpriseId, fio, bin, contact, message string) (*Application, error) {
+func NewApplication(enterpriseId, fio, bin, phone, email, message string) (*Application, error) {
 	if enterpriseId == "" {
 		return nil, exceptions.ErrInvalidApplicationEnterprise
 	}
@@ -27,8 +28,11 @@ func NewApplication(enterpriseId, fio, bin, contact, message string) (*Applicati
 	if bin == "" {
 		return nil, exceptions.ErrInvalidApplicationBin
 	}
-	if contact == "" {
-		return nil, exceptions.ErrInvalidApplicationContact
+	if phone == "" {
+		return nil, exceptions.ErrInvalidApplicationPhone
+	}
+	if email == "" {
+		return nil, exceptions.ErrInvalidApplicationEmail
 	}
 	if message == "" {
 		return nil, exceptions.ErrInvalidApplicationMessage
@@ -38,7 +42,8 @@ func NewApplication(enterpriseId, fio, bin, contact, message string) (*Applicati
 		enterpriseId: enterpriseId,
 		fio:          fio,
 		bin:          bin,
-		contact:      contact,
+		phone:        phone,
+		email:        email,
 		message:      message,
 		createdAt:    time.Now(),
 		updatedAt:    time.Now(),
@@ -61,8 +66,12 @@ func (a *Application) GetBin() string {
 	return a.bin
 }
 
-func (a *Application) GetContact() string {
-	return a.contact
+func (a *Application) GetPhone() string {
+	return a.phone
+}
+
+func (a *Application) GetEmail() string {
+	return a.email
 }
 
 func (a *Application) GetMessage() string {
@@ -77,7 +86,7 @@ func (a *Application) GetUpdatedAt() time.Time {
 	return a.updatedAt
 }
 
-func (a *Application) Update(enterpriseId, fio, bin, contact, message string) error {
+func (a *Application) Update(enterpriseId, fio, bin, phone, email, message string) error {
 	if enterpriseId == "" {
 		return exceptions.ErrInvalidApplicationEnterprise
 	}
@@ -87,8 +96,11 @@ func (a *Application) Update(enterpriseId, fio, bin, contact, message string) er
 	if bin == "" {
 		return exceptions.ErrInvalidApplicationBin
 	}
-	if contact == "" {
-		return exceptions.ErrInvalidApplicationContact
+	if phone == "" {
+		return exceptions.ErrInvalidApplicationPhone
+	}
+	if email == "" {
+		return exceptions.ErrInvalidApplicationEmail
 	}
 	if message == "" {
 		return exceptions.ErrInvalidApplicationMessage
@@ -97,19 +109,21 @@ func (a *Application) Update(enterpriseId, fio, bin, contact, message string) er
 	a.enterpriseId = enterpriseId
 	a.fio = fio
 	a.bin = bin
-	a.contact = contact
+	a.phone = phone
+	a.email = email
 	a.message = message
 	a.updatedAt = time.Now()
 	return nil
 }
 
-func UnmarshalApplicationFromDatabase(id uuid.UUID, enterpriseId, fio, bin, contact, message string, createAt time.Time) *Application {
+func UnmarshalApplicationFromDatabase(id uuid.UUID, enterpriseId, fio, bin, phone, email, message string, createAt time.Time) *Application {
 	return &Application{
 		id:           id,
 		enterpriseId: enterpriseId,
 		fio:          fio,
 		bin:          bin,
-		contact:      contact,
+		phone:        phone,
+		email:        email,
 		message:      message,
 		createdAt:    createAt,
 		updatedAt:    time.Now(),

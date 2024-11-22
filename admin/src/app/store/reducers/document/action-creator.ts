@@ -33,7 +33,7 @@ export const DocumentActionCreator = {
     }),
 
     getDocuments: (controller: AbortController) => async (dispatch: AppDispatch, getState: () => RootState) => {
-        const {lang} = getState().system;
+        const {lang, notificationApi} = getState().system;
         try {
             dispatch(DocumentActionCreator.setLoading(true));
             const res = await DocumentService.getDocuments(controller);
@@ -42,12 +42,15 @@ export const DocumentActionCreator = {
             } else {
                 dispatch(DocumentActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("document_module", lang),
+                    message: translate("document_fetch_failed", lang),
                     httpStatus: res.status,
                 });
             }
         } catch (e: any) {
             httpHandler({
+                notificationApi: notificationApi!,
                 error: e,
                 httpStatus: e?.response?.status,
                 dispatch: dispatch,
@@ -59,7 +62,7 @@ export const DocumentActionCreator = {
     },
 
     getOneDocumentById: (documentId: string, navigationCallback: NavigateCallback) => async (dispatch: AppDispatch, getState: () => RootState) => {
-        const {lang} = getState().system;
+        const {lang, notificationApi} = getState().system;
         try {
             dispatch(DocumentActionCreator.setLoading(true));
             const res = await DocumentService.getOneDocumentById(documentId);
@@ -68,12 +71,15 @@ export const DocumentActionCreator = {
             } else {
                 dispatch(DocumentActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("document_module", lang),
+                    message: translate("document_fetch_failed", lang),
                     httpStatus: res.status,
                 });
             }
         } catch (e: any) {
             httpHandler({
+                notificationApi: notificationApi!,
                 error: e,
                 httpStatus: e?.response?.status,
                 dispatch: dispatch,
@@ -100,12 +106,15 @@ export const DocumentActionCreator = {
             } else {
                 dispatch(DocumentActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("document_module", lang),
+                    message: translate("document_create_failed", lang),
                     httpStatus: res.status,
                 });
             }
         } catch (e: any) {
             httpHandler({
+                notificationApi: notificationApi!,
                 error: e,
                 httpStatus: e?.response?.status,
                 dispatch: dispatch,
@@ -132,12 +141,15 @@ export const DocumentActionCreator = {
             } else {
                 dispatch(DocumentActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("document_module", lang),
+                    message: translate("document_update_failed", lang),
                     httpStatus: res.status,
                 });
             }
         } catch (e: any) {
             httpHandler({
+                notificationApi: notificationApi!,
                 error: e,
                 httpStatus: e?.response?.status,
                 dispatch: dispatch,
@@ -164,12 +176,15 @@ export const DocumentActionCreator = {
             } else {
                 dispatch(DocumentActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("document_module", lang),
+                    message: translate("document_delete_failed", lang),
                     httpStatus: res.status,
                 });
             }
         } catch (e: any) {
             httpHandler({
+                notificationApi: notificationApi!,
                 error: e,
                 httpStatus: e?.response?.status,
                 dispatch: dispatch,

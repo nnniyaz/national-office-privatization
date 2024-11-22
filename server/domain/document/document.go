@@ -22,9 +22,11 @@ func NewDocument(title, filename string) (*Document, error) {
 		return nil, exceptions.ErrInvalidDocumentFilename
 	}
 	return &Document{
-		id:       uuid.NewUUID(),
-		title:    title,
-		filename: filename,
+		id:        uuid.NewUUID(),
+		title:     title,
+		filename:  filename,
+		createdAt: time.Now(),
+		updatedAt: time.Now(),
 	}, nil
 }
 

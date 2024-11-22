@@ -6,6 +6,7 @@ import (
 	"github.com/nnniyaz/nop/server/domain/base/uuid"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"time"
 )
 
@@ -26,7 +27,8 @@ type mongoApplication struct {
 	EnterpriseId string    `bson:"enterpriseId"`
 	Fio          string    `bson:"fio"`
 	Bin          string    `bson:"bin"`
-	Contact      string    `bson:"contact"`
+	Phone        string    `bson:"phone"`
+	Email        string    `bson:"email"`
 	Message      string    `bson:"message"`
 	CreateAt     time.Time `bson:"createAt"`
 }
@@ -37,18 +39,19 @@ func newFromApplication(a *application.Application) *mongoApplication {
 		EnterpriseId: a.GetEnterpriseId(),
 		Fio:          a.GetFio(),
 		Bin:          a.GetBin(),
-		Contact:      a.GetContact(),
+		Phone:        a.GetPhone(),
+		Email:        a.GetEmail(),
 		Message:      a.GetMessage(),
 		CreateAt:     a.GetCreatedAt(),
 	}
 }
 
 func (m *mongoApplication) ToAggregate() *application.Application {
-	return application.UnmarshalApplicationFromDatabase(m.Id, m.EnterpriseId, m.Fio, m.Bin, m.Contact, m.Message, m.CreateAt)
+	return application.UnmarshalApplicationFromDatabase(m.Id, m.EnterpriseId, m.Fio, m.Bin, m.Phone, m.Email, m.Message, m.CreateAt)
 }
 
 func (r *RepoApplication) Get(ctx context.Context) ([]*application.Application, error) {
-	cursor, err := r.Coll().Find(ctx, bson.D{})
+	cursor, err := r.Coll().Find(ctx, bson.D{}, options.Find().SetSort(bson.D{{"createdAt", -1}}))
 	if err != nil {
 		return nil, err
 	}

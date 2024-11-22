@@ -9,7 +9,7 @@ import {useEffect} from "react";
 export default function Mission() {
     const navigate = useNavigate();
     const {lang} = useTypedSelector(state => state.system);
-    const {mission} = useTypedSelector(state => state.mission);
+    const {mission, isLoading} = useTypedSelector(state => state.mission);
     const {getMission} = useActions();
 
     useEffect(() => {
@@ -17,7 +17,7 @@ export default function Mission() {
     }, [])
 
     return (
-        <Card bodyStyle={{padding: "10px"}}>
+        <Card bodyStyle={{padding: "10px"}} style={{maxWidth: "500px"}} loading={isLoading}>
             <Row justify={"end"}>
                 {
                     !!mission

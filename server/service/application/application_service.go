@@ -14,8 +14,8 @@ import (
 type ApplicationService interface {
 	Get(ctx context.Context) ([]*application.Application, error)
 	GetById(ctx context.Context, applicationId string) (*application.Application, error)
-	Create(ctx context.Context, enterpriseId, fio, bin, contact, message string) error
-	Update(ctx context.Context, applicationId, enterpriseId, fio, bin, contact, message string) error
+	Create(ctx context.Context, enterpriseId, fio, bin, phone, email, message string) error
+	Update(ctx context.Context, applicationId, enterpriseId, fio, bin, phone, email, message string) error
 	Delete(ctx context.Context, applicationId string) error
 }
 
@@ -42,8 +42,8 @@ func (s *applicationService) GetById(ctx context.Context, applicationId string) 
 	return s.repo.GetById(ctx, convertedId)
 }
 
-func (s *applicationService) Create(ctx context.Context, enterpriseId, fio, bin, contact, message string) error {
-	a, err := application.NewApplication(enterpriseId, fio, bin, contact, message)
+func (s *applicationService) Create(ctx context.Context, enterpriseId, fio, bin, phone, email, message string) error {
+	a, err := application.NewApplication(enterpriseId, fio, bin, phone, email, message)
 	if err != nil {
 		return err
 	}
@@ -54,7 +54,7 @@ func (s *applicationService) Create(ctx context.Context, enterpriseId, fio, bin,
 	}
 
 	subject := "Запрос об объекте с веб-сайта НОП"
-	htmlBody := fmt.Sprintf("<p>Дата и время запроса: %s,</p><p>Запрос от <strong>%s</strong></p><p>Наименование объекта: %s</p><p>ИИН/БИН запросителя: %s</p><p>Контакты запросителя: %s</p><p>Cообщение запросителя: <br/>%s</p>", a.GetCreatedAt().Format("2006-01-02 15:04:05"), a.GetFio(), enterprise.GetName(), a.GetBin(), a.GetContact(), a.GetMessage())
+	htmlBody := fmt.Sprintf("<p>Дата и время запроса: %s,</p><p>Запрос от <strong>%s</strong></p><p>Наименование объекта: %s</p><p>ИИН/БИН запросителя: %s</p><p>Контакты запросителя: %s, %s</p><p>Cообщение запросителя: <br/>%s</p>", a.GetCreatedAt().Format("2006-01-02 15:04:05"), a.GetFio(), enterprise.GetName(), a.GetBin(), a.GetPhone(), a.GetEmail(), a.GetMessage())
 	err = s.emailService.SendMail([]string{"k.kense.azrk@azrk.gov.kz"}, subject, htmlBody)
 	if err != nil {
 		return err
@@ -63,7 +63,7 @@ func (s *applicationService) Create(ctx context.Context, enterpriseId, fio, bin,
 	return s.repo.Create(ctx, a)
 }
 
-func (s *applicationService) Update(ctx context.Context, applicationId, enterpriseId, fio, bin, contact, message string) error {
+func (s *applicationService) Update(ctx context.Context, applicationId, enterpriseId, fio, bin, phone, email, message string) error {
 	convertedId, err := uuid.UUIDFromString(applicationId)
 	if err != nil {
 		return err
@@ -72,7 +72,7 @@ func (s *applicationService) Update(ctx context.Context, applicationId, enterpri
 	if err != nil {
 		return err
 	}
-	if err = a.Update(enterpriseId, fio, bin, contact, message); err != nil {
+	if err = a.Update(enterpriseId, fio, bin, phone, email, message); err != nil {
 		return err
 	}
 	return s.repo.Update(ctx, a)

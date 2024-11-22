@@ -11,7 +11,8 @@ import (
 	"mime/multipart"
 )
 
-const MaxFileSize = 1 << 20
+// 5 MB:
+const MaxFileSize = 5 * (1 << 20)
 
 var ErrMaxFileSizeIs1MB = core.NewI18NError(core.EINVALID, core.TXT_MAX_FILE_SIZE_IS_1MB)
 
@@ -37,7 +38,7 @@ func (s *uploadService) UploadImage(folderName string, file multipart.File, file
 	fileName := uuid.NewUUID().String() + "_" + fileHeader.Filename
 	_, err := s.s3Client.PutObject(&s3.PutObjectInput{
 		Bucket:       aws.String("ardodev"),
-		Key:          aws.String(folderName + "/" + fileName),
+		Key:          aws.String("/nop/" + folderName + "/" + fileName),
 		Body:         bytes.NewReader(buf.Bytes()),
 		ACL:          aws.String("public-read"),
 		CacheControl: aws.String("max-age=21600000"),

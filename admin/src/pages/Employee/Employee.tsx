@@ -29,11 +29,6 @@ export default function Employee() {
             ),
         },
         {
-            key: "id",
-            title: "ID",
-            dataIndex: "id",
-        },
-        {
             key: "name",
             title: translate("name", lang),
             dataIndex: "name",

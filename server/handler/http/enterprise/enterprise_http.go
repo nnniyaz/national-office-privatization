@@ -44,17 +44,17 @@ func NewEnterprise(enterprise *enterprise.Enterprise) *Enterprise {
 
 type Enterprises struct {
 	Enterprises []*Enterprise `json:"enterprises"`
-	Count       int           `json:"count"`
+	Count       int64         `json:"count"`
 }
 
-func NewEnterprises(enterprises []*enterprise.Enterprise) *Enterprises {
+func NewEnterprises(enterprises []*enterprise.Enterprise, count int64) *Enterprises {
 	var enterprisesList []*Enterprise
 	for _, e := range enterprises {
 		enterprisesList = append(enterprisesList, NewEnterprise(e))
 	}
 	return &Enterprises{
 		enterprisesList,
-		len(enterprisesList),
+		count,
 	}
 }
 
@@ -63,12 +63,15 @@ func NewEnterprises(enterprises []*enterprise.Enterprise) *Enterprises {
 // -----------------------------------------------------------------------------
 
 func (hd *HttpDelivery) GetEnterprises(w http.ResponseWriter, r *http.Request) {
-	foundEnterprises, err := hd.service.Get(r.Context())
+	offset := r.Context().Value("offset").(int64)
+	limit := r.Context().Value("limit").(int64)
+	search := r.Context().Value("search").(string)
+	foundEnterprises, count, err := hd.service.Get(r.Context(), offset, limit, search)
 	if err != nil {
 		response.NewError(hd.logger, w, r, err)
 		return
 	}
-	response.NewSuccess(hd.logger, w, r, NewEnterprises(foundEnterprises))
+	response.NewSuccess(hd.logger, w, r, NewEnterprises(foundEnterprises, count))
 }
 
 func (hd *HttpDelivery) GetEnterpriseById(w http.ResponseWriter, r *http.Request) {

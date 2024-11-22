@@ -37,7 +37,8 @@ export const UserActionCreator = {
             } else {
                 dispatch(UserActionCreator.setError(res.data.messages[0]));
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    title: translate("user_module", lang),
+                    message: translate("", lang),
                     httpStatus: res.status,
                     notificationApi: notificationApi!
                 });
@@ -65,7 +66,8 @@ export const UserActionCreator = {
             } else {
                 dispatch(UserActionCreator.setError(res.data.messages[0]));
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    title: translate("user_module", lang),
+                    message: translate("failed_to_get_user", lang),
                     httpStatus: res.status,
                     notificationApi: notificationApi!
                 });
@@ -94,7 +96,8 @@ export const UserActionCreator = {
             } else {
                 dispatch(UserActionCreator.setError(res.data.messages[0]));
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    title: translate("user_module", lang),
+                    message: translate("failed_to_get_user_by_login", lang),
                     httpStatus: res.status,
                     notificationApi: notificationApi!
                 });
@@ -128,7 +131,8 @@ export const UserActionCreator = {
             } else {
                 dispatch(UserActionCreator.setError(res.data.messages[0]));
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    title: translate("user_module", lang),
+                    message: translate("failed_to_create_user", lang),
                     httpStatus: res.status,
                     notificationApi: notificationApi!
                 });
@@ -162,7 +166,8 @@ export const UserActionCreator = {
             } else {
                 dispatch(UserActionCreator.setError(res.data.messages[0]));
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    title: translate("user_module", lang),
+                    message: translate("failed_to_update_user", lang),
                     httpStatus: res.status,
                     notificationApi: notificationApi!
                 });
@@ -196,7 +201,8 @@ export const UserActionCreator = {
             } else {
                 dispatch(UserActionCreator.setError(res.data.messages[0]));
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    title: translate("user_module", lang),
+                    message: translate("failed_to_update_password", lang),
                     httpStatus: res.status,
                     notificationApi: notificationApi!
                 });
@@ -230,7 +236,8 @@ export const UserActionCreator = {
             } else {
                 dispatch(UserActionCreator.setError(res.data.messages[0]));
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    title: translate("user_module", lang),
+                    message: translate("failed_to_delete_user", lang),
                     httpStatus: res.status,
                     notificationApi: notificationApi!
                 });
@@ -264,7 +271,8 @@ export const UserActionCreator = {
             } else {
                 dispatch(UserActionCreator.setError(res.data.messages[0]));
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    title: translate("user_module", lang),
+                    message: translate("failed_to_recover_user", lang),
                     httpStatus: res.status,
                     notificationApi: notificationApi!
                 });

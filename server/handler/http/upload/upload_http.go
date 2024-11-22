@@ -35,7 +35,7 @@ func (hd *HttpDelivery) UploadDocuments(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 	defer file.Close()
-	fileName, err := hd.service.UploadImage("documents", file, header)
+	fileName, err := hd.service.UploadImage("document", file, header)
 	if err != nil {
 		response.NewError(hd.logger, w, r, err)
 		return

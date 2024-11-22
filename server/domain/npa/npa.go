@@ -22,9 +22,11 @@ func NewNpa(title, filename string) (*Npa, error) {
 		return nil, exceptions.ErrInvalidNpaFilename
 	}
 	return &Npa{
-		id:       uuid.NewUUID(),
-		title:    title,
-		filename: filename,
+		id:        uuid.NewUUID(),
+		title:     title,
+		filename:  filename,
+		createdAt: time.Now(),
+		updatedAt: time.Now(),
 	}, nil
 }
 

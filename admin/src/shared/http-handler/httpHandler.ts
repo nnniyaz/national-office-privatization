@@ -1,4 +1,3 @@
-import {isEmpty} from "lodash";
 import {AppDispatch} from "../../app/store";
 import {Langs} from "../../domain/base/mlString.ts";
 import {NavigateCallback} from "../../domain/base/navigateCallback.ts";
@@ -15,7 +14,7 @@ interface HttpHandlerProps {
     currentLang: Langs;
     navigateCallback?: NavigateCallback;
     hideNotify?: boolean;
-    notificationApi?: NotificationInstance;
+    notificationApi: NotificationInstance;
 }
 
 export const httpHandler = (
@@ -72,25 +71,26 @@ export const httpHandler = (
 }
 
 interface FailedResponseHandlerProps {
-    messages: string[];
+    title?: string;
+    message?: string;
     httpStatus: number;
     hideNotify?: boolean;
-    notificationApi?: NotificationInstance;
+    notificationApi: NotificationInstance;
 }
 
 export const FailedResponseHandler = (
-    {messages, httpStatus, hideNotify, notificationApi}: FailedResponseHandlerProps
+    {title, message, httpStatus, hideNotify, notificationApi}: FailedResponseHandlerProps
 ) => {
     if (hideNotify) {
         return;
     }
-    if (httpStatus >= 400 && httpStatus < 500 && !isEmpty(messages)) {
-        messages.forEach((msg) => {
+    if (httpStatus >= 400 && httpStatus < 500) {
+        if (title && message) {
             Notify.Warning({
-                title: msg,
-                message: "",
+                title: title,
+                message: message,
                 notificationApi: notificationApi!
             });
-        });
+        }
     }
 }

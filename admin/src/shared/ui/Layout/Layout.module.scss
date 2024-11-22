@@ -8,6 +8,7 @@
     padding: 20px;
     display: flex;
     flex-direction: column;
+    margin-left: 200px;
 
     .layout__sidebar__btn {
       display: none;
@@ -18,10 +19,11 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1480px) {
   .layout {
     .layout__content {
       padding: 20px 10px;
+      margin-left: 0;
 
       .layout__sidebar__btn {
         display: block;

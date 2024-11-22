@@ -1,5 +1,5 @@
 .sidebar {
-  position: relative;
+  position: fixed;
   width: 200px;
   height: 100dvh;
   padding: 15px 10px;
@@ -52,7 +52,7 @@
   }
 }
 
-@media (max-width: 1340px) {
+@media (max-width: 1480px) {
   .sidebar {
     position: fixed;
     top: 0;

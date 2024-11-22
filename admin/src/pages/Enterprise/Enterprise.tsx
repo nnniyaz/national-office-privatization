@@ -1,19 +1,29 @@
 import {useTypedSelector} from "../../shared/hooks/useTypedSelector.ts";
 import {useActions} from "../../shared/hooks/useActions.ts";
-import {useEffect} from "react";
-import {Button, Card, Empty, Row, Table} from "antd";
+import {useEffect, useState} from "react";
+import {Button, Card, Empty, Table} from "antd";
 import {txts} from "../../shared/core/i18ngen.ts";
 import {ColumnsType} from "antd/es/table";
 import {Enterprise as EnterpriseModel} from "../../domain/enterprise/enterprise.ts";
 import {Link, useNavigate} from "react-router-dom";
 import {RouteNames} from "../index.tsx";
 import {translate} from "../../shared/translate/translate.ts";
+import Input from "antd/es/input/Input";
+import {getRegion} from "../../shared/utils/regions.ts";
 
 export default function Enterprise() {
     const navigate = useNavigate();
     const {lang} = useTypedSelector(state => state.system);
-    const {enterprises, isLoading} = useTypedSelector(state => state.enterprise);
+    const {enterprises, count, isLoading} = useTypedSelector(state => state.enterprise);
     const {getEnterprises} = useActions();
+    const [pagination, setPagination] = useState({
+        pagination: {
+            current: 1,
+            pageSize: 25,
+            total: count,
+        }
+    });
+    const [search, setSearch] = useState("");
 
     const columns: ColumnsType<EnterpriseModel> = [
         {
@@ -29,11 +39,6 @@ export default function Enterprise() {
             ),
         },
         {
-            key: "id",
-            title: "ID",
-            dataIndex: "id",
-        },
-        {
             key: "name",
             title: translate("name", lang),
             dataIndex: "name",
@@ -42,6 +47,7 @@ export default function Enterprise() {
             key: "location",
             title: translate("location", lang),
             dataIndex: "location",
+            render: (location: string) => getRegion(location, lang),
         },
         {
             key: "industry",
@@ -82,13 +88,47 @@ export default function Enterprise() {
 
     useEffect(() => {
         const controller = new AbortController();
-        getEnterprises(controller);
+        getEnterprises(controller, {
+            offset: (pagination.pagination.current - 1) * pagination.pagination.pageSize,
+            limit: pagination.pagination.pageSize,
+            search: search,
+        });
         return () => controller.abort();
-    }, []);
+    }, [pagination]);
+
+    useEffect(() => {
+        setPagination({
+            ...pagination,
+            pagination: {
+                ...pagination.pagination,
+                total: count,
+            }
+        });
+    }, [count]);
 
     return (
         <Card bodyStyle={{padding: "10px"}}>
-            <Row justify={"end"}>
+            <div style={{width: "100%", display: "flex", justifyContent: "space-between", gap: "10px"}}>
+                <Input
+                    placeholder={translate("search", lang)}
+                    style={{marginBottom: "20px"}}
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    onKeyPress={(e) => e.key === "Enter" && setPagination({
+                        ...pagination,
+                        pagination: {...pagination.pagination, current: 1}
+                    })}
+                />
+                <Button
+                    type={"primary"}
+                    style={{marginBottom: "20px"}}
+                    onClick={() => setPagination({
+                        ...pagination,
+                        pagination: {...pagination.pagination, current: 1}
+                    })}
+                >
+                    {translate("search", lang)}
+                </Button>
                 <Button
                     type={"primary"}
                     style={{marginBottom: "20px"}}
@@ -96,12 +136,20 @@ export default function Enterprise() {
                 >
                     {translate("add", lang)}
                 </Button>
-            </Row>
+            </div>
+            <p style={{marginBottom: "20px", color: "gray"}}>{`${translate("quantity", lang)}: ${count}`}</p>
             <Table
                 locale={{emptyText: <Empty description={translate("no_data", lang)}/>}}
                 dataSource={data}
                 columns={columns}
                 bordered={true}
+                pagination={{
+                    ...pagination.pagination,
+                    onChange: (page) => setPagination({
+                        ...pagination,
+                        pagination: {...pagination.pagination, current: page}
+                    }),
+                }}
                 scroll={{x: 500}}
                 loading={isLoading}
             />

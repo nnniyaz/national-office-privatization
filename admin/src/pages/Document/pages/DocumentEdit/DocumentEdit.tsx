@@ -4,19 +4,26 @@ import {useActions} from "../../../../shared/hooks/useActions.ts";
 import {Button, Card, Divider, Form, Input} from "antd";
 import {translate} from "../../../../shared/translate/translate.ts";
 import {useEffect} from "react";
+import {Upload} from "../../../../shared/ui/Upload/Upload.tsx";
+import {useWatch} from "antd/es/form/Form";
 
 export default function DocumentEdit() {
     const {id} = useParams();
     const navigate = useNavigate();
     const {lang} = useTypedSelector(state => state.system);
     const {isLoading, document} = useTypedSelector(state => state.document);
+    const uploadState = useTypedSelector(state => state.upload);
     const {
         getOneDocumentById,
         updateDocument,
         deleteDocument,
+        uploadDocument,
     } = useActions();
 
     const [form] = Form.useForm();
+
+    // @ts-ignore
+    const values = useWatch([], form);
 
     const onFinish = () => {
         if (!id) return;
@@ -29,6 +36,15 @@ export default function DocumentEdit() {
     const onFinishDelete = () => {
         if (!id) return;
         deleteDocument(id, {navigate});
+    }
+
+    const upload = async (file: File) => {
+        const formData = new FormData();
+        formData.append("file", file);
+        const filename: any = await uploadDocument(formData);
+        if (filename) {
+            form.setFieldValue("filename", filename);
+        }
     }
 
     useEffect(() => {
@@ -48,7 +64,6 @@ export default function DocumentEdit() {
         <Card bodyStyle={{padding: "10px"}} style={{maxWidth: "500px"}} loading={isLoading}>
             <h2>{document?.id}</h2>
             <p>{`${translate("title", lang)}: `}<i>{document?.title}</i></p>
-            <p>{`${translate("filename", lang)}: `}<i>{document?.filename}</i></p>
             <p>{`${translate("created_at", lang)}: `}<i>{new Date(document?.createdAt || "").toLocaleString()}</i></p>
             <p>{`${translate("updated_at", lang)}: `}<i>{new Date(document?.updatedAt || "").toLocaleString()}</i></p>
 
@@ -67,11 +82,21 @@ export default function DocumentEdit() {
                     <Input placeholder={translate("enter_title", lang)}/>
                 </Form.Item>
                 <Form.Item
-                    label={translate("filename", lang)}
+                    label={translate("file", lang)}
                     name={"filename"}
-                    rules={[{required: true, message: translate("please_enter_filename", lang)}]}
+                    rules={[{required: true, message: translate("please_upload_document", lang)}]}
                 >
-                    <Input placeholder={translate("enter_filename", lang)}/>
+                    {!!form.getFieldValue("filename") && (
+                        <Button style={{marginBottom: "20px"}} onClick={() => form.setFieldValue("filename", "")}>
+                            {translate("remove", lang)}
+                        </Button>
+                    )}
+                    <Upload
+                        imgSrc={form.getFieldValue("filename") || ""}
+                        onUpload={upload}
+                        loading={uploadState.isLoading}
+                        isDocument={true}
+                    />
                 </Form.Item>
                 <Form.Item style={{
                     marginBottom: "0",

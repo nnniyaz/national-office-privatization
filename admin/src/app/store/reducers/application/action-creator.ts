@@ -10,6 +10,8 @@ import {AppDispatch, RootState} from "../../index.ts";
 import {httpHandler, FailedResponseHandler} from "../../../../shared/http-handler/httpHandler.ts";
 import {NavigateCallback} from "../../../../domain/base/navigateCallback.ts";
 import {Application} from "../../../../domain/application/application.ts";
+import {txts} from "../../../../shared/core/i18ngen.ts";
+import {RouteNames} from "../../../../pages";
 
 export const ApplicationActionCreator = {
     setApplications: (payload: Application[]): SetApplicationsAction => ({
@@ -30,7 +32,7 @@ export const ApplicationActionCreator = {
     }),
 
     getApplications: (controller: AbortController) => async (dispatch: AppDispatch, getState: () => RootState) => {
-        const {lang} = getState().system;
+        const {lang, notificationApi} = getState().system;
         try {
             dispatch(ApplicationActionCreator.setLoading(true));
             const res = await ApplicationService.getApplications(controller);
@@ -39,7 +41,9 @@ export const ApplicationActionCreator = {
             } else {
                 dispatch(ApplicationActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    title: txts.applications[lang],
+                    message: txts.could_not_get_application[lang],
+                    notificationApi: notificationApi!,
                     httpStatus: res.status,
                 });
             }
@@ -49,6 +53,7 @@ export const ApplicationActionCreator = {
                 httpStatus: e?.response?.status,
                 dispatch: dispatch,
                 currentLang: lang,
+                notificationApi: notificationApi!,
             });
         } finally {
             dispatch(ApplicationActionCreator.setLoading(false));
@@ -56,7 +61,7 @@ export const ApplicationActionCreator = {
     },
 
     getOneApplicationById: (applicationId: string, navigationCallback: NavigateCallback) => async (dispatch: AppDispatch, getState: () => RootState) => {
-        const {lang} = getState().system;
+        const {lang, notificationApi} = getState().system;
         try {
             dispatch(ApplicationActionCreator.setLoading(true));
             const res = await ApplicationService.getOneApplicationById(applicationId);
@@ -65,7 +70,10 @@ export const ApplicationActionCreator = {
             } else {
                 dispatch(ApplicationActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    title: txts.applications[lang],
+                    message: txts.could_not_get_application[lang],
+                    notificationApi: notificationApi!,
+                    hideNotify: true,
                     httpStatus: res.status,
                 });
             }
@@ -76,6 +84,7 @@ export const ApplicationActionCreator = {
                 dispatch: dispatch,
                 currentLang: lang,
                 navigateCallback: navigationCallback,
+                notificationApi: notificationApi!,
             });
         } finally {
             dispatch(ApplicationActionCreator.setLoading(false));
@@ -83,16 +92,22 @@ export const ApplicationActionCreator = {
     },
 
     createApplication: (request: ApplicationCreateReq, applicationId: string, navigationCallback: NavigateCallback) => async (dispatch: AppDispatch, getState: () => RootState) => {
-        const {lang} = getState().system;
+        const {lang, notificationApi} = getState().system;
         try {
             dispatch(ApplicationActionCreator.setLoading(true));
             const res = await ApplicationService.createApplication(request);
             if (res.data.success) {
                 await ApplicationActionCreator.getOneApplicationById(applicationId, navigationCallback)(dispatch, getState);
+                notificationApi!.success({
+                    message: txts.applications[lang],
+                    description: txts.application_created_successfully[lang]
+                });
             } else {
                 dispatch(ApplicationActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    title: txts.applications[lang],
+                    message: txts.could_not_create_application[lang],
+                    notificationApi: notificationApi!,
                     httpStatus: res.status,
                 });
             }
@@ -103,6 +118,7 @@ export const ApplicationActionCreator = {
                 dispatch: dispatch,
                 currentLang: lang,
                 navigateCallback: navigationCallback,
+                notificationApi: notificationApi!,
             });
         } finally {
             dispatch(ApplicationActionCreator.setLoading(false));
@@ -110,16 +126,22 @@ export const ApplicationActionCreator = {
     },
 
     updateApplication: (request: ApplicationUpdateReq, applicationId: string, navigationCallback: NavigateCallback) => async (dispatch: AppDispatch, getState: () => RootState) => {
-        const {lang} = getState().system;
+        const {lang, notificationApi} = getState().system;
         try {
             dispatch(ApplicationActionCreator.setLoading(true));
             const res = await ApplicationService.updateApplication(request);
             if (res.data.success) {
                 await ApplicationActionCreator.getOneApplicationById(applicationId, navigationCallback)(dispatch, getState);
+                notificationApi!.success({
+                    message: txts.applications[lang],
+                    description: txts.application_updated_successfully[lang]
+                });
             } else {
                 dispatch(ApplicationActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    title: txts.applications[lang],
+                    message: txts.could_not_update_application[lang],
+                    notificationApi: notificationApi!,
                     httpStatus: res.status,
                 });
             }
@@ -130,6 +152,7 @@ export const ApplicationActionCreator = {
                 dispatch: dispatch,
                 currentLang: lang,
                 navigateCallback: navigationCallback,
+                notificationApi: notificationApi!,
             });
         } finally {
             dispatch(ApplicationActionCreator.setLoading(false));
@@ -137,16 +160,23 @@ export const ApplicationActionCreator = {
     },
 
     deleteApplication: (applicationId: string, navigationCallback: NavigateCallback) => async (dispatch: AppDispatch, getState: () => RootState) => {
-        const {lang} = getState().system;
+        const {lang, notificationApi} = getState().system;
         try {
             dispatch(ApplicationActionCreator.setLoading(true));
             const res = await ApplicationService.deleteApplication(applicationId);
             if (res.data.success) {
                 await ApplicationActionCreator.getOneApplicationById(applicationId, navigationCallback)(dispatch, getState);
+                notificationApi!.success({
+                    message: txts.applications[lang],
+                    description: txts.application_deleted_successfully[lang]
+                });
+                navigationCallback.navigate(RouteNames.APPLICATIONS);
             } else {
                 dispatch(ApplicationActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    title: txts.applications[lang],
+                    message: txts.could_not_delete_application[lang],
+                    notificationApi: notificationApi!,
                     httpStatus: res.status,
                 });
             }
@@ -157,6 +187,7 @@ export const ApplicationActionCreator = {
                 dispatch: dispatch,
                 currentLang: lang,
                 navigateCallback: navigationCallback,
+                notificationApi: notificationApi!,
             });
         } finally {
             dispatch(ApplicationActionCreator.setLoading(false));

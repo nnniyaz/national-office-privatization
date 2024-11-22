@@ -5,19 +5,26 @@ import {Button, Card, Divider, Form, Input} from "antd";
 import {translate} from "../../../../shared/translate/translate.ts";
 import {useEffect} from "react";
 import TextArea from "antd/es/input/TextArea";
+import {Upload} from "../../../../shared/ui/Upload/Upload.tsx";
+import {useWatch} from "antd/es/form/Form";
 
 export default function NewsEdit() {
     const {id} = useParams();
     const navigate = useNavigate();
     const {lang} = useTypedSelector(state => state.system);
     const {isLoading, news} = useTypedSelector(state => state.news);
+    const uploadState = useTypedSelector(state => state.upload);
     const {
         getOneNewsById,
         updateNews,
         deleteNews,
+        uploadNewsImage
     } = useActions();
 
     const [form] = Form.useForm();
+
+    // @ts-ignore
+    const values = useWatch([], form);
 
     const onFinish = () => {
         if (!id) return;
@@ -30,6 +37,15 @@ export default function NewsEdit() {
     const onFinishDelete = () => {
         if (!id) return;
         deleteNews(id, {navigate});
+    }
+
+    const upload = async (file: File) => {
+        const formData = new FormData();
+        formData.append("file", file);
+        const filename: any = await uploadNewsImage(formData);
+        if (filename) {
+            form.setFieldValue("imgUrl", filename);
+        }
     }
 
     useEffect(() => {
@@ -49,10 +65,10 @@ export default function NewsEdit() {
     return (
         <Card bodyStyle={{padding: "10px"}} style={{maxWidth: "500px"}} loading={isLoading}>
             <h2>{news?.id}</h2>
-            <p>{`${translate("title", lang)}: `}<i>{news?.title}</i></p>
-            <p>{`${translate("content", lang)}: `}<i>{news?.content}</i></p>
-            <p>{`${translate("img_url", lang)}: `}<i>{news?.imgUrl}</i></p>
-            <p>{`${translate("created_at", lang)}: `}<i>{new Date(news?.createdAt || "").toLocaleString()}</i></p>
+            <p style={{marginBottom: "5px"}}><b>{`${translate("title", lang)}: `}</b><i>{news?.title}</i></p>
+            <p style={{marginBottom: "5px"}}><b>{`${translate("created_at", lang)}: `}</b><i>{new Date(news?.createdAt || "").toLocaleString()}</i></p>
+            <p style={{marginBottom: "5px"}}><b>{`${translate("content", lang)}: `}</b></p>
+            <p><i>{news?.content}</i></p>
 
             <Divider/>
 
@@ -70,11 +86,24 @@ export default function NewsEdit() {
                     <Input placeholder={translate("enter_title", lang)}/>
                 </Form.Item>
                 <Form.Item
-                    label={translate("img_url", lang)}
+                    label={translate("file", lang)}
                     name={"imgUrl"}
-                    rules={[{required: true, message: translate("please_enter_img_url", lang)}]}
+                    rules={[{required: true, message: translate("please_upload_image", lang)}]}
                 >
-                    <Input placeholder={translate("enter_img_url", lang)}/>
+                    {!!form.getFieldValue("imgUrl") && (
+                        <Button style={{marginBottom: "20px"}} onClick={() => form.setFieldValue("imgUrl", "")}>
+                            {translate("remove", lang)}
+                        </Button>
+                    )}
+                    <Upload
+                        imgSrc={
+                            form.getFieldValue("imgUrl") ?
+                                `${import.meta.env.VITE_SPACE_HOST}/news/${form.getFieldValue("imgUrl")}`
+                                : ""
+                        }
+                        onUpload={upload}
+                        loading={uploadState.isLoading}
+                    />
                 </Form.Item>
                 <Form.Item
                     label={translate("content", lang)}

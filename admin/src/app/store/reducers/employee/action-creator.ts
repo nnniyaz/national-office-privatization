@@ -33,7 +33,7 @@ export const EmployeeActionCreator = {
     }),
 
     getEmployees: (controller: AbortController) => async (dispatch: AppDispatch, getState: () => RootState) => {
-        const {lang} = getState().system;
+        const {lang, notificationApi} = getState().system;
         try {
             dispatch(EmployeeActionCreator.setLoading(true));
             const res = await EmployeeService.getEmployees(controller);
@@ -42,12 +42,15 @@ export const EmployeeActionCreator = {
             } else {
                 dispatch(EmployeeActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("employee_module", lang),
+                    message: translate("failed_to_fetch_employees", lang),
                     httpStatus: res.status,
                 });
             }
         } catch (e: any) {
             httpHandler({
+                notificationApi: notificationApi!,
                 error: e,
                 httpStatus: e?.response?.status,
                 dispatch: dispatch,
@@ -59,7 +62,7 @@ export const EmployeeActionCreator = {
     },
 
     getOneEmployeeById: (employeeId: string, navigationCallback: NavigateCallback) => async (dispatch: AppDispatch, getState: () => RootState) => {
-        const {lang} = getState().system;
+        const {lang, notificationApi} = getState().system;
         try {
             dispatch(EmployeeActionCreator.setLoading(true));
             const res = await EmployeeService.getOneEmployeeById(employeeId);
@@ -68,12 +71,15 @@ export const EmployeeActionCreator = {
             } else {
                 dispatch(EmployeeActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("employee_module", lang),
+                    message: translate("failed_to_fetch_employee", lang),
                     httpStatus: res.status,
                 });
             }
         } catch (e: any) {
             httpHandler({
+                notificationApi: notificationApi!,
                 error: e,
                 httpStatus: e?.response?.status,
                 dispatch: dispatch,
@@ -100,12 +106,15 @@ export const EmployeeActionCreator = {
             } else {
                 dispatch(EmployeeActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("employee_module", lang),
+                    message: translate("failed_to_create_employee", lang),
                     httpStatus: res.status,
                 });
             }
         } catch (e: any) {
             httpHandler({
+                notificationApi: notificationApi!,
                 error: e,
                 httpStatus: e?.response?.status,
                 dispatch: dispatch,
@@ -132,12 +141,15 @@ export const EmployeeActionCreator = {
             } else {
                 dispatch(EmployeeActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("employee_module", lang),
+                    message: translate("failed_to_update_employee", lang),
                     httpStatus: res.status,
                 });
             }
         } catch (e: any) {
             httpHandler({
+                notificationApi: notificationApi!,
                 error: e,
                 httpStatus: e?.response?.status,
                 dispatch: dispatch,
@@ -164,12 +176,15 @@ export const EmployeeActionCreator = {
             } else {
                 dispatch(EmployeeActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("employee_module", lang),
+                    message: translate("failed_to_delete_employee", lang),
                     httpStatus: res.status,
                 });
             }
         } catch (e: any) {
             httpHandler({
+                notificationApi: notificationApi!,
                 error: e,
                 httpStatus: e?.response?.status,
                 dispatch: dispatch,

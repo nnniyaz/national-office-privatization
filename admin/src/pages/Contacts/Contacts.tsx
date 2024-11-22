@@ -4,20 +4,46 @@ import {translate} from "../../shared/translate/translate.ts";
 import {useTypedSelector} from "../../shared/hooks/useTypedSelector.ts";
 import {useNavigate} from "react-router-dom";
 import {useActions} from "../../shared/hooks/useActions.ts";
-import {useEffect} from "react";
+import {useEffect, useMemo} from "react";
 
 export default function Contacts() {
     const navigate = useNavigate();
     const {lang} = useTypedSelector(state => state.system);
-    const {contacts} = useTypedSelector(state => state.contacts);
+    const {contacts, isLoading} = useTypedSelector(state => state.contacts);
     const {getContacts} = useActions();
+
+    const data: {[key: string]: {label: string, value: any}} = useMemo(() => {
+        if (!contacts) return {} as {[key: string]: {label: string, value: any}};
+        return {
+            enterpriseId: {
+                label: translate("primary_contact_person", lang),
+                value: contacts?.primaryContactPerson || "-"
+            },
+            fio: {
+                label: translate("primary_contact", lang),
+                value: contacts?.primaryContact || "-"
+            },
+            bin: {
+                label: translate("secondary_contact_person", lang),
+                value: contacts?.secondaryContactPerson || "-"
+            },
+            phone: {
+                label: translate("secondary_contact", lang),
+                value: contacts?.secondaryContact || "-"
+            },
+            email: {
+                label: translate("email", lang),
+                value: contacts?.email || "-"
+            },
+        }
+    }, [contacts]);
 
     useEffect(() => {
         getContacts();
     }, [])
 
     return (
-        <Card bodyStyle={{padding: "10px"}}>
+        <Card bodyStyle={{padding: "10px"}} style={{maxWidth: "500px"}} loading={isLoading}>
             <Row justify={"end"}>
                 {
                     !!contacts
@@ -39,22 +65,43 @@ export default function Contacts() {
                         </Button>
                 }
             </Row>
-            <div style={{padding: "10px"}}>
-                <p style={{marginBottom: "5px"}}>
-                    {translate("primary_contact_person", lang)}: <i>{contacts?.primaryContactPerson}</i>
-                </p>
-                <p style={{marginBottom: "5px"}}>
-                    {translate("primary_contact", lang)}: <i>{contacts?.primaryContact}</i>
-                </p>
-                <p style={{marginBottom: "5px"}}>
-                    {translate("secondary_contact_person", lang)}: <i>{contacts?.secondaryContactPerson}</i>
-                </p>
-                <p style={{marginBottom: "5px"}}>
-                    {translate("secondary_contact", lang)}: <i>{contacts?.secondaryContact}</i>
-                </p>
-                <p style={{marginBottom: "5px"}}>
-                    {translate("email", lang)}: <i>{contacts?.email}</i>
-                </p>
+
+            <div
+                style={{
+                    border: "1px solid rgb(240, 240, 240)",
+                    borderRadius: "5px",
+                    marginBottom: "20px"
+                }}
+            >
+                {
+                    Object.keys(data).map((key, index) => (
+                        <div
+                            key={index}
+                            style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                borderBottom: Object.keys(data).length - 1 === index ? "" : "1px solid rgb(240, 240, 240)",
+                            }}
+                        >
+                            <div style={{
+                                width: "30%",
+                                padding: "10px",
+                                borderRight: "1px solid rgb(240, 240, 240)",
+                                backgroundColor: "#fafafa",
+                                borderTopLeftRadius: index === 0 ? "4px" : "",
+                                borderBottomLeftRadius: Object.keys(data).length - 1 === index ? "4px" : "",
+                            }}>
+                                {data[key].label}
+                            </div>
+                            <div style={{
+                                width: "70%",
+                                padding: "10px",
+                            }}>
+                                {data[key].value}
+                            </div>
+                        </div>
+                    ))
+                }
             </div>
         </Card>
     )

@@ -33,7 +33,7 @@ export const NpaActionCreator = {
     }),
 
     getNpas: (controller: AbortController) => async (dispatch: AppDispatch, getState: () => RootState) => {
-        const {lang} = getState().system;
+        const {lang, notificationApi} = getState().system;
         try {
             dispatch(NpaActionCreator.setLoading(true));
             const res = await NpaService.getNpas(controller);
@@ -42,12 +42,15 @@ export const NpaActionCreator = {
             } else {
                 dispatch(NpaActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("npa_module", lang),
+                    message: translate("failed_to_get_npa_list", lang),
                     httpStatus: res.status,
                 });
             }
         } catch (e: any) {
             httpHandler({
+                notificationApi: notificationApi!,
                 error: e,
                 httpStatus: e?.response?.status,
                 dispatch: dispatch,
@@ -59,7 +62,7 @@ export const NpaActionCreator = {
     },
 
     getOneNpaById: (npaId: string, navigationCallback: NavigateCallback) => async (dispatch: AppDispatch, getState: () => RootState) => {
-        const {lang} = getState().system;
+        const {lang, notificationApi} = getState().system;
         try {
             dispatch(NpaActionCreator.setLoading(true));
             const res = await NpaService.getOneNpaById(npaId);
@@ -68,12 +71,15 @@ export const NpaActionCreator = {
             } else {
                 dispatch(NpaActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("npa_module", lang),
+                    message: translate("failed_to_get_npa", lang),
                     httpStatus: res.status,
                 });
             }
         } catch (e: any) {
             httpHandler({
+                notificationApi: notificationApi!,
                 error: e,
                 httpStatus: e?.response?.status,
                 dispatch: dispatch,
@@ -100,12 +106,15 @@ export const NpaActionCreator = {
             } else {
                 dispatch(NpaActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("npa_module", lang),
+                    message: translate("failed_to_create_npa", lang),
                     httpStatus: res.status,
                 });
             }
         } catch (e: any) {
             httpHandler({
+                notificationApi: notificationApi!,
                 error: e,
                 httpStatus: e?.response?.status,
                 dispatch: dispatch,
@@ -132,12 +141,15 @@ export const NpaActionCreator = {
             } else {
                 dispatch(NpaActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("npa_module", lang),
+                    message: translate("failed_to_update_npa", lang),
                     httpStatus: res.status,
                 });
             }
         } catch (e: any) {
             httpHandler({
+                notificationApi: notificationApi!,
                 error: e,
                 httpStatus: e?.response?.status,
                 dispatch: dispatch,
@@ -164,12 +176,15 @@ export const NpaActionCreator = {
             } else {
                 dispatch(NpaActionCreator.setError(res.data.messages[0]))
                 FailedResponseHandler({
-                    messages: res.data?.messages,
+                    notificationApi: notificationApi!,
+                    title: translate("npa_module", lang),
+                    message: translate("failed_to_delete_npa", lang),
                     httpStatus: res.status,
                 });
             }
         } catch (e: any) {
             httpHandler({
+                notificationApi: notificationApi!,
                 error: e,
                 httpStatus: e?.response?.status,
                 dispatch: dispatch,

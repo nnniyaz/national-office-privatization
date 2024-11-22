@@ -1,7 +1,8 @@
-import { Enterprise } from '../../../../domain/enterprise/enterprise.ts';
+import {Enterprise} from '../../../../domain/enterprise/enterprise.ts';
 
 export interface EnterpriseState {
     enterprises: Enterprise[];
+    count: number;
     enterprise: Enterprise | null;
     isLoading: boolean;
     error: string | null;
@@ -9,6 +10,7 @@ export interface EnterpriseState {
 
 export enum EnterpriseActionEnum {
     SET_ENTERPRISES = "SET_ENTERPRISES",
+    SET_COUNT = "SET_COUNT",
     SET_ENTERPRISE = "SET_ENTERPRISE",
     SET_LOADING_ENTERPRISES = "SET_LOADING_ENTERPRISES",
     SET_ERROR_ENTERPRISES = "SET_ERROR_ENTERPRISES",
@@ -17,6 +19,11 @@ export enum EnterpriseActionEnum {
 export interface SetEnterprisesAction {
     type: EnterpriseActionEnum.SET_ENTERPRISES;
     payload: Enterprise[];
+}
+
+export interface SetCountAction {
+    type: EnterpriseActionEnum.SET_COUNT;
+    payload: number;
 }
 
 export interface SetEnterpriseAction {
@@ -34,4 +41,9 @@ export interface SetErrorAction {
     payload: string | null;
 }
 
-export type EnterpriseAction = SetEnterprisesAction | SetEnterpriseAction | SetLoadingAction | SetErrorAction;
+export type EnterpriseAction =
+    SetEnterprisesAction
+    | SetCountAction
+    | SetEnterpriseAction
+    | SetLoadingAction
+    | SetErrorAction;
