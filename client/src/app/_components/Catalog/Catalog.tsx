@@ -21,6 +21,7 @@ export default function Catalog({lang}: { lang: Langs }) {
     const [selectedItem, setSelectedItem] = useState<string>("");
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
     const [mounted, setMounted] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         function handleResize() {
@@ -143,7 +144,7 @@ export default function Catalog({lang}: { lang: Langs }) {
 
     useEffect(() => {
         const fetchObjects = async () => {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/enterprise`);
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/enterprise?offset=0&limit=0`);
             const data = await res.json();
             if (data.success) {
                 setObjects(data.data.enterprises);
