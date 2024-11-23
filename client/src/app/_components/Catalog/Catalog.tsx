@@ -5,11 +5,14 @@ import classes from "./Catalog.module.scss";
 import SearchSVG from "@assets/search.svg";
 import CrossSVG from "@assets/x.svg";
 import React, {useEffect, useMemo, useState} from "react";
-import {Button as AntdButton, Form, Input, Modal, notification, Select} from "antd";
+import {Button as AntdButton, Form, Input, Modal, notification, Pagination, Select} from "antd";
 import Button from "@components/ui/Button/Button";
 import {translate} from "@/pkg/translate/translate";
 import {useForm} from "antd/es/form/Form";
 import {Enterprise} from "@domain/enterprise/enterprise";
+import {LoadingOutlined} from "@ant-design/icons";
+import TextArea from "antd/es/input/TextArea";
+import {useParams} from "next/navigation";
 
 function getWindowDimensions() {
     const {innerWidth: width, innerHeight: height} = window;
@@ -17,11 +20,24 @@ function getWindowDimensions() {
 }
 
 export default function Catalog({lang}: { lang: Langs }) {
+    const params = useParams();
     const [objects, setObjects] = useState<Enterprise[]>([]);
     const [selectedItem, setSelectedItem] = useState<string>("");
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
     const [mounted, setMounted] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+
+    console.log(params);
+
+    const [enterprisesCount, setEnterprisesCount] = useState(0);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [pagination, setPagination] = useState({
+        currentPage: 1,
+        limit: 10,
+        search: "",
+        region: "",
+        field: "",
+    });
 
     useEffect(() => {
         function handleResize() {
@@ -60,98 +76,172 @@ export default function Catalog({lang}: { lang: Langs }) {
         {value: "", label: translate("select_field".toLowerCase(), lang)},
         {value: "Добыча угля и лигнита", label: "Добыча угля и лигнита"},
         {value: "Деятельность в области здравоохранения", label: "Деятельность в области здравоохранения"},
-        {value: "Финансовые услуги, за исключением услуг страховых и пенсионных фондов", label: "Финансовые услуги, за исключением услуг страховых и пенсионных фондов"},
-        {value: "Складское хозяйство и вспомогательная транспортная деятельность", label: "Складское хозяйство и вспомогательная транспортная деятельность"},
+        {
+            value: "Финансовые услуги, за исключением услуг страховых и пенсионных фондов",
+            label: "Финансовые услуги, за исключением услуг страховых и пенсионных фондов"
+        },
+        {
+            value: "Складское хозяйство и вспомогательная транспортная деятельность",
+            label: "Складское хозяйство и вспомогательная транспортная деятельность"
+        },
         {value: "Рыболовство и аквакультура", label: "Рыболовство и аквакультура"},
-        {value: "Растениеводство и животноводство, охота и предоставление услуг в этих областях", label: "Растениеводство и животноводство, охота и предоставление услуг в этих областях"},
-        {value: "Вспомогательная деятельность по предоставлению финансовых услуг и страхования", label: "Вспомогательная деятельность по предоставлению финансовых услуг и страхования"},
-        {value: "Компьютерное программирование, консультации и другие сопутствующие услуги", label: "Компьютерное программирование, консультации и другие сопутствующие услуги"},
-        {value: "Электроснабжение, подача газа, пара и воздушное кондиционирование", label: "Электроснабжение, подача газа, пара и воздушное кондиционирование"},
-        {value: "Сбор, обработка и удаление отходов; утилизация отходов", label: "Сбор, обработка и удаление отходов; утилизация отходов"},
-        {value: "Производство готовых металлических изделий, кроме машин и оборудования", label: "Производство готовых металлических изделий, кроме машин и оборудования"},
+        {
+            value: "Растениеводство и животноводство, охота и предоставление услуг в этих областях",
+            label: "Растениеводство и животноводство, охота и предоставление услуг в этих областях"
+        },
+        {
+            value: "Вспомогательная деятельность по предоставлению финансовых услуг и страхования",
+            label: "Вспомогательная деятельность по предоставлению финансовых услуг и страхования"
+        },
+        {
+            value: "Компьютерное программирование, консультации и другие сопутствующие услуги",
+            label: "Компьютерное программирование, консультации и другие сопутствующие услуги"
+        },
+        {
+            value: "Электроснабжение, подача газа, пара и воздушное кондиционирование",
+            label: "Электроснабжение, подача газа, пара и воздушное кондиционирование"
+        },
+        {
+            value: "Сбор, обработка и удаление отходов; утилизация отходов",
+            label: "Сбор, обработка и удаление отходов; утилизация отходов"
+        },
+        {
+            value: "Производство готовых металлических изделий, кроме машин и оборудования",
+            label: "Производство готовых металлических изделий, кроме машин и оборудования"
+        },
         {value: "Научные исследования и разработки", label: "Научные исследования и разработки"},
-        {value: "Прочая профессиональная, научная и техническая деятельность", label: "Прочая профессиональная, научная и техническая деятельность"},
+        {
+            value: "Прочая профессиональная, научная и техническая деятельность",
+            label: "Прочая профессиональная, научная и техническая деятельность"
+        },
         {value: "Связь", label: "Связь"},
-        {value: "Сухопутный транспорт и транспортирование по трубопроводам", label: "Сухопутный транспорт и транспортирование по трубопроводам"},
+        {
+            value: "Сухопутный транспорт и транспортирование по трубопроводам",
+            label: "Сухопутный транспорт и транспортирование по трубопроводам"
+        },
         {value: "Производство прочих транспортных средств", label: "Производство прочих транспортных средств"},
         {value: "Добыча металлических руд", label: "Добыча металлических руд"},
-        {value: "Деятельность по обеспечению безопасности и расследованию", label: "Деятельность по обеспечению безопасности и расследованию"},
-        {value: "Производство продуктов химической промышленности", label: "Производство продуктов химической промышленности"},
-        {value: "Деятельность в области архитектуры, инженерных изысканий, технических испытаний и анализа", label: "Деятельность в области архитектуры, инженерных изысканий, технических испытаний и анализа"},
-        {value: "Прочие отрасли горнодобывающей промышленности", label: "Прочие отрасли горнодобывающей промышленности"},
+        {
+            value: "Деятельность по обеспечению безопасности и расследованию",
+            label: "Деятельность по обеспечению безопасности и расследованию"
+        },
+        {
+            value: "Производство продуктов химической промышленности",
+            label: "Производство продуктов химической промышленности"
+        },
+        {
+            value: "Деятельность в области архитектуры, инженерных изысканий, технических испытаний и анализа",
+            label: "Деятельность в области архитектуры, инженерных изысканий, технических испытаний и анализа"
+        },
+        {
+            value: "Прочие отрасли горнодобывающей промышленности",
+            label: "Прочие отрасли горнодобывающей промышленности"
+        },
         {value: "Гражданское строительство", label: "Гражданское строительство"},
         {value: "Деятельность членских организаций", label: "Деятельность членских организаций"},
         {value: "Образование", label: "Образование"},
-        {value: "Оптовая торговля, за исключением автомобилей и мотоциклов", label: "Оптовая торговля, за исключением автомобилей и мотоциклов"},
+        {
+            value: "Оптовая торговля, за исключением автомобилей и мотоциклов",
+            label: "Оптовая торговля, за исключением автомобилей и мотоциклов"
+        },
         {value: "Добыча сырой нефти и природного газа", label: "Добыча сырой нефти и природного газа"},
-        {value: "Технические услуги в области горнодобывающей промышленности", label: "Технические услуги в области горнодобывающей промышленности"},
-        {value: "Услуги по предоставлению продуктов питания и напитков", label: "Услуги по предоставлению продуктов питания и напитков"},
+        {
+            value: "Технические услуги в области горнодобывающей промышленности",
+            label: "Технические услуги в области горнодобывающей промышленности"
+        },
+        {
+            value: "Услуги по предоставлению продуктов питания и напитков",
+            label: "Услуги по предоставлению продуктов питания и напитков"
+        },
         {value: "Специализированные строительные работы", label: "Специализированные строительные работы"},
-        {value: "Производство кокса и продуктов нефтепереработки", label: "Производство кокса и продуктов нефтепереработки"},
-        {value: "Деятельность библиотек, архивов, музеев и других учреждений культурного обслуживания", label: "Деятельность библиотек, архивов, музеев и других учреждений культурного обслуживания"},
-        {value: "Деятельность головных компаний; консультации по вопросам управления", label: "Деятельность головных компаний; консультации по вопросам управления"},
-        {value: "Государственное управление и оборона; обязательное социальное обеспечение", label: "Государственное управление и оборона; обязательное социальное обеспечение"},
-        {value: "Деятельность по созданию программ и телерадиовещание", label: "Деятельность по созданию программ и телерадиовещание"},
+        {
+            value: "Производство кокса и продуктов нефтепереработки",
+            label: "Производство кокса и продуктов нефтепереработки"
+        },
+        {
+            value: "Деятельность библиотек, архивов, музеев и других учреждений культурного обслуживания",
+            label: "Деятельность библиотек, архивов, музеев и других учреждений культурного обслуживания"
+        },
+        {
+            value: "Деятельность головных компаний; консультации по вопросам управления",
+            label: "Деятельность головных компаний; консультации по вопросам управления"
+        },
+        {
+            value: "Государственное управление и оборона; обязательное социальное обеспечение",
+            label: "Государственное управление и оборона; обязательное социальное обеспечение"
+        },
+        {
+            value: "Деятельность по созданию программ и телерадиовещание",
+            label: "Деятельность по созданию программ и телерадиовещание"
+        },
         {value: "Операции с недвижимым имуществом", label: "Операции с недвижимым имуществом"},
         {value: "Предоставление прочих индивидуальных услуг", label: "Предоставление прочих индивидуальных услуг"},
-        {value: "Деятельность в области административно-управленческого, хозяйственного и прочего вспомогательного обслуживания", label: "Деятельность в области административно-управленческого, хозяйственного и прочего вспомогательного обслуживания"},
+        {
+            value: "Деятельность в области административно-управленческого, хозяйственного и прочего вспомогательного обслуживания",
+            label: "Деятельность в области административно-управленческого, хозяйственного и прочего вспомогательного обслуживания"
+        },
         {value: "Строительство зданий и сооружений", label: "Строительство зданий и сооружений"},
         {value: "Сбор, обработка и распределение воды", label: "Сбор, обработка и распределение воды"},
-        {value: "Розничная торговля, кроме торговли автомобилями и мотоциклами", label: "Розничная торговля, кроме торговли автомобилями и мотоциклами"},
-        {value: "Рекламная деятельность и изучение рыночной конъюнктуры", label: "Рекламная деятельность и изучение рыночной конъюнктуры"},
-        {value: "Предоставление социальных услуг без обеспечения проживания", label: "Предоставление социальных услуг без обеспечения проживания"},
-        {value: "Деятельность туроператоров, турагентов и прочих организаций, предоставляющих услуги в сфере туризма", label: "Деятельность туроператоров, турагентов и прочих организаций, предоставляющих услуги в сфере туризма"},
-        {value: "Деятельность в области обслуживания зданий и территорий", label: "Деятельность в области обслуживания зданий и территорий"},
+        {
+            value: "Розничная торговля, кроме торговли автомобилями и мотоциклами",
+            label: "Розничная торговля, кроме торговли автомобилями и мотоциклами"
+        },
+        {
+            value: "Рекламная деятельность и изучение рыночной конъюнктуры",
+            label: "Рекламная деятельность и изучение рыночной конъюнктуры"
+        },
+        {
+            value: "Предоставление социальных услуг без обеспечения проживания",
+            label: "Предоставление социальных услуг без обеспечения проживания"
+        },
+        {
+            value: "Деятельность туроператоров, турагентов и прочих организаций, предоставляющих услуги в сфере туризма",
+            label: "Деятельность туроператоров, турагентов и прочих организаций, предоставляющих услуги в сфере туризма"
+        },
+        {
+            value: "Деятельность в области обслуживания зданий и территорий",
+            label: "Деятельность в области обслуживания зданий и территорий"
+        },
         {value: "Воздушный транспорт", label: "Воздушный транспорт"},
-        {value: "Деятельность в области спорта, организации отдыха и развлечений", label: "Деятельность в области спорта, организации отдыха и развлечений"},
-        {value: "Деятельность в области творчества, искусства и развлечений", label: "Деятельность в области творчества, искусства и развлечений"},
-        {value: "Предоставление социальных услуг с обеспечением проживания", label: "Предоставление социальных услуг с обеспечением проживания"},
+        {
+            value: "Деятельность в области спорта, организации отдыха и развлечений",
+            label: "Деятельность в области спорта, организации отдыха и развлечений"
+        },
+        {
+            value: "Деятельность в области творчества, искусства и развлечений",
+            label: "Деятельность в области творчества, искусства и развлечений"
+        },
+        {
+            value: "Предоставление социальных услуг с обеспечением проживания",
+            label: "Предоставление социальных услуг с обеспечением проживания"
+        },
         {value: "Лесоводство и лесозаготовки", label: "Лесоводство и лесозаготовки"},
     ];
-
-    const [filters, setFilters] = useState({
-        search: "",
-        region: "",
-        field: "",
-        owner: "",
-    })
-
-    const list = useMemo(() => {
-        let copy = [...objects];
-
-        if (filters.search) {
-            copy = copy.filter(item => (
-                item.name.toLowerCase().includes(filters.search.toLowerCase())
-            ))
-        }
-
-        if (filters.region) {
-            copy = copy.filter(item => (
-                item.location === filters.region
-            ))
-        }
-
-        if (filters.field) {
-            copy = copy.filter(item => (
-                item.industry === filters.field
-            ))
-        }
-
-        return copy
-    }, [filters.search, filters.region, filters.field, objects])
 
     const [positionY, setPositionY] = useState(0);
 
     useEffect(() => {
         const fetchObjects = async () => {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/enterprise?offset=0&limit=0`);
-            const data = await res.json();
-            if (data.success) {
-                setObjects(data.data.enterprises);
+            setIsLoading(true);
+            if (pagination.search) {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/enterprise?offset=${(pagination.currentPage - 1) * pagination.limit}&limit=${pagination.limit}&search=${pagination.search}`);
+                const data = await res.json();
+                if (data.success) {
+                    setObjects(data.data.enterprises || []);
+                    setEnterprisesCount(data.data.count || 0);
+                }
+            } else {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/enterprise?offset=${(pagination.currentPage - 1) * pagination.limit}&limit=${pagination.limit}&region=${pagination.region}&field=${pagination.field}`);
+                const data = await res.json();
+                if (data.success) {
+                    setObjects(data.data.enterprises || []);
+                    setEnterprisesCount(data.data.count || 0);
+                }
             }
+            setIsLoading(false);
         }
         fetchObjects();
-    }, [])
+    }, [pagination]);
 
     useEffect(() => {
         window.addEventListener('scroll', () => {
@@ -176,25 +266,41 @@ export default function Catalog({lang}: { lang: Langs }) {
             <h2 className={classes.title}>
                 Каталог объектов
             </h2>
+            <div
+                className={classes.tab__bar}
+                style={{
+                    borderBottom: "none",
+                    paddingBottom: 0,
+                    height: "40px",
+                }}
+            >
+                <div style={{width: "100%", display: "flex", gap: "10px"}}>
+                    <Input
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        prefix={<SearchSVG/>}
+                        placeholder={translate("search", lang)}
+                        onKeyPress={(e) => setPagination({...pagination, currentPage: 1, search: searchQuery})}
+                        className={classes.tab}
+                    />
+                    <Button
+                        label={translate("search", lang)}
+                        onClick={() => setPagination({...pagination, currentPage: 1, search: searchQuery})}
+                    />
+                </div>
+            </div>
             <div className={classes.tab__bar}>
-                <Input
-                    value={filters.search}
-                    onChange={(e) => setFilters({...filters, search: e.currentTarget.value})}
-                    prefix={<SearchSVG/>}
-                    placeholder={translate("search", lang)}
-                    className={classes.tab}
-                />
                 <Select
-                    value={filters.region}
-                    onChange={(value) => setFilters({...filters, region: value})}
+                    value={pagination.region}
+                    onChange={(value) => setPagination({...pagination, currentPage: 1, region: value})}
                     options={regions}
                     placeholder={translate("select_region", lang)}
                     className={classes.tab}
                     clearIcon={<CrossSVG/>}
                 />
                 <Select
-                    value={filters.field}
-                    onChange={(value) => setFilters({...filters, field: value})}
+                    value={pagination.field}
+                    onChange={(value) => setPagination({...pagination, currentPage: 1, field: value})}
                     options={fields}
                     placeholder={translate("select_field", lang)}
                     className={classes.tab}
@@ -202,44 +308,75 @@ export default function Catalog({lang}: { lang: Langs }) {
                 />
             </div>
 
-            <div className={classes.container}>
-                <div className={classes.group}>
-                    <ul className={classes.enterprises__group__list}>
-                        {
-                            list.length > 0 ? (
-                                list.map(item => (
-                                    <li key={item.id} onClick={() => setSelectedItem(item.id)}>
-                                        <EnterpriseItem
-                                            id={item.id}
-                                            title={item.name}
-                                            field={item.industry}
-                                            desc={item.location}
-                                            active={selectedItem === item.id}
-                                            lang={lang}
-                                        />
-                                    </li>
-                                ))
-                            ) : (
-                                <li>
-                                    <EnterpriseItem
-                                        id={""}
-                                        title={"объекты не найдены"}
-                                        field={""}
-                                        desc={""}
-                                        active={false}
+            <div style={{
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+            }}>
+                {
+                    isLoading ? (
+                        <div style={{
+                            width: "100%",
+                            height: "300px",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                        }}>
+                            <LoadingOutlined style={{fontSize: "50px", color: "#005FF9"}}/>
+                        </div>
+                    ) : (
+                        objects.length > 0 ? (
+                            <div className={classes.container}>
+                                <div className={classes.group}>
+                                    <ul className={classes.enterprises__group__list}>
+                                        {
+                                            objects.map(item => (
+                                                <li key={item.id} onClick={() => setSelectedItem(item.id)}>
+                                                    <EnterpriseItem
+                                                        id={item.id}
+                                                        title={item.name}
+                                                        field={item.industry}
+                                                        desc={item.location}
+                                                        active={selectedItem === item.id}
+                                                        lang={lang}
+                                                    />
+                                                </li>
+                                            ))
+                                        }
+                                    </ul>
+                                </div>
+                                <div className={classes.group}>
+                                    <EnterpriseDetail
+                                        item={objects.find(item => item.id === selectedItem)}
                                         lang={lang}
                                     />
-                                </li>
-                            )
-                        }
-                    </ul>
-                </div>
-                <div className={classes.group}>
-                    <EnterpriseDetail
-                        item={objects.find(item => item.id === selectedItem)}
-                        lang={lang}
-                    />
-                </div>
+                                </div>
+                            </div>
+                        ) : (
+                            <div style={{
+                                width: "100%",
+                                height: "300px",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                            }}>
+                                <h3 style={{margin: "100px 0"}}>
+                                    {translate("no_enterprises_found", lang)}
+                                </h3>
+                            </div>
+                        )
+                    )
+                }
+
+                <Pagination
+                    total={enterprisesCount}
+                    current={pagination.currentPage}
+                    onChange={(page) => setPagination({...pagination, currentPage: page})}
+                    pageSize={pagination.limit}
+                    style={{marginTop: "20px"}}
+                    pageSizeOptions={[]}
+                    align={"center"}
+                />
             </div>
 
             {
@@ -264,7 +401,14 @@ export default function Catalog({lang}: { lang: Langs }) {
     )
 }
 
-function EnterpriseItem({id, title, field, desc, active, lang}: { id: string, title: string, field: string, desc: string, active: boolean, lang: Langs }) {
+function EnterpriseItem({id, title, field, desc, active, lang}: {
+    id: string,
+    title: string,
+    field: string,
+    desc: string,
+    active: boolean,
+    lang: Langs
+}) {
     return (
         <div className={active ? classes.enterprise_item__active : classes.enterprise_item} id={id}>
             <h5 className={classes.enterprise_item__title}>{title}</h5>
@@ -296,7 +440,8 @@ function EnterpriseDetail({item, lang}: { item: Enterprise | undefined, lang: La
                 enterpriseId: item?.id,
                 fio: values.fio,
                 bin: values.bin,
-                contact: values.contacts,
+                phone: values.phone,
+                email: values.email,
                 message: values.message,
             })
         })
@@ -313,7 +458,7 @@ function EnterpriseDetail({item, lang}: { item: Enterprise | undefined, lang: La
     return (
         <div className={classes.details}>
             {contextHolder}
-            <h3>{translate("object_details", lang)}</h3>
+            <h3 style={{fontSize: "20px", lineHeight: "normal"}}>{item.name}</h3>
 
             <div className={classes.row}>
                 <div className={classes.row__label}>
@@ -358,18 +503,12 @@ function EnterpriseDetail({item, lang}: { item: Enterprise | undefined, lang: La
 
             <Modal
                 open={isOpen}
-                title={translate("submit_application", lang)}
                 okText={translate("send", lang)}
                 cancelText={translate("cancel", lang)}
                 onOk={() => form.submit()}
                 onCancel={() => setIsOpen(false)}
                 confirmLoading={isLoading}
             >
-                <p>{`${translate("name", lang)}`} <strong>{item.name}</strong></p>
-                <p>{`${translate("location", lang)}:`} <strong>{translate(item.location.toLowerCase(), lang)}</strong></p>
-                <p>{`${translate("industry", lang)}`} <strong>{item.industry}</strong></p>
-                <p>{`${translate("gov_participation", lang)} (%):`} <strong>{item.governmentShare}</strong></p>
-
                 <h3 style={{margin: "30px 0 10px 0"}}>
                     {translate("share_contact_info_for_callback", lang)}
                 </h3>
@@ -396,7 +535,8 @@ function EnterpriseDetail({item, lang}: { item: Enterprise | undefined, lang: La
                         label={translate("bin", lang)}
                         required={true}
                         rules={[
-                            {required: true, message: translate("enter_bin", lang)}
+                            {required: true, message: translate("enter_bin", lang)},
+                            {pattern: /^[0-9]{12}$/, message: translate("bin_must_be_12_digits", lang)}
                         ]}
                     >
                         <Input
@@ -405,27 +545,43 @@ function EnterpriseDetail({item, lang}: { item: Enterprise | undefined, lang: La
                         />
                     </Form.Item>
                     <Form.Item
-                        name={"contacts"}
-                        label={translate("phone_or_email", lang)}
+                        name={"phone"}
+                        label={translate("phone", lang)}
                         required={true}
                         rules={[
-                            {required: true, message: translate("enter_phone_or_email", lang)}
+                            {required: true, message: translate("enter_phone", lang)},
+                            {pattern: /^[0-9]{10}$/, message: translate("phone_must_be_10_digits", lang)}
                         ]}
                     >
                         <Input
-                            placeholder={translate("please_enter_phone_or_email", lang)}
+                            prefix={"+7"}
+                            placeholder={"7071234567"}
+                            className={classes.tab}
+                        />
+                    </Form.Item>
+                    <Form.Item
+                        name={"email"}
+                        label={translate("email", lang)}
+                        required={true}
+                        rules={[
+                            {required: true, message: translate("enter_email", lang)},
+                            {type: "email", message: translate("email_must_be_valid", lang)}
+                        ]}
+                    >
+                        <Input
+                            placeholder={"example@mail.com"}
                             className={classes.tab}
                         />
                     </Form.Item>
                     <Form.Item
                         name={"message"}
-                        label={translate("message", lang)}
+                        label={translate("request_reason", lang)}
                         required={true}
                         rules={[
                             {required: true, message: translate("enter_message", lang)}
                         ]}
                     >
-                        <Input
+                        <TextArea
                             placeholder={translate("please_enter_message", lang)}
                             className={classes.tab}
                         />

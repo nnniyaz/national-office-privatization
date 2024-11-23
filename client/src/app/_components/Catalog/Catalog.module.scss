@@ -14,6 +14,7 @@
   }
 
   .tab__bar {
+    height: 60px;
     width: 100%;
     display: flex;
     align-items: center;
@@ -22,7 +23,8 @@
     border-bottom: 1px solid var(--border-color);
 
     .tab {
-      width: calc((100% - 30px) / 3);
+      width: calc((100% - 20px) / 2);
+      height: 100%;
       border-radius: 20px;
       //padding: 10px 15px;
 
@@ -133,11 +135,17 @@
           }
         }
       }
+
+      &:last-child {
+        position: relative;
+      }
     }
   }
 }
 
 .details {
+  position: sticky;
+  top: 161px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -179,15 +187,19 @@
 
 @media only screen and (max-width: 1200px) {
   .main {
+    gap: 10px;
 
     .title {
 
     }
 
     .tab__bar {
+      height: auto;
       flex-direction: column;
+      padding-bottom: 20px;
 
       .tab {
+        height: 40px;
         width: 100%;
 
         div {

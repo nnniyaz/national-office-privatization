@@ -36,8 +36,12 @@ export const metadata: Metadata = {
 };
 
 const fetchData = async (): Promise<SuccessResponse<Contacts> | ErrorResponse> => {
-    const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/contacts");
-    return await response.json();
+    try {
+        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/contacts");
+        return await response.json();
+    } catch (e: any) {
+        return {success: false, messages: [e]};
+    }
 }
 
 export default async function RootLayout({children}: Readonly<{ children: React.ReactNode }>) {
@@ -61,7 +65,7 @@ export default async function RootLayout({children}: Readonly<{ children: React.
             </head>
             <body className={montserrat.className} suppressHydrationWarning={true}>
             <main className={"main"}>
-                <div>Error</div>
+                <div style={{padding: "50px"}}>Please, contact technical support.</div>
             </main>
             </body>
             </html>

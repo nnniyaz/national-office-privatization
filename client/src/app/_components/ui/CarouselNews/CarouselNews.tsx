@@ -10,6 +10,7 @@ import 'swiper/css';
 import {Autoplay} from 'swiper/modules';
 import classes from "./CarouselNews.module.scss";
 import {Langs} from "@domain/base/mlString/mlString";
+import {News as NewsDomain} from "@domain/news/news";
 
 function getWindowDimensions() {
     const {innerWidth: width} = window;
@@ -18,6 +19,18 @@ function getWindowDimensions() {
 
 export default function CarouselNews({lang}: { lang: Langs }) {
     const [swiper, setSwiper] = useState<Swiper | null>(null);
+    const [news, setNews] = useState<NewsDomain[]>([]);
+
+    useEffect(() => {
+        const fetchNews = async () => {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/news`);
+            const data = await res.json();
+            if (data.success) {
+                setNews(data.data.news);
+            }
+        }
+        fetchNews();
+    }, []);
 
     return (
         <>
@@ -34,88 +47,59 @@ export default function CarouselNews({lang}: { lang: Langs }) {
 
             <SwiperComponent
                 spaceBetween={10}
-                slidesPerView={4}
+                slidesPerView={3}
                 loop={true}
                 autoplay={{
                     delay: 2000,
                     disableOnInteraction: false,
                 }}
                 centeredSlides={true}
-                initialSlide={2}
                 onSwiper={(swiper) => setSwiper(swiper)}
                 className={classes.swiper}
                 modules={[Autoplay]}
             >
-                <SwiperSlide>
-                    <News
-                        cover={"https://www.gov.kz/uploads/2024/6/28/5c5b866ca9b640b71ab5521a702b11ad_1280x720.jpg"}
-                        date={"28.06.2024"}
-                        title={"Национальный офис по приватизации анонсировал передачу ряда государственных предприятий в частные руки"}
-                        link={`/${lang.toLowerCase()}/news?id=${1}`}
-                    />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <News
-                        cover={"https://www.gov.kz/uploads/2024/6/28/822dbb80c2969229f2c902c73c73458f_1280x720.jpg"}
-                        date={"28.06.2024"}
-                        title={"Факт создания субъекта рынка с государственным участием будет означать обязательное включение его в список приватизации"}
-                        link={`/${lang.toLowerCase()}/news?id=${2}`}
-                    />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <News
-                        cover={"https://www.gov.kz/uploads/2024/6/27/29576b60ea92a41aff65d9861a750aa6_1280x720.JPG"}
-                        date={"27.06.2024"}
-                        title={"В Астане прошло первое заседание национального офиса по приватизации"}
-                        link={`/${lang.toLowerCase()}/news?id=${3}`}
-                    />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <News
-                        cover={"https://www.gov.kz/uploads/2024/6/28/59fbf6046b66c62b5173cbc7afc0417d_1280x720.jpg"}
-                        date={"28.06.2024"}
-                        title={"Национальный офис по приватизации анонсировал передачу ряда государственных предприятий в частные руки"}
-                        link={`/${lang.toLowerCase()}/news?id=${1}`}
-                    />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <News
-                        cover={"https://www.gov.kz/uploads/2024/6/28/822dbb80c2969229f2c902c73c73458f_1280x720.jpg"}
-                        date={"28.06.2024"}
-                        title={"Факт создания субъекта рынка с государственным участием будет означать обязательное включение его в список приватизации"}
-                        link={`/${lang.toLowerCase()}/news?id=${2}`}
-                    />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <News
-                        cover={"https://www.gov.kz/uploads/2024/6/27/29576b60ea92a41aff65d9861a750aa6_1280x720.JPG"}
-                        date={"27.06.2024"}
-                        title={"В Астане прошло первое заседание национального офиса по приватизации"}
-                        link={`/${lang.toLowerCase()}/news?id=${3}`}
-                    />
-                </SwiperSlide>
+                {
+                    news.map((news, index) => (
+                        <SwiperSlide key={index}>
+                            <News
+                                cover={`${process.env.NEXT_PUBLIC_SPACE_HOST}/news/${news?.imgUrl}`}
+                                date={
+                                    new Date(news.createdAt).toLocaleDateString(lang, {
+                                        year: 'numeric',
+                                        month: 'numeric',
+                                        day: 'numeric',
+                                        hour: 'numeric',
+                                        minute: 'numeric'
+                                    })
+                                }
+                                title={news.title}
+                                link={`/${lang.toLowerCase()}/news?id=${news.id}`}
+                            />
+                        </SwiperSlide>
+                    ))
+                }
             </SwiperComponent>
 
             <div className={classes.news_list}>
-                <News
-                    primary={true}
-                    cover={"https://www.gov.kz/uploads/2024/6/28/5c5b866ca9b640b71ab5521a702b11ad_1280x720.jpg"}
-                    date={"28.06.2024"}
-                    title={"Национальный офис по приватизации анонсировал передачу ряда государственных предприятий в частные руки"}
-                    link={`/${lang.toLowerCase()}/news?id=${1}`}
-                />
-                <News
-                    cover={"https://www.gov.kz/uploads/2024/6/28/822dbb80c2969229f2c902c73c73458f_1280x720.jpg"}
-                    date={"28.06.2024"}
-                    title={"Факт создания субъекта рынка с государственным участием будет означать обязательное включение его в список приватизации"}
-                    link={`/${lang.toLowerCase()}/news?id=${2}`}
-                />
-                <News
-                    cover={"https://www.gov.kz/uploads/2024/6/27/29576b60ea92a41aff65d9861a750aa6_1280x720.JPG"}
-                    date={"27.06.2024"}
-                    title={"В Астане прошло первое заседание национального офиса по приватизации"}
-                    link={`/${lang.toLowerCase()}/news?id=${3}`}
-                />
+                {
+                    news.map((news, index) => (
+                        <News
+                            cover={`${process.env.NEXT_PUBLIC_SPACE_HOST}/news/${news?.imgUrl}`}
+                            date={
+                                new Date(news.createdAt).toLocaleDateString(lang, {
+                                    year: 'numeric',
+                                    month: 'numeric',
+                                    day: 'numeric',
+                                    hour: 'numeric',
+                                    minute: 'numeric'
+                                })
+                            }
+                            title={news.title}
+                            link={`/${lang.toLowerCase()}/news?id=${news.id}`}
+                            key={index}
+                        />
+                    ))
+                }
             </div>
         </>
     )

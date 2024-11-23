@@ -66,7 +66,9 @@ func (hd *HttpDelivery) GetEnterprises(w http.ResponseWriter, r *http.Request) {
 	offset := r.Context().Value("offset").(int64)
 	limit := r.Context().Value("limit").(int64)
 	search := r.Context().Value("search").(string)
-	foundEnterprises, count, err := hd.service.Get(r.Context(), offset, limit, search)
+	region := r.Context().Value("region").(string)
+	field := r.Context().Value("field").(string)
+	foundEnterprises, count, err := hd.service.Get(r.Context(), offset, limit, search, region, field)
 	if err != nil {
 		response.NewError(hd.logger, w, r, err)
 		return

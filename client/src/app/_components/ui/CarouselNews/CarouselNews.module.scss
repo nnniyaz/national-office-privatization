@@ -33,11 +33,12 @@
 }
 
 .news {
-  width: 292.5px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 5px;
   text-decoration: none;
+  padding: 5px;
 
   .news__cover {
     width: 100%;

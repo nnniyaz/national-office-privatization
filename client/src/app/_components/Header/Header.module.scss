@@ -206,6 +206,9 @@
             gap: 5px;
             text-decoration: none;
             cursor: pointer;
+            padding: 7px 10px;
+            border-radius: 20px;
+            transition: .1s linear;
 
             &:hover {
               .header__lower_layer__navigation__list__item__link__icon {
@@ -234,12 +237,15 @@
           .header__lower_layer__navigation__list__item__link__active {
             @extend .header__lower_layer__navigation__list__item__link;
 
+            background-color: var(--link-color);
+            color: #FFFFFF;
+
             .header__lower_layer__navigation__list__item__link__icon {
-              color: var(--link-color);
+              color: #FFFFFF;
             }
 
             p {
-              color: var(--link-color);
+              color: #FFFFFF;
             }
           }
         }

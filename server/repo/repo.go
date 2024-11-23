@@ -103,7 +103,7 @@ type News interface {
 }
 
 type Enterprise interface {
-	Get(ctx context.Context, offset, limit int64, search string) ([]*enterprise.Enterprise, int64, error)
+	Get(ctx context.Context, offset, limit int64, search, region, field string) ([]*enterprise.Enterprise, int64, error)
 	GetById(ctx context.Context, enterpriseId uuid.UUID) (*enterprise.Enterprise, error)
 	Create(ctx context.Context, e *enterprise.Enterprise) error
 	Update(ctx context.Context, e *enterprise.Enterprise) error

@@ -5,6 +5,10 @@ import Image from "next/image";
 import {Langs} from "@domain/base/mlString/mlString";
 import classes from "./Media.module.scss";
 import {translate} from "@/pkg/translate/translate";
+import {News as NewsDomain} from "@domain/news/news";
+import {Event as EventDomain} from "@domain/event/event";
+import {Document as DocumentDomain} from "@domain/document/document";
+import DocSVG from "@assets/document-text.svg";
 
 export default function Media({lang}: { lang: Langs }) {
     const [isMounted, setMounted] = useState(false);
@@ -15,6 +19,59 @@ export default function Media({lang}: { lang: Langs }) {
         "meetings": translate("events", lang),
         "documents": translate("reports_and_documents", lang)
     }
+
+    const [news, setNews] = useState<NewsDomain[]>([]);
+    const [events, setEvents] = useState<EventDomain[]>([]);
+    const [documents, setDocuments] = useState<DocumentDomain[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (currentTab !== "news") {
+            return;
+        }
+        const fetchNews = async () => {
+            setLoading(true);
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/news`);
+            const data = await res.json();
+            if (data.success) {
+                setNews(data.data.news || []);
+            }
+            setLoading(false);
+        }
+        fetchNews();
+    }, [currentTab]);
+
+    useEffect(() => {
+        if (currentTab !== "meetings") {
+            return;
+        }
+        const fetchEvents = async () => {
+            setLoading(true);
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/event`);
+            const data = await res.json();
+            if (data.success) {
+                setEvents(data.data.events || []);
+            }
+            setLoading(false);
+        }
+        fetchEvents();
+    }, [currentTab]);
+
+    useEffect(() => {
+        if (currentTab !== "documents") {
+            return;
+        }
+        const fetchDocuments = async () => {
+            setLoading(true);
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/document`);
+            const data = await res.json();
+            if (data.success) {
+                setDocuments(data.data.documents || []);
+            }
+            setLoading(false);
+        }
+        fetchDocuments();
+    }, [currentTab]);
 
     useEffect(() => {
         if (isMounted) {
@@ -51,70 +108,125 @@ export default function Media({lang}: { lang: Langs }) {
                     isMounted ? (
                         <div className={classes.content}>
                             {currentTab === "news" && (
-                                <>
-                                    <h2 className={classes.content__title}>
-                                        {translate("news", lang)}
-                                    </h2>
-                                    <div className={classes.list}>
-                                        <News
-                                            cover={"https://www.gov.kz/uploads/2024/6/28/5c5b866ca9b640b71ab5521a702b11ad_1280x720.jpg"}
-                                            date={"28.06.2024"}
-                                            title={"Национальный офис по приватизации анонсировал передачу ряда государственных предприятий в частные руки"}
-                                            link={`/${lang.toLowerCase()}/news?id=${1}`}
-                                        />
-                                        <News
-                                            cover={"https://www.gov.kz/uploads/2024/6/28/822dbb80c2969229f2c902c73c73458f_1280x720.jpg"}
-                                            date={"28.06.2024"}
-                                            title={"Факт создания субъекта рынка с государственным участием будет означать обязательное включение его в список приватизации"}
-                                            link={`/${lang.toLowerCase()}/news?id=${2}`}
-                                        />
-                                        <News
-                                            cover={"https://www.gov.kz/uploads/2024/6/27/29576b60ea92a41aff65d9861a750aa6_1280x720.JPG"}
-                                            date={"27.06.2024"}
-                                            title={"В Астане прошло первое заседание национального офиса по приватизации"}
-                                            link={`/${lang.toLowerCase()}/news?id=${3}`}
-                                        />
+                                loading ? (
+                                    <div className={"loader_wrapper"}>
+                                        <div className={"loader"}></div>
                                     </div>
-                                </>
+                                ) : (
+                                    <>
+                                        <h2 className={classes.content__title}>
+                                            {translate("news", lang)}
+                                        </h2>
+                                        <div className={classes.list}>
+                                            {
+                                                news.map((news, index) => (
+                                                    <News
+                                                        key={index}
+                                                        cover={`${process.env.NEXT_PUBLIC_SPACE_HOST}/news/${news?.imgUrl}`}
+                                                        date={
+                                                            new Date(news.createdAt).toLocaleDateString(lang, {
+                                                                year: 'numeric',
+                                                                month: 'numeric',
+                                                                day: 'numeric',
+                                                                hour: 'numeric',
+                                                                minute: 'numeric'
+                                                            })
+                                                        }
+                                                        title={news.title}
+                                                        link={`/${lang.toLowerCase()}/news?id=${news.id}`}
+                                                    />
+                                                ))
+                                            }
+                                        </div>
+                                    </>
+                                )
                             )}
                             {currentTab === "meetings" && (
-                                <>
-                                    <h2 className={classes.content__title}>
-                                        {translate("events", lang)}
-                                    </h2>
-                                    <div className={classes.tab__bar}>
-                                        <div
-                                            className={currentSubTab === 1 ? classes.tab__active : classes.tab}
-                                            onClick={() => setCurrentSubTab(1)}
-                                        >
-                                            {translate("upcoming", lang)}
-                                        </div>
-                                        <div
-                                            className={currentSubTab === 2 ? classes.tab__active : classes.tab}
-                                            onClick={() => setCurrentSubTab(2)}
-                                        >
-                                            {translate("past", lang)}
-                                        </div>
-                                        <div
-                                            className={currentSubTab === 3 ? classes.tab__active : classes.tab}
-                                            onClick={() => setCurrentSubTab(3)}
-                                        >
-                                            {translate("all", lang)}
-                                        </div>
+                                loading ? (
+                                    <div className={"loader_wrapper"}>
+                                        <div className={"loader"}></div>
                                     </div>
-                                    <h3 style={{marginTop: "30px"}}>
-                                        {translate("events_not_found", lang)}
-                                    </h3>
-                                </>
+                                ) : (
+                                    <>
+                                        <h2 className={classes.content__title}>
+                                            {translate("events", lang)}
+                                        </h2>
+                                        <div className={classes.list}>
+                                            {
+                                                events.length > 0 ? (
+                                                    events.map((event, index) => (
+                                                        <Event
+                                                            key={index}
+                                                            cover={`${process.env.NEXT_PUBLIC_SPACE_HOST}/event/${event?.imgUrl}`}
+                                                            date={
+                                                                new Date(event.createdAt).toLocaleDateString(lang, {
+                                                                    year: 'numeric',
+                                                                    month: 'numeric',
+                                                                    day: 'numeric',
+                                                                    hour: 'numeric',
+                                                                    minute: 'numeric'
+                                                                })
+                                                            }
+                                                            plannedAt={
+                                                                new Date(event.plannedAt).toLocaleDateString(lang, {
+                                                                    year: 'numeric',
+                                                                    month: 'numeric',
+                                                                    day: 'numeric',
+                                                                    hour: 'numeric',
+                                                                    minute: 'numeric'
+                                                                })
+                                                            }
+                                                            title={event.name}
+                                                            link={`/${lang.toLowerCase()}/news?id=${event.id}`}
+                                                            lang={lang}
+                                                        />
+                                                    ))
+                                                ) : (
+                                                    <h3 style={{marginTop: "30px"}}>
+                                                        {translate("events_not_found", lang)}
+                                                    </h3>
+                                                )
+                                            }
+                                        </div>
+                                    </>
+                                )
                             )}
                             {currentTab === "documents" && (
                                 <>
                                     <h2 className={classes.content__title}>
                                         {translate("reports_and_documents", lang)}
                                     </h2>
-                                    <h3 style={{marginTop: "30px"}}>
-                                        {translate("documents_not_found", lang)}
-                                    </h3>
+                                    {
+                                        loading ? (
+                                            <div className={"loader_wrapper"}>
+                                                <div className={"loader"}></div>
+                                            </div>
+                                        ) : (
+                                            documents.length > 0 ? (
+                                                documents.map((item, index) => (
+                                                    <div className={classes.doc} key={index}>
+                                                        <div className={classes.doc__group}>
+                                                            <div className={classes.doc__title}>
+                                                                {item.title}
+                                                            </div>
+                                                            <DocSVG className={classes.doc__symbol}/>
+                                                        </div>
+                                                        <a
+                                                            className={classes.doc__download}
+                                                            href={`${process.env.NEXT_PUBLIC_SPACE_HOST}/npa/${item?.filename}`}
+                                                            target={"_blank"}
+                                                        >
+                                                            {translate("download", lang)}
+                                                        </a>
+                                                    </div>
+                                                ))
+                                            ) : (
+                                                <h3 style={{marginTop: "30px"}}>
+                                                    {translate("documents_not_found", lang)}
+                                                </h3>
+                                            )
+                                        )
+                                    }
                                 </>
                             )}
                         </div>
@@ -150,6 +262,42 @@ function News({cover, date, title, link}: NewsProps) {
             </div>
             <div className={classes.news__date}>
                 <p>{date}</p>
+            </div>
+            <div className={classes.news__title}>
+                <p>{title}</p>
+            </div>
+        </a>
+    )
+}
+
+interface EventProps {
+    cover: string,
+    date: string,
+    plannedAt: string,
+    title: string,
+    link: string,
+    lang: Langs
+}
+
+function Event({cover, date, plannedAt, title, link, lang}: EventProps) {
+    return (
+        <a className={classes.news} href={link}>
+            <div className={classes.news__cover}>
+                <Image
+                    src={cover}
+                    alt={title}
+                    width={0}
+                    height={0}
+                    className={classes.news__cover__img}
+                    placeholder={"empty"}
+                    unoptimized={true}
+                />
+            </div>
+            <div className={classes.news__date}>
+                <p>{date}</p>
+            </div>
+            <div className={classes.news__date}>
+                <p>{`${translate("planned_at", lang)}: ${plannedAt}`}</p>
             </div>
             <div className={classes.news__title}>
                 <p>{title}</p>

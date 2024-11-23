@@ -10,7 +10,7 @@ import CarouselPartners from "@components/ui/CarouselPartners/CarouselPartners";
 import Enterprises from "@components/ui/Enterprises/Enterprises";
 import Player from "@components/ui/Player/Player";
 import {useEffect, useState} from "react";
-import {LoadingOutlined} from "@ant-design/icons";
+import MissionBlock from "@components/ui/Mission/Mission";
 
 export default function Home({lang}: { lang: Langs }) {
     const [mounted, setMounted] = useState<boolean>(false);
@@ -49,41 +49,7 @@ export default function Home({lang}: { lang: Langs }) {
             <Block title={translate("office_mission", lang)}>
                 <div className={classes.mission}>
                     <div className={classes.mission__group}>
-                        <p className={classes.mission__group__text}>
-                            В соответствии с Указом Национальный офис до 31 декабря 2024 года должен обеспечить:
-                        </p>
-                        <p className={classes.mission__group__text}>
-                            - Выработку критериев к государственным объектам, подлежащим обязательной приватизации;
-                        </p>
-                        <p className={classes.mission__group__text}>
-                            - Проведение анализа деятельности действующих государственных предприятий и юридических лиц,
-                            более пятидесяти процентов акций (долей участия в уставном капитале) которых принадлежат
-                            государству и аффилированным с ними лицам, на предмет возможности и целесообразности
-                            передачи в
-                            конкурентную среду непрофильных активов с учетом региональной специфики;
-                        </p>
-                        <p className={classes.mission__group__text}>
-                            - Формирование перечня государственных активов, подлежащих приватизации (с определением по
-                            каждому из них условий и методов реализации, включая проведение IPO, SPO, аукционов и
-                            других),
-                            утверждение и корректировка которого будут возможны только по решению Высшего совета при
-                            Президенте Республики Казахстан по реформам;
-                        </p>
-                        <p className={classes.mission__group__text}>
-                            - Предоставление возможности приватизации объектов по инициативе субъектов частного
-                            предпринимательства путем формирования и внедрения заявочного перечня государственных
-                            активов,
-                            подлежащих приватизации;
-                        </p>
-                        <p className={classes.mission__group__text}>
-                            - Мониторинг хода приватизации государственных активов.
-                        </p>
-                        <p className={classes.mission__group__text}>
-                            Национальным офисом также будет осуществляться формирование условий и методов приватизации,
-                            что
-                            исключит факты необоснованного затягивания процедур, завышения требований к потенциальным
-                            покупателям и
-                        </p>
+                        <MissionBlock/>
                     </div>
                     <div className={classes.mission__group}>
                         <div className={classes.step}>

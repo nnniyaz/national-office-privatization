@@ -104,11 +104,15 @@ func (m *Middleware) PaginationParams(next http.Handler) http.Handler {
 		}
 
 		search := getParam(r, "search")
+		region := getParam(r, "region")
+		field := getParam(r, "field")
 
 		ctx := context.WithValue(r.Context(), "limit", limit)
 		ctx = context.WithValue(ctx, "offset", offset)
 		ctx = context.WithValue(ctx, "is_deleted", isDeleted)
 		ctx = context.WithValue(ctx, "search", search)
+		ctx = context.WithValue(ctx, "region", region)
+		ctx = context.WithValue(ctx, "field", field)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }

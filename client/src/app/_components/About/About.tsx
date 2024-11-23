@@ -23,48 +23,75 @@ export default function About({lang}: { lang: Langs }) {
         "contacts": translate("contacts", lang),
     }
 
+    const [missionText, setMissionText] = useState<string>('');
     const [contacts, setContacts] = useState<Contacts>({} as Contacts);
     const [employee, setEmployee] = useState<Employee[]>([]);
     const [npa, setNpa] = useState<Npa[]>([]);
-
-    const fetchContacts = async (): Promise<SuccessResponse<Contacts> | ErrorResponse> => {
-        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/contacts");
-        return await response.json();
-    }
-
-    const fetchEmployees = async (): Promise<SuccessResponse<EmployeeData> | ErrorResponse> => {
-        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/employee");
-        return await response.json();
-    }
-
-    const fetchNpas = async (): Promise<SuccessResponse<NpaData> | ErrorResponse> => {
-        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/npa");
-        return await response.json();
-    }
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const getContacts = async () => {
-            const partners = await fetchContacts();
-            if (partners.success) {
-                setContacts(partners.data)
-            }
+        if (currentTab !== "office") {
+            return;
         }
-        const getEmployees = async () => {
-            const employees = await fetchEmployees();
-            if (employees.success) {
-                setEmployee(employees.data.employees)
+        const fetchMission = async () => {
+            setLoading(true);
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/mission`);
+            const data = await res.json();
+            if (data.success) {
+                setMissionText(data.data.text);
             }
+            setLoading(false);
         }
-        const getNpas = async () => {
-            const npas = await fetchNpas();
-            if (npas.success) {
-                setNpa(npas.data.npas)
+        fetchMission();
+    }, [currentTab]);
+
+    useEffect(() => {
+        if (currentTab !== "contacts") {
+            return;
+        }
+        const fetchContacts = async () => {
+            setLoading(true);
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/contacts`);
+            const data = await res.json();
+            if (data.success) {
+                setContacts(data.data)
             }
+            setLoading(false);
         }
-        getContacts();
-        getEmployees();
-        getNpas();
-    }, []);
+        fetchContacts();
+    }, [currentTab]);
+
+    useEffect(() => {
+        if (currentTab !== "team") {
+            return;
+        }
+        const fetchEmployee = async () => {
+            setLoading(true);
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/employee`);
+            const data = await res.json();
+            if (data.success) {
+                setEmployee(data.data.employees || [])
+            }
+            setLoading(false);
+        }
+        fetchEmployee();
+    }, [currentTab]);
+
+    useEffect(() => {
+        if (currentTab !== "npa") {
+            return;
+        }
+        const fetchNpa = async () => {
+            setLoading(true);
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/npa`);
+            const data = await res.json();
+            if (data.success) {
+                setNpa(data.data.npas || [])
+            }
+            setLoading(false);
+        }
+        fetchNpa();
+    }, [currentTab]);
 
     useEffect(() => {
         if (isMounted) {
@@ -101,148 +128,127 @@ export default function About({lang}: { lang: Langs }) {
                     isMounted ? (
                         <div className={classes.content}>
                             {currentTab === "office" && (
-                                <>
-                                    <h2 className={classes.content__title}>
-                                        {translate("office_of_nop", lang)}
-                                    </h2>
-                                    <p className={classes.mission__text}>
-                                        В соответствии с Указом Национальный офис до 31 декабря 2024 года должен
-                                        обеспечить:
-                                    </p>
-                                    <p className={classes.mission__text}>
-                                        - Выработку критериев к государственным объектам, подлежащим обязательной
-                                        приватизации;
-                                    </p>
-                                    <p className={classes.mission__text}>
-                                        - Проведение анализа деятельности действующих государственных предприятий и
-                                        юридических
-                                        лиц,
-                                        более пятидесяти процентов акций (долей участия в уставном капитале) которых
-                                        принадлежат
-                                        государству и аффилированным с ними лицам, на предмет возможности и
-                                        целесообразности
-                                        передачи в
-                                        конкурентную среду непрофильных активов с учетом региональной специфики;
-                                    </p>
-                                    <p className={classes.mission__text}>
-                                        - Формирование перечня государственных активов, подлежащих приватизации (с
-                                        определением
-                                        по
-                                        каждому из них условий и методов реализации, включая проведение IPO, SPO,
-                                        аукционов и
-                                        других),
-                                        утверждение и корректировка которого будут возможны только по решению Высшего
-                                        совета при
-                                        Президенте Республики Казахстан по реформам;
-                                    </p>
-                                    <p className={classes.mission__text}>
-                                        - Предоставление возможности приватизации объектов по инициативе субъектов
-                                        частного
-                                        предпринимательства путем формирования и внедрения заявочного перечня
-                                        государственных
-                                        активов,
-                                        подлежащих приватизации;
-                                    </p>
-                                    <p className={classes.mission__text}>
-                                        - Мониторинг хода приватизации государственных активов.
-                                    </p>
-                                    <p className={classes.mission__text}>
-                                        Национальным офисом также будет осуществляться формирование условий и методов
-                                        приватизации,
-                                        что
-                                        исключит факты необоснованного затягивания процедур, завышения требований к
-                                        потенциальным
-                                        покупателям и
-                                    </p>
-                                </>
+                                loading ? (
+                                    <div className={"loader_wrapper"}>
+                                        <div className={"loader"}></div>
+                                    </div>
+                                ) : (
+                                    <>
+                                        <h2 className={classes.content__title}>
+                                            {translate("office_of_nop", lang)}
+                                        </h2>
+                                        <p
+                                            className={classes.mission__text}
+                                            dangerouslySetInnerHTML={{__html: missionText.replace(/(\r\n|\r|\n)/g, '<br>')}}
+                                        />
+                                    </>
+                                )
                             )}
 
                             {currentTab === "team" && (
-                                <>
-                                    <h2 className={classes.content__title}>
-                                        {translate("team", lang)}
-                                    </h2>
-                                    <div className={classes.tab__bar}>
-                                        <div
-                                            className={currentSubTab === "1" ? classes.tab__active : classes.tab}
-                                            onClick={() => setCurrentSubTab("1")}
-                                        >
-                                            {translate("main_group", lang)}
-                                        </div>
-                                        <div
-                                            className={currentSubTab === "2" ? classes.tab__active : classes.tab}
-                                            onClick={() => setCurrentSubTab("2")}
-                                        >
-                                            {translate("first_sub_group", lang)}
-                                        </div>
-                                        <div
-                                            className={currentSubTab === "3" ? classes.tab__active : classes.tab}
-                                            onClick={() => setCurrentSubTab("3")}
-                                        >
-                                            {translate("second_sub_group", lang)}
-                                        </div>
+                                loading ? (
+                                    <div className={"loader_wrapper"}>
+                                        <div className={"loader"}></div>
                                     </div>
+                                ) : (
+                                    <>
+                                        <h2 className={classes.content__title}>
+                                            {translate("team", lang)}
+                                        </h2>
+                                        <div className={classes.tab__bar}>
+                                            <div
+                                                className={currentSubTab === "1" ? classes.tab__active : classes.tab}
+                                                onClick={() => setCurrentSubTab("1")}
+                                            >
+                                                {translate("main_group", lang)}
+                                            </div>
+                                            <div
+                                                className={currentSubTab === "2" ? classes.tab__active : classes.tab}
+                                                onClick={() => setCurrentSubTab("2")}
+                                            >
+                                                {translate("first_sub_group", lang)}
+                                            </div>
+                                            <div
+                                                className={currentSubTab === "3" ? classes.tab__active : classes.tab}
+                                                onClick={() => setCurrentSubTab("3")}
+                                            >
+                                                {translate("second_sub_group", lang)}
+                                            </div>
+                                        </div>
 
-                                    <ol className={classes.staff}>
-                                        {
-                                            employee.filter(item => item.group === currentSubTab).map((item, index) => (
-                                                <li key={index}>{item.name}</li>
-                                            ))
-                                        }
-                                    </ol>
-                                </>
+                                        <ol className={classes.staff}>
+                                            {
+                                                employee.filter(item => item.group === currentSubTab).map((item, index) => (
+                                                    <li key={index}>{item.name}</li>
+                                                ))
+                                            }
+                                        </ol>
+                                    </>
+                                )
                             )}
 
                             {currentTab === "npa" && (
-                                <>
-                                    <h2 className={classes.content__title}>
-                                        {translate("npa", lang)}
-                                    </h2>
-                                    {
-                                        npa.map((item, index) => (
-                                            <div className={classes.doc} key={index}>
-                                                <div className={classes.doc__group}>
-                                                    <div className={classes.doc__title}>
-                                                        {item.title}
+                                loading ? (
+                                    <div className={"loader_wrapper"}>
+                                        <div className={"loader"}></div>
+                                    </div>
+                                ) : (
+                                    <>
+                                        <h2 className={classes.content__title}>
+                                            {translate("npa", lang)}
+                                        </h2>
+                                        {
+                                            npa.map((item, index) => (
+                                                <div className={classes.doc} key={index}>
+                                                    <div className={classes.doc__group}>
+                                                        <div className={classes.doc__title}>
+                                                            {item.title}
+                                                        </div>
+                                                        <DocSVG className={classes.doc__symbol}/>
                                                     </div>
-                                                    <DocSVG className={classes.doc__symbol}/>
+                                                    <a
+                                                        className={classes.doc__download}
+                                                        href={`${process.env.NEXT_PUBLIC_SPACE_HOST}/npa/${item?.filename}`}
+                                                        target={"_blank"}
+                                                    >
+                                                        {translate("download", lang)}
+                                                    </a>
                                                 </div>
-                                                <a
-                                                    className={classes.doc__download}
-                                                    href={item.filename}
-                                                    target={"_blank"}
-                                                >
-                                                    {translate("download", lang)}
-                                                </a>
-                                            </div>
-                                        ))
-                                    }
-                                </>
+                                            ))
+                                        }
+                                    </>
+                                )
                             )}
 
                             {currentTab === "contacts" && (
-                                <>
-                                    <h2 className={classes.content__title}>
-                                        {translate("contacts", lang)}
-                                    </h2>
-                                    <div className={classes.map__info}>
-                                        <div>
-                                            <strong>{`${translate("main_phone", lang)}:`}</strong>
-                                            <p>{`${contacts.primaryContact}`}</p>
-                                        </div>
-
-                                        <div>
-                                            <strong>{`${translate("additional_phone", lang)}:`}</strong>
-                                            <p>{`${contacts.secondaryContactPerson} - ${contacts.secondaryContact}`}</p>
-                                        </div>
-
-                                        <div>
-                                            <strong>{`${translate("address", lang)}:`}</strong>
-                                            <p>Проспект Мангилик Ел, 8, Есиль район, г.Астана</p>
-                                        </div>
+                                loading ? (
+                                    <div className={"loader_wrapper"}>
+                                        <div className={"loader"}></div>
                                     </div>
-                                    <Map/>
-                                </>
+                                ) : (
+                                    <>
+                                        <h2 className={classes.content__title}>
+                                            {translate("contacts", lang)}
+                                        </h2>
+                                        <div className={classes.map__info}>
+                                            <div>
+                                                <strong>{`${translate("main_phone", lang)}:`}</strong>
+                                                <p>{`${contacts.primaryContact}`}</p>
+                                            </div>
+
+                                            <div>
+                                                <strong>{`${translate("additional_phone", lang)}:`}</strong>
+                                                <p>{`${contacts.secondaryContactPerson} - ${contacts.secondaryContact}`}</p>
+                                            </div>
+
+                                            <div>
+                                                <strong>{`${translate("address", lang)}:`}</strong>
+                                                <p>Проспект Мангилик Ел, 8, Есиль район, г.Астана</p>
+                                            </div>
+                                        </div>
+                                        <Map/>
+                                    </>
+                                )
                             )}
                         </div>
                     ) : (

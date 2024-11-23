@@ -249,7 +249,7 @@ export default function Enterprises({lang}: { lang: Langs }) {
                     <ul className={classes.enterprises__group__list}>
                         {
                             objects.filter(item => item.location === selectedRegion)?.length > 0 ? (
-                                objects.filter(item => item.location === selectedRegion).map(item => (
+                                objects.filter(item => item.location === selectedRegion).slice(0, 5).map(item => (
                                     <li key={item.id}>
                                         <EnterpriseItem
                                             id={item.id}

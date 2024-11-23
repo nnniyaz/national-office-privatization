@@ -130,6 +130,10 @@
         padding: 15px 0;
         border-bottom: 1px solid var(--border-color);
 
+        &:last-child {
+          border-bottom: none;
+        }
+
         .doc__group {
           display: flex;
           align-items: center;

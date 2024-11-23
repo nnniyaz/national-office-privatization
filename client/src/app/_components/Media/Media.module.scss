@@ -82,6 +82,10 @@
         padding: 15px 0;
         border-bottom: 1px solid var(--border-color);
 
+        &:last-child {
+          border-bottom: none;
+        }
+
         .doc__group {
           display: flex;
           align-items: center;
@@ -178,6 +182,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      border-radius: 10px;
     }
   }
 

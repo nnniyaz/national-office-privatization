@@ -49,7 +49,7 @@ func (m *mongoEnterprise) ToAggregate() *enterprise.Enterprise {
 	return enterprise.UnmarshalEnterpriseFromDatabase(m.Id, m.Name, m.Location, m.Industry, m.GovernmentShare, m.CreatedAt, m.UpdatedAt)
 }
 
-func (r *RepoEnterprise) Get(ctx context.Context, offset, limit int64, search string) ([]*enterprise.Enterprise, int64, error) {
+func (r *RepoEnterprise) Get(ctx context.Context, offset, limit int64, search, region, field string) ([]*enterprise.Enterprise, int64, error) {
 	var m []mongoEnterprise
 	filter := bson.D{
 		{"governmentShare", bson.D{{"$gt", -1}}},
@@ -60,6 +60,20 @@ func (r *RepoEnterprise) Get(ctx context.Context, offset, limit int64, search st
 			Value: bson.D{{"$regex", primitive.Regex{Pattern: search, Options: "i"}}},
 		})
 	}
+
+	if region != "" {
+	    filter = append(filter, bson.E{
+	        Key:   "location",
+	        Value: bson.D{{"$regex", primitive.Regex{Pattern: region, Options: "i"}}},
+        })
+    }
+
+    if field != "" {
+        filter = append(filter, bson.E{
+            Key:   "industry",
+            Value: bson.D{{"$regex", primitive.Regex{Pattern: field, Options: "i"}}},
+        })
+    }
 
 	count, err := r.Coll().CountDocuments(ctx, filter)
 	if err != nil {

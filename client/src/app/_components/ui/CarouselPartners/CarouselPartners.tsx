@@ -37,15 +37,14 @@ export default function CarouselPartners() {
     return (
         <>
             <SwiperComponent
-                spaceBetween={125}
-                slidesPerView={5}
+                spaceBetween={10}
+                slidesPerView={4}
                 loop={true}
                 autoplay={{
                     delay: 2000,
                     disableOnInteraction: false,
                 }}
                 centeredSlides={true}
-                initialSlide={2}
                 onSwiper={(swiper) => setSwiper(swiper)}
                 className={classes.swiper}
                 modules={[Autoplay]}
@@ -62,7 +61,7 @@ export default function CarouselPartners() {
             <div className={classes.partner_list}>
                 {
                     partners.map((partner, index) => (
-                        <PartnerItem title={partner.name} link={partner.link}/>
+                        <PartnerItem title={partner.name} link={partner.link} key={index}/>
                     ))
                 }
             </div>
