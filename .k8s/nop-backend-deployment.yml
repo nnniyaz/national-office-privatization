@@ -16,6 +16,64 @@ spec:
       containers:
         - name: nop-backend-container
           image: <IMAGE>
+          env:
+            - name: IS_DEV_MODE
+              value: "false"
+            - name: SMTP_USER
+              valueFrom:
+                secretKeyRef:
+                  name: nop-secret
+                  key: SMTP_USER
+            - name: SMTP_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: nop-secret
+                  key: SMTP_PASS
+            - name: SMTP_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: nop-secret
+                  key: SMTP_HOST
+            - name: SMTP_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: nop-secret
+                  key: SMTP_PORT
+            - name: MONGO_URI
+              valueFrom:
+                secretKeyRef:
+                  name: nop-secret
+                  key: MONGO_URI
+            - name: SPACE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: nop-secret
+                  key: SPACE_KEY
+            - name: SPACE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: nop-secret
+                  key: SPACE_SECRET
+            - name: SPACE_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: nop-secret
+                  key: SPACE_ENDPOINT
+            - name: SPACE_REGION
+              valueFrom:
+                secretKeyRef:
+                  name: nop-secret
+                  key: SPACE_REGION
+            - name: SPACE_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: nop-secret
+                  key: SPACE_NAME
+            - name: SPACE_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: nop-secret
+                  key: SPACE_HOST
           ports:
             - containerPort: 8080
       dnsPolicy: ClusterFirstWithHostNet
