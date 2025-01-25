@@ -5,7 +5,7 @@ env:
   REGISTRY: "registry.digitalocean.com/salam"
   CLUSTER_NAME: "salam-k8s"
 
-  DOCKERFILE_PATH: "Dockerfile"
+  DOCKERFILE_PATH: "/server/Dockerfile"
   IMAGE_NAME: "nop-backend"
 
   DEPLOYMENT_FILE_PATH: ".k8s/nop-backend-deployment.yml"
