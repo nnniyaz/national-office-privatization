@@ -7,7 +7,7 @@ spec:
   revisionHistoryLimit: 3
   selector:
     matchLabels:
-      app: nop-backend-deployment-pod
+      app: nop-backend-pod
   template:
     metadata:
       labels:
