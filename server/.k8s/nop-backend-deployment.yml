@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nop-backend-deployment
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: nop-backend-deployment-pod
+  template:
+    metadata:
+      labels:
+        app: nop-backend-pod
+    spec:
+      containers:
+        - name: nop-backend-container
+          image: <IMAGE>
+          ports:
+            - containerPort: 8080
+      dnsPolicy: ClusterFirstWithHostNet
+
