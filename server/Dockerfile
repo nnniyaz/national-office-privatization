@@ -8,7 +8,7 @@ COPY . .
 
 RUN go run cmd/i18n/gen.go --csv errors.csv --out pkg/core/i18ngen.go --pkg core
 
-WORKDIR .
+WORKDIR server
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -trimpath -o /nop-backend .
 
 # Deploy
