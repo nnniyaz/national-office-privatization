@@ -6,7 +6,7 @@ ENV GOPATH=/
 
 COPY . .
 
-RUN go run cmd/i18n/gen.go --csv errors.csv --out pkg/core/i18ngen.go --pkg core
+RUN go run server/cmd/i18n/gen.go --csv server/errors.csv --out server/pkg/core/i18ngen.go --pkg core
 
 WORKDIR server
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -trimpath -o /nop-backend .
