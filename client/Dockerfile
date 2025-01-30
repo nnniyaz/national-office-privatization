@@ -16,6 +16,12 @@ RUN npm run build
 # Expose the port on which the server will run
 EXPOSE 8080
 
+ARG NEXT_PUBLIC_API_URL
+ARG NEXT_PUBLIC_SPACE_HOST
+
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_SPACE_HOST=$NEXT_PUBLIC_SPACE_HOST
+
 ARG build_id
 ARG commit_hash
 ENV BUILD_ID=$build_id
