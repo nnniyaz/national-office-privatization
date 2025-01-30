@@ -1,9 +1,9 @@
 # Build React App
 FROM node:19.2.0 as build
-WORKDIR /app
+COPY . .
+WORKDIR /admin
 COPY package.json /app
 RUN npm install
-COPY . /app
 
 RUN npm run i18n
 RUN npm run build:prod
