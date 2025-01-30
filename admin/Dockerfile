@@ -2,7 +2,7 @@
 FROM node:19.2.0 as build
 COPY . .
 WORKDIR /admin
-COPY package.json /app
+COPY package.json ./
 RUN npm install
 
 RUN npm run i18n
