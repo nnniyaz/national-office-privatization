@@ -55,7 +55,7 @@ func (s *applicationService) Create(ctx context.Context, enterpriseId, fio, bin,
 
 	subject := "Запрос об объекте с веб-сайта НОП"
 	htmlBody := fmt.Sprintf("<p>Дата и время запроса: %s,</p><p>Запрос от <strong>%s</strong></p><p>Наименование объекта: %s</p><p>ИИН/БИН запросителя: %s</p><p>Контакты запросителя: %s, %s</p><p>Cообщение запросителя: <br/>%s</p>", a.GetCreatedAt().Format("2006-01-02 15:04:05"), a.GetFio(), enterprise.GetName(), a.GetBin(), a.GetPhone(), a.GetEmail(), a.GetMessage())
-	err = s.emailService.SendMail([]string{"k.kense.azrk@azrk.gov.kz"}, subject, htmlBody)
+	err = s.emailService.SendMail([]string{"k.kense.azrk@azrk.gov.kz", "e.kushanov@azrk.gov.kz"}, subject, htmlBody)
 	if err != nil {
 		return err
 	}
