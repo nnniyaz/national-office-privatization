@@ -76,5 +76,7 @@ spec:
                   key: SPACE_HOST
           ports:
             - containerPort: 8080
+      imagePullSecrets:
+            - name: registry-salam
       dnsPolicy: ClusterFirstWithHostNet
 
