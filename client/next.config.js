@@ -12,8 +12,8 @@ const nextConfig = {
         domains: ['ardodev.fra1.cdn.digitaloceanspaces.com'],
     },
     env: {
-        NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
-        NEXT_PUBLIC_SPACE_HOST: process.env.NEXT_PUBLIC_SPACE_HOST
+        NEXT_PUBLIC_API_URL: "https://api.nop.kz",
+        NEXT_PUBLIC_SPACE_HOST: "https://salam-dev.fra1.digitaloceanspaces.com"
     },
     rewrites: async () => {
         return {
