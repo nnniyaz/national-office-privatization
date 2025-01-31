@@ -8,12 +8,13 @@ import (
 )
 
 type HttpDelivery struct {
-	logger  logger.Logger
-	service upload.UploadService
+	logger   logger.Logger
+	service  upload.UploadService
+	s3Bucket string
 }
 
-func NewHttpDelivery(l logger.Logger, s upload.UploadService) *HttpDelivery {
-	return &HttpDelivery{logger: l, service: s}
+func NewHttpDelivery(l logger.Logger, s upload.UploadService, s3Bucket string) *HttpDelivery {
+	return &HttpDelivery{logger: l, service: s, s3Bucket: s3Bucket}
 }
 
 // UploadDocuments godoc
@@ -35,7 +36,7 @@ func (hd *HttpDelivery) UploadDocuments(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 	defer file.Close()
-	fileName, err := hd.service.UploadImage("document", file, header)
+	fileName, err := hd.service.UploadImage(hd.s3Bucket, "document", file, header)
 	if err != nil {
 		response.NewError(hd.logger, w, r, err)
 		return
@@ -66,7 +67,7 @@ func (hd *HttpDelivery) UploadNpa(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer file.Close()
-	fileName, err := hd.service.UploadImage("npa", file, header)
+	fileName, err := hd.service.UploadImage(hd.s3Bucket, "npa", file, header)
 	if err != nil {
 		response.NewError(hd.logger, w, r, err)
 		return
@@ -97,7 +98,7 @@ func (hd *HttpDelivery) UploadNewsImage(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 	defer file.Close()
-	fileName, err := hd.service.UploadImage("news", file, header)
+	fileName, err := hd.service.UploadImage(hd.s3Bucket, "news", file, header)
 	if err != nil {
 		response.NewError(hd.logger, w, r, err)
 		return
@@ -128,7 +129,7 @@ func (hd *HttpDelivery) UploadEventImage(w http.ResponseWriter, r *http.Request)
 		return
 	}
 	defer file.Close()
-	fileName, err := hd.service.UploadImage("event", file, header)
+	fileName, err := hd.service.UploadImage(hd.s3Bucket, "event", file, header)
 	if err != nil {
 		response.NewError(hd.logger, w, r, err)
 		return

@@ -4,6 +4,7 @@ type Config struct {
 	mongoUri      string
 	isDevMode     bool
 	emailCfg      *CfgEmail
+	spaceBucket   string
 	spaceKey      string
 	spaceSecret   string
 	spaceEndPoint string
@@ -12,11 +13,12 @@ type Config struct {
 	spaceHost     string
 }
 
-func New(isDevMode bool, smtpPort int, smtpUser, smtpPass, smtpHost, mongoUri, spaceKey, spaceSecret, spaceEndPoint, spaceRegion, spaceName, spaceHost string) *Config {
+func New(isDevMode bool, smtpPort int, smtpUser, smtpPass, smtpHost, mongoUri, spaceBucket, spaceKey, spaceSecret, spaceEndPoint, spaceRegion, spaceName, spaceHost string) *Config {
 	return &Config{
 		mongoUri:      mongoUri,
 		isDevMode:     isDevMode,
 		emailCfg:      NewCfgEmail(int64(smtpPort), smtpUser, smtpPass, smtpHost),
+		spaceBucket:   spaceBucket,
 		spaceKey:      spaceKey,
 		spaceSecret:   spaceSecret,
 		spaceEndPoint: spaceEndPoint,
@@ -36,6 +38,10 @@ func (c *Config) GetIsDevMode() bool {
 
 func (c *Config) GetEmailCfg() *CfgEmail {
 	return c.emailCfg
+}
+
+func (c *Config) GetSpaceBucket() string {
+	return c.spaceBucket
 }
 
 func (c *Config) GetSpaceKey() string {

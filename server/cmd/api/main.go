@@ -56,6 +56,7 @@ func main() {
 		env.MustGetEnv("SMTP_PASS"),
 		env.MustGetEnv("SMTP_HOST"),
 		env.MustGetEnv("MONGO_URI"),
+		env.MustGetEnv("SPACE_BUCKET"),
 		env.MustGetEnv("SPACE_KEY"),
 		env.MustGetEnv("SPACE_SECRET"),
 		env.MustGetEnv("SPACE_ENDPOINT"),
@@ -103,7 +104,7 @@ func main() {
 
 	repos := repo.NewRepository(db)
 	services := service.NewService(repos, cfg, lg, emailService, s3Client)
-	handlers := http.NewHandler(db, services, lg)
+	handlers := http.NewHandler(db, cfg, services, lg)
 
 	srv := new(nop.Server)
 	go func() {

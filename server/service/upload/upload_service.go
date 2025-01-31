@@ -17,7 +17,7 @@ const MaxFileSize = 5 * (1 << 20)
 var ErrMaxFileSizeIs1MB = core.NewI18NError(core.EINVALID, core.TXT_MAX_FILE_SIZE_IS_1MB)
 
 type UploadService interface {
-	UploadImage(folderName string, file multipart.File, fileHeader *multipart.FileHeader) (string, error)
+	UploadImage(s3Bucket, folderName string, file multipart.File, fileHeader *multipart.FileHeader) (string, error)
 }
 
 type uploadService struct {
@@ -29,7 +29,7 @@ func NewUploadService(l logger.Logger, s3Client *s3.S3) UploadService {
 	return &uploadService{logger: l, s3Client: s3Client}
 }
 
-func (s *uploadService) UploadImage(folderName string, file multipart.File, fileHeader *multipart.FileHeader) (string, error) {
+func (s *uploadService) UploadImage(s3Bucket, folderName string, file multipart.File, fileHeader *multipart.FileHeader) (string, error) {
 	var buf bytes.Buffer
 	io.Copy(&buf, file)
 	if buf.Len() > MaxFileSize {
@@ -37,7 +37,7 @@ func (s *uploadService) UploadImage(folderName string, file multipart.File, file
 	}
 	fileName := uuid.NewUUID().String() + "_" + fileHeader.Filename
 	_, err := s.s3Client.PutObject(&s3.PutObjectInput{
-		Bucket:       aws.String("ardodev"),
+		Bucket:       aws.String(s3Bucket),
 		Key:          aws.String("/nop/" + folderName + "/" + fileName),
 		Body:         bytes.NewReader(buf.Bytes()),
 		ACL:          aws.String("public-read"),

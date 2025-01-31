@@ -4,6 +4,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
+	"github.com/nnniyaz/nop/server/config"
 	_ "github.com/nnniyaz/nop/server/docs"
 	"github.com/nnniyaz/nop/server/handler/http/application"
 	"github.com/nnniyaz/nop/server/handler/http/auth"
@@ -43,7 +44,7 @@ type Handler struct {
 	Upload      *upload.HttpDelivery
 }
 
-func NewHandler(c *mongo.Client, s *service.Services, l logger.Logger) *Handler {
+func NewHandler(c *mongo.Client, cfg *config.Config, s *service.Services, l logger.Logger) *Handler {
 	return &Handler{
 		Middleware:  middleware2.New(l, c, s.Auth),
 		User:        user.NewHttpDelivery(l, s.User),
@@ -58,7 +59,7 @@ func NewHandler(c *mongo.Client, s *service.Services, l logger.Logger) *Handler 
 		Npa:         npa.NewHttpDelivery(l, s.Npa),
 		Event:       event.NewHttpDelivery(l, s.Event),
 		Application: application.NewHttpDelivery(l, s.Application),
-		Upload:      upload.NewHttpDelivery(l, s.Upload),
+		Upload:      upload.NewHttpDelivery(l, s.Upload, cfg.GetSpaceBucket()),
 	}
 }
 
