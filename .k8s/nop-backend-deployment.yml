@@ -16,8 +16,6 @@ spec:
       containers:
         - name: nop-backend-container
           image: <IMAGE>
-          imagePullSecrets:
-            - name: registry-salam
           env:
             - name: IS_DEV_MODE
               value: "false"
