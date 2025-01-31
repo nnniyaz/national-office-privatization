@@ -16,6 +16,8 @@ spec:
       containers:
         - name: nop-backend-container
           image: <IMAGE>
+          imagePullSecrets:
+            - name: registry-salam
           env:
             - name: IS_DEV_MODE
               value: "false"
@@ -76,7 +78,5 @@ spec:
                   key: SPACE_HOST
           ports:
             - containerPort: 8080
-          imagePullSecrets:
-            - name: registry-salam
       dnsPolicy: ClusterFirstWithHostNet
 
