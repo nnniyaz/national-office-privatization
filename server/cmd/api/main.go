@@ -3,11 +3,16 @@ package main
 import (
 	"context"
 	"fmt"
+	nHttp "net/http"
+	"os/signal"
+	"syscall"
+	"time"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
-	"github.com/nnniyaz/nop/server"
+	nop "github.com/nnniyaz/nop/server"
 	"github.com/nnniyaz/nop/server/config"
 	"github.com/nnniyaz/nop/server/handler/http"
 	"github.com/nnniyaz/nop/server/pkg/email"
@@ -18,10 +23,6 @@ import (
 	"github.com/nnniyaz/nop/server/repo"
 	"github.com/nnniyaz/nop/server/service"
 	"go.uber.org/zap"
-	nHttp "net/http"
-	"os/signal"
-	"syscall"
-	"time"
 )
 
 const port = 8080
@@ -36,9 +37,9 @@ const port = 8080
 //	@host		https://api.nop.kz
 //	@schemes	https
 
-// @securityDefinitions.apikey	ApiKeyAuth
-// @in							header
-// @name						Cookie
+//	@securityDefinitions.apikey	ApiKeyAuth
+//	@in							header
+//	@name						Cookie
 
 func main() {
 	start := time.Now()

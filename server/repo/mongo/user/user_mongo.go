@@ -3,12 +3,13 @@ package user
 import (
 	"context"
 	"errors"
+	"time"
+
 	"github.com/nnniyaz/nop/server/domain/base/uuid"
 	"github.com/nnniyaz/nop/server/domain/user"
 	"github.com/nnniyaz/nop/server/domain/user/valueobject"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
-	"time"
 )
 
 type RepoUser struct {

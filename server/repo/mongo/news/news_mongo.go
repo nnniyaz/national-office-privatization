@@ -2,12 +2,14 @@ package news
 
 import (
 	"context"
+	"time"
+
 	"github.com/nnniyaz/nop/server/domain/base/uuid"
 	"github.com/nnniyaz/nop/server/domain/news"
+	"github.com/nnniyaz/nop/server/internal/i18n"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"time"
 )
 
 type RepoNews struct {
@@ -23,11 +25,11 @@ func (r *RepoNews) Coll() *mongo.Collection {
 }
 
 type mongoNews struct {
-	Id        uuid.UUID `bson:"_id"`
-	Title     string    `bson:"title"`
-	Content   string    `bson:"content"`
-	ImgUrl    string    `bson:"imgUrl"`
-	CreatedAt time.Time `bson:"createdAt"`
+	Id        uuid.UUID     `bson:"_id"`
+	Title     i18n.MlString `bson:"title"`
+	Content   i18n.MlString `bson:"content"`
+	ImgUrl    string        `bson:"imgUrl"`
+	CreatedAt time.Time     `bson:"createdAt"`
 }
 
 func newFromNews(n *news.News) *mongoNews {

@@ -2,8 +2,10 @@ package employee
 
 import (
 	"context"
+
 	"github.com/nnniyaz/nop/server/domain/base/uuid"
 	"github.com/nnniyaz/nop/server/domain/employee"
+	"github.com/nnniyaz/nop/server/internal/i18n"
 	"github.com/nnniyaz/nop/server/pkg/logger"
 	"github.com/nnniyaz/nop/server/repo"
 )
@@ -11,8 +13,8 @@ import (
 type EmployeeService interface {
 	Get(ctx context.Context) ([]*employee.Employee, error)
 	GetById(ctx context.Context, employeeId string) (*employee.Employee, error)
-	Create(ctx context.Context, name, group string) error
-	Update(ctx context.Context, employeeId, name, group string) error
+	Create(ctx context.Context, name i18n.MlString, group string) error
+	Update(ctx context.Context, employeeId string, name i18n.MlString, group string) error
 	Delete(ctx context.Context, employeeId string) error
 }
 
@@ -37,12 +39,15 @@ func (s *employeeService) GetById(ctx context.Context, employeeId string) (*empl
 	return s.employeeRepo.GetById(ctx, convertedId)
 }
 
-func (s *employeeService) Create(ctx context.Context, name, group string) error {
-	e := employee.NewEmployee(name, group)
+func (s *employeeService) Create(ctx context.Context, name i18n.MlString, group string) error {
+	e, err := employee.NewEmployee(name, group)
+	if err != nil {
+		return err
+	}
 	return s.employeeRepo.Create(ctx, e)
 }
 
-func (s *employeeService) Update(ctx context.Context, employeeId, name, group string) error {
+func (s *employeeService) Update(ctx context.Context, employeeId string, name i18n.MlString, group string) error {
 	convertedId, err := uuid.UUIDFromString(employeeId)
 	if err != nil {
 		return err
@@ -51,7 +56,9 @@ func (s *employeeService) Update(ctx context.Context, employeeId, name, group st
 	if err != nil {
 		return err
 	}
-	foundEmployee.Update(name, group)
+	if err := foundEmployee.Update(name, group); err != nil {
+		return err
+	}
 	return s.employeeRepo.Update(ctx, foundEmployee)
 }
 

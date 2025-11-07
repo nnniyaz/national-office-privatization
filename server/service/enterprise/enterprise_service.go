@@ -2,6 +2,7 @@ package enterprise
 
 import (
 	"context"
+
 	"github.com/nnniyaz/nop/server/domain/base/uuid"
 	"github.com/nnniyaz/nop/server/domain/enterprise"
 	"github.com/nnniyaz/nop/server/pkg/logger"
@@ -11,8 +12,8 @@ import (
 type EnterpriseService interface {
 	Get(ctx context.Context, offset, limit int64, search, region, field string) ([]*enterprise.Enterprise, int64, error)
 	GetById(ctx context.Context, enterpriseId string) (*enterprise.Enterprise, error)
-	Create(ctx context.Context, name, location, industry string, governmentShare float64) error
-	Update(ctx context.Context, enterpriseId, name, location, industry string, governmentShare float64) error
+	Create(ctx context.Context, name, location, industry string, governmentShare float64, juridicalForm string, year int, owner, mainActivity string, authorizedCapital float64, authorizedCapitalComment string, assets float64, assetsComment string, equity float64, equityComment string, income float64, incomeComment string, netProfit float64, netProfitComment string, numberOfEmployees int, numberOfEmployeesComment string, totalLiabilities float64, totalLiabilitiesComment string, propertyComplex, additionalInfo, salesRecommendations, implementationForm, salePurpose, keyTerms, additionalTerms string) error
+	Update(ctx context.Context, enterpriseId, name, location, industry string, governmentShare float64, juridicalForm string, year int, owner, mainActivity string, authorizedCapital float64, authorizedCapitalComment string, assets float64, assetsComment string, equity float64, equityComment string, income float64, incomeComment string, netProfit float64, netProfitComment string, numberOfEmployees int, numberOfEmployeesComment string, totalLiabilities float64, totalLiabilitiesComment string, propertyComplex, additionalInfo, salesRecommendations, implementationForm, salePurpose, keyTerms, additionalTerms string) error
 	Delete(ctx context.Context, enterpriseId string) error
 }
 
@@ -37,15 +38,15 @@ func (s *enterpriseService) GetById(ctx context.Context, enterpriseId string) (*
 	return s.enterpriseRepo.GetById(ctx, convertedId)
 }
 
-func (s *enterpriseService) Create(ctx context.Context, name, location, industry string, governmentShare float64) error {
-	e, err := enterprise.NewEnterprise(name, location, industry, governmentShare)
+func (s *enterpriseService) Create(ctx context.Context, name, location, industry string, governmentShare float64, juridicalForm string, year int, owner, mainActivity string, authorizedCapital float64, authorizedCapitalComment string, assets float64, assetsComment string, equity float64, equityComment string, income float64, incomeComment string, netProfit float64, netProfitComment string, numberOfEmployees int, numberOfEmployeesComment string, totalLiabilities float64, totalLiabilitiesComment string, propertyComplex, additionalInfo, salesRecommendations, implementationForm, salePurpose, keyTerms, additionalTerms string) error {
+	e, err := enterprise.NewEnterprise(name, location, industry, governmentShare, juridicalForm, year, owner, mainActivity, authorizedCapital, authorizedCapitalComment, assets, assetsComment, equity, equityComment, income, incomeComment, netProfit, netProfitComment, numberOfEmployees, numberOfEmployeesComment, totalLiabilities, totalLiabilitiesComment, propertyComplex, additionalInfo, salesRecommendations, implementationForm, salePurpose, keyTerms, additionalTerms)
 	if err != nil {
 		return err
 	}
 	return s.enterpriseRepo.Create(ctx, e)
 }
 
-func (s *enterpriseService) Update(ctx context.Context, enterpriseId, name, location, industry string, governmentShare float64) error {
+func (s *enterpriseService) Update(ctx context.Context, enterpriseId, name, location, industry string, governmentShare float64, juridicalForm string, year int, owner, mainActivity string, authorizedCapital float64, authorizedCapitalComment string, assets float64, assetsComment string, equity float64, equityComment string, income float64, incomeComment string, netProfit float64, netProfitComment string, numberOfEmployees int, numberOfEmployeesComment string, totalLiabilities float64, totalLiabilitiesComment string, propertyComplex, additionalInfo, salesRecommendations, implementationForm, salePurpose, keyTerms, additionalTerms string) error {
 	convertedId, err := uuid.UUIDFromString(enterpriseId)
 	if err != nil {
 		return err
@@ -54,7 +55,7 @@ func (s *enterpriseService) Update(ctx context.Context, enterpriseId, name, loca
 	if err != nil {
 		return err
 	}
-	if err = foundEnterprise.Update(name, location, industry, governmentShare); err != nil {
+	if err = foundEnterprise.Update(name, location, industry, governmentShare, juridicalForm, year, owner, mainActivity, authorizedCapital, authorizedCapitalComment, assets, assetsComment, equity, equityComment, income, incomeComment, netProfit, netProfitComment, numberOfEmployees, numberOfEmployeesComment, totalLiabilities, totalLiabilitiesComment, propertyComplex, additionalInfo, salesRecommendations, implementationForm, salePurpose, keyTerms, additionalTerms); err != nil {
 		return err
 	}
 	return s.enterpriseRepo.Update(ctx, foundEnterprise)

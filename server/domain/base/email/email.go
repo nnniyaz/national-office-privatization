@@ -1,8 +1,9 @@
 package email
 
 import (
-	"github.com/nnniyaz/nop/server/pkg/core"
 	"net/mail"
+
+	"github.com/nnniyaz/nop/server/pkg/core"
 )
 
 var (

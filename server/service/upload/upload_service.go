@@ -2,13 +2,14 @@ package upload
 
 import (
 	"bytes"
+	"io"
+	"mime/multipart"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/nnniyaz/nop/server/domain/base/uuid"
 	"github.com/nnniyaz/nop/server/pkg/core"
 	"github.com/nnniyaz/nop/server/pkg/logger"
-	"io"
-	"mime/multipart"
 )
 
 // 5 MB:

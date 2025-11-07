@@ -2,13 +2,14 @@ package enterprise
 
 import (
 	"encoding/json"
+	"net/http"
+	"time"
+
 	"github.com/go-chi/chi/v5"
 	"github.com/nnniyaz/nop/server/domain/enterprise"
 	"github.com/nnniyaz/nop/server/handler/http/response"
 	"github.com/nnniyaz/nop/server/pkg/logger"
 	enterpriseService "github.com/nnniyaz/nop/server/service/enterprise"
-	"net/http"
-	"time"
 )
 
 type HttpDelivery struct {
@@ -21,24 +22,74 @@ func NewHttpDelivery(l logger.Logger, service enterpriseService.EnterpriseServic
 }
 
 type Enterprise struct {
-	Id              string  `json:"id"`
-	Name            string  `json:"name"`
-	Location        string  `json:"location"`
-	Industry        string  `json:"industry"`
-	GovernmentShare float64 `json:"governmentShare"`
-	CreatedAt       string  `json:"createdAt"`
-	UpdatedAt       string  `json:"updatedAt"`
+	Id                       string  `json:"id"`
+	Name                     string  `json:"name"`
+	Location                 string  `json:"location"`
+	Industry                 string  `json:"industry"`
+	GovernmentShare          float64 `json:"governmentShare"`
+	JuridicalForm            string  `json:"juridicalForm"`
+	Year                     int     `json:"year"`
+	Owner                    string  `json:"owner"`
+	MainActivity             string  `json:"mainActivity"`
+	AuthorizedCapital        float64 `json:"authorizedCapital"`
+	AuthorizedCapitalComment string  `json:"authorizedCapitalComment"`
+	Assets                   float64 `json:"assets"`
+	AssetsComment            string  `json:"assetsComment"`
+	Equity                   float64 `json:"equity"`
+	EquityComment            string  `json:"equityComment"`
+	Income                   float64 `json:"income"`
+	IncomeComment            string  `json:"incomeComment"`
+	NetProfit                float64 `json:"netProfit"`
+	NetProfitComment         string  `json:"netProfitComment"`
+	NumberOfEmployees        int     `json:"numberOfEmployees"`
+	NumberOfEmployeesComment string  `json:"numberOfEmployeesComment"`
+	TotalLiabilities         float64 `json:"totalLiabilities"`
+	TotalLiabilitiesComment  string  `json:"totalLiabilitiesComment"`
+	PropertyComplex          string  `json:"propertyComplex"`
+	AdditionalInfo           string  `json:"additionalInfo"`
+	SalesRecommendations     string  `json:"salesRecommendations"`
+	ImplementationForm       string  `json:"implementationForm"`
+	SalePurpose              string  `json:"salePurpose"`
+	KeyTerms                 string  `json:"keyTerms"`
+	AdditionalTerms          string  `json:"additionalTerms"`
+	CreatedAt                string  `json:"createdAt"`
+	UpdatedAt                string  `json:"updatedAt"`
 }
 
-func NewEnterprise(enterprise *enterprise.Enterprise) *Enterprise {
+func NewEnterprise(e *enterprise.Enterprise) *Enterprise {
 	return &Enterprise{
-		Id:              enterprise.GetID().String(),
-		Name:            enterprise.GetName(),
-		Location:        enterprise.GetLocation(),
-		Industry:        enterprise.GetIndustry(),
-		GovernmentShare: enterprise.GetGovernmentShare(),
-		CreatedAt:       enterprise.GetCreatedAt().Format(time.RFC3339),
-		UpdatedAt:       enterprise.GetUpdatedAt().Format(time.RFC3339),
+		Id:                       e.GetID().String(),
+		Name:                     e.GetName(),
+		Location:                 e.GetLocation(),
+		Industry:                 e.GetIndustry(),
+		GovernmentShare:          e.GetGovernmentShare(),
+		JuridicalForm:            e.GetJuridicalForm(),
+		Year:                     e.GetYear(),
+		Owner:                    e.GetOwner(),
+		MainActivity:             e.GetMainActivity(),
+		AuthorizedCapital:        e.GetAuthorizedCapital(),
+		AuthorizedCapitalComment: e.GetAuthorizedCapitalComment(),
+		Assets:                   e.GetAssets(),
+		AssetsComment:            e.GetAssetsComment(),
+		Equity:                   e.GetEquity(),
+		EquityComment:            e.GetEquityComment(),
+		Income:                   e.GetIncome(),
+		IncomeComment:            e.GetIncomeComment(),
+		NetProfit:                e.GetNetProfit(),
+		NetProfitComment:         e.GetNetProfitComment(),
+		NumberOfEmployees:        e.GetNumberOfEmployees(),
+		NumberOfEmployeesComment: e.GetNumberOfEmployeesComment(),
+		TotalLiabilities:         e.GetTotalLiabilities(),
+		TotalLiabilitiesComment:  e.GetTotalLiabilitiesComment(),
+		PropertyComplex:          e.GetPropertyComplex(),
+		AdditionalInfo:           e.GetAdditionalInfo(),
+		SalesRecommendations:     e.GetSalesRecommendations(),
+		ImplementationForm:       e.GetImplementationForm(),
+		SalePurpose:              e.GetSalePurpose(),
+		KeyTerms:                 e.GetKeyTerms(),
+		AdditionalTerms:          e.GetAdditionalTerms(),
+		CreatedAt:                e.GetCreatedAt().Format(time.RFC3339),
+		UpdatedAt:                e.GetUpdatedAt().Format(time.RFC3339),
 	}
 }
 
@@ -62,6 +113,20 @@ func NewEnterprises(enterprises []*enterprise.Enterprise, count int64) *Enterpri
 // Queries
 // -----------------------------------------------------------------------------
 
+// GetEnterprises godoc
+// @Summary Get all enterprises
+// @Description Retrieves a paginated list of enterprises with search, region, and field filters
+// @Tags enterprises
+// @Accept json
+// @Produce json
+// @Param offset query int false "Offset for pagination" default(0)
+// @Param limit query int false "Limit for pagination" default(10)
+// @Param search query string false "Search by name"
+// @Param region query string false "Filter by region/location"
+// @Param field query string false "Filter by industry"
+// @Success 200 {object} Enterprises
+// @Failure 500 {object} ErrorResponse
+// @Router /api/enterprise [get]
 func (hd *HttpDelivery) GetEnterprises(w http.ResponseWriter, r *http.Request) {
 	offset := r.Context().Value("offset").(int64)
 	limit := r.Context().Value("limit").(int64)
@@ -76,6 +141,17 @@ func (hd *HttpDelivery) GetEnterprises(w http.ResponseWriter, r *http.Request) {
 	response.NewSuccess(hd.logger, w, r, NewEnterprises(foundEnterprises, count))
 }
 
+// GetEnterpriseById godoc
+// @Summary Get enterprise by ID
+// @Description Retrieves a single enterprise with full details
+// @Tags enterprises
+// @Accept json
+// @Produce json
+// @Param enterprise_id path string true "Enterprise ID"
+// @Success 200 {object} Enterprise
+// @Failure 404 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /api/enterprise/{enterprise_id} [get]
 func (hd *HttpDelivery) GetEnterpriseById(w http.ResponseWriter, r *http.Request) {
 	enterpriseId := chi.URLParam(r, "enterprise_id")
 	foundEnterprise, err := hd.service.GetById(r.Context(), enterpriseId)
@@ -91,19 +167,56 @@ func (hd *HttpDelivery) GetEnterpriseById(w http.ResponseWriter, r *http.Request
 // -----------------------------------------------------------------------------
 
 type CreateEnterpriseIn struct {
-	Name            string  `json:"name"`
-	Location        string  `json:"location"`
-	Industry        string  `json:"industry"`
-	GovernmentShare float64 `json:"governmentShare"`
+	Name                     string  `json:"name"`
+	Location                 string  `json:"location"`
+	Industry                 string  `json:"industry"`
+	GovernmentShare          float64 `json:"governmentShare"`
+	JuridicalForm            string  `json:"juridicalForm"`
+	Year                     int     `json:"year"`
+	Owner                    string  `json:"owner"`
+	MainActivity             string  `json:"mainActivity"`
+	AuthorizedCapital        float64 `json:"authorizedCapital"`
+	AuthorizedCapitalComment string  `json:"authorizedCapitalComment"`
+	Assets                   float64 `json:"assets"`
+	AssetsComment            string  `json:"assetsComment"`
+	Equity                   float64 `json:"equity"`
+	EquityComment            string  `json:"equityComment"`
+	Income                   float64 `json:"income"`
+	IncomeComment            string  `json:"incomeComment"`
+	NetProfit                float64 `json:"netProfit"`
+	NetProfitComment         string  `json:"netProfitComment"`
+	NumberOfEmployees        int     `json:"numberOfEmployees"`
+	NumberOfEmployeesComment string  `json:"numberOfEmployeesComment"`
+	TotalLiabilities         float64 `json:"totalLiabilities"`
+	TotalLiabilitiesComment  string  `json:"totalLiabilitiesComment"`
+	PropertyComplex          string  `json:"propertyComplex"`
+	AdditionalInfo           string  `json:"additionalInfo"`
+	SalesRecommendations     string  `json:"salesRecommendations"`
+	ImplementationForm       string  `json:"implementationForm"`
+	SalePurpose              string  `json:"salePurpose"`
+	KeyTerms                 string  `json:"keyTerms"`
+	AdditionalTerms          string  `json:"additionalTerms"`
 }
 
+// CreateEnterprise godoc
+// @Summary Create a new enterprise
+// @Description Creates a new enterprise with complete financial and operational data
+// @Tags enterprises
+// @Accept json
+// @Produce json
+// @Param enterprise body CreateEnterpriseIn true "Enterprise data"
+// @Success 200 {object} SuccessResponse
+// @Failure 400 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /api/enterprise [post]
+// @Security Bearer
 func (hd *HttpDelivery) CreateEnterprise(w http.ResponseWriter, r *http.Request) {
 	in := CreateEnterpriseIn{}
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
 		response.NewError(hd.logger, w, r, err)
 		return
 	}
-	if err := hd.service.Create(r.Context(), in.Name, in.Location, in.Industry, in.GovernmentShare); err != nil {
+	if err := hd.service.Create(r.Context(), in.Name, in.Location, in.Industry, in.GovernmentShare, in.JuridicalForm, in.Year, in.Owner, in.MainActivity, in.AuthorizedCapital, in.AuthorizedCapitalComment, in.Assets, in.AssetsComment, in.Equity, in.EquityComment, in.Income, in.IncomeComment, in.NetProfit, in.NetProfitComment, in.NumberOfEmployees, in.NumberOfEmployeesComment, in.TotalLiabilities, in.TotalLiabilitiesComment, in.PropertyComplex, in.AdditionalInfo, in.SalesRecommendations, in.ImplementationForm, in.SalePurpose, in.KeyTerms, in.AdditionalTerms); err != nil {
 		response.NewError(hd.logger, w, r, err)
 		return
 	}
@@ -111,26 +224,76 @@ func (hd *HttpDelivery) CreateEnterprise(w http.ResponseWriter, r *http.Request)
 }
 
 type UpdateEnterpriseIn struct {
-	Id              string  `json:"id"`
-	Name            string  `json:"name"`
-	Location        string  `json:"location"`
-	Industry        string  `json:"industry"`
-	GovernmentShare float64 `json:"governmentShare"`
+	Id                       string  `json:"id"`
+	Name                     string  `json:"name"`
+	Location                 string  `json:"location"`
+	Industry                 string  `json:"industry"`
+	GovernmentShare          float64 `json:"governmentShare"`
+	JuridicalForm            string  `json:"juridicalForm"`
+	Year                     int     `json:"year"`
+	Owner                    string  `json:"owner"`
+	MainActivity             string  `json:"mainActivity"`
+	AuthorizedCapital        float64 `json:"authorizedCapital"`
+	AuthorizedCapitalComment string  `json:"authorizedCapitalComment"`
+	Assets                   float64 `json:"assets"`
+	AssetsComment            string  `json:"assetsComment"`
+	Equity                   float64 `json:"equity"`
+	EquityComment            string  `json:"equityComment"`
+	Income                   float64 `json:"income"`
+	IncomeComment            string  `json:"incomeComment"`
+	NetProfit                float64 `json:"netProfit"`
+	NetProfitComment         string  `json:"netProfitComment"`
+	NumberOfEmployees        int     `json:"numberOfEmployees"`
+	NumberOfEmployeesComment string  `json:"numberOfEmployeesComment"`
+	TotalLiabilities         float64 `json:"totalLiabilities"`
+	TotalLiabilitiesComment  string  `json:"totalLiabilitiesComment"`
+	PropertyComplex          string  `json:"propertyComplex"`
+	AdditionalInfo           string  `json:"additionalInfo"`
+	SalesRecommendations     string  `json:"salesRecommendations"`
+	ImplementationForm       string  `json:"implementationForm"`
+	SalePurpose              string  `json:"salePurpose"`
+	KeyTerms                 string  `json:"keyTerms"`
+	AdditionalTerms          string  `json:"additionalTerms"`
 }
 
+// UpdateEnterprise godoc
+// @Summary Update an enterprise
+// @Description Updates an existing enterprise with new data
+// @Tags enterprises
+// @Accept json
+// @Produce json
+// @Param enterprise body UpdateEnterpriseIn true "Enterprise update data"
+// @Success 200 {object} SuccessResponse
+// @Failure 400 {object} ErrorResponse
+// @Failure 404 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /api/enterprise [put]
+// @Security Bearer
 func (hd *HttpDelivery) UpdateEnterprise(w http.ResponseWriter, r *http.Request) {
 	in := UpdateEnterpriseIn{}
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
 		response.NewError(hd.logger, w, r, err)
 		return
 	}
-	if err := hd.service.Update(r.Context(), in.Id, in.Name, in.Location, in.Industry, in.GovernmentShare); err != nil {
+	if err := hd.service.Update(r.Context(), in.Id, in.Name, in.Location, in.Industry, in.GovernmentShare, in.JuridicalForm, in.Year, in.Owner, in.MainActivity, in.AuthorizedCapital, in.AuthorizedCapitalComment, in.Assets, in.AssetsComment, in.Equity, in.EquityComment, in.Income, in.IncomeComment, in.NetProfit, in.NetProfitComment, in.NumberOfEmployees, in.NumberOfEmployeesComment, in.TotalLiabilities, in.TotalLiabilitiesComment, in.PropertyComplex, in.AdditionalInfo, in.SalesRecommendations, in.ImplementationForm, in.SalePurpose, in.KeyTerms, in.AdditionalTerms); err != nil {
 		response.NewError(hd.logger, w, r, err)
 		return
 	}
 	response.NewSuccess(hd.logger, w, r, nil)
 }
 
+// DeleteEnterprise godoc
+// @Summary Delete an enterprise
+// @Description Deletes an enterprise by ID
+// @Tags enterprises
+// @Accept json
+// @Produce json
+// @Param enterprise_id path string true "Enterprise ID"
+// @Success 200 {object} SuccessResponse
+// @Failure 404 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /api/enterprise/{enterprise_id} [delete]
+// @Security Bearer
 func (hd *HttpDelivery) DeleteEnterprise(w http.ResponseWriter, r *http.Request) {
 	enterpriseId := chi.URLParam(r, "enterprise_id")
 	if err := hd.service.Delete(r.Context(), enterpriseId); err != nil {

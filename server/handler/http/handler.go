@@ -1,6 +1,8 @@
 package http
 
 import (
+	"net/http"
+
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
@@ -24,7 +26,6 @@ import (
 	"github.com/nnniyaz/nop/server/service"
 	httpSwagger "github.com/swaggo/http-swagger"
 	"go.mongodb.org/mongo-driver/mongo"
-	"net/http"
 )
 
 type Handler struct {

@@ -1,0 +1,143 @@
+definitions:
+  response.Error:
+    properties:
+      messages:
+        example:
+        - error message
+        items:
+          type: string
+        type: array
+      success:
+        example: false
+        type: boolean
+      traceId:
+        example: string
+        type: string
+    type: object
+  response.Success:
+    properties:
+      data: {}
+      success:
+        example: true
+        type: boolean
+      traceId:
+        example: string
+        type: string
+    type: object
+host: https://api.nop.kz
+info:
+  contact:
+    name: API Support
+    url: https://t.me/nassyrovich
+  description: Detailed info about all endpoints
+  title: Ardo Backend API
+  version: 0.0.1
+paths:
+  /upload/category-image:
+    post:
+      consumes:
+      - multipart/form-data
+      description: This can only be done by the logged-in user.
+      parameters:
+      - description: file to upload
+        in: formData
+        name: data
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Uploads a category image
+      tags:
+      - Upload
+  /upload/product-image:
+    post:
+      consumes:
+      - multipart/form-data
+      description: This can only be done by the logged-in user.
+      parameters:
+      - description: file to upload
+        in: formData
+        name: data
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Uploads a product image
+      tags:
+      - Upload
+  /upload/section-image:
+    post:
+      consumes:
+      - multipart/form-data
+      description: This can only be done by the logged-in user.
+      parameters:
+      - description: file to upload
+        in: formData
+        name: data
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Uploads a section image
+      tags:
+      - Upload
+  /upload/slide-image:
+    post:
+      consumes:
+      - multipart/form-data
+      description: This can only be done by the logged-in user.
+      parameters:
+      - description: file to upload
+        in: formData
+        name: data
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Uploads a slide image
+      tags:
+      - Upload
+schemes:
+- https
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Cookie
+    type: apiKey
+swagger: "2.0"

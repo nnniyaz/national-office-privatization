@@ -1,24 +1,26 @@
 package news
 
 import (
+	"time"
+
 	"github.com/nnniyaz/nop/server/domain/base/uuid"
 	"github.com/nnniyaz/nop/server/domain/news/exceptions"
-	"time"
+	"github.com/nnniyaz/nop/server/internal/i18n"
 )
 
 type News struct {
 	id        uuid.UUID
-	title     string
-	content   string
+	title     i18n.MlString
+	content   i18n.MlString
 	imgUrl    string
 	createdAt time.Time
 }
 
-func NewNews(title, content, imgUrl string) (*News, error) {
-	if title == "" {
+func NewNews(title, content i18n.MlString, imgUrl string) (*News, error) {
+	if err := title.ValidateAtLeastOne(); err != nil {
 		return nil, exceptions.ErrInvalidNewsTitle
 	}
-	if content == "" {
+	if err := content.ValidateAtLeastOne(); err != nil {
 		return nil, exceptions.ErrInvalidNewsContent
 	}
 	return &News{
@@ -34,11 +36,11 @@ func (n *News) GetID() uuid.UUID {
 	return n.id
 }
 
-func (n *News) GetTitle() string {
+func (n *News) GetTitle() i18n.MlString {
 	return n.title
 }
 
-func (n *News) GetContent() string {
+func (n *News) GetContent() i18n.MlString {
 	return n.content
 }
 
@@ -50,11 +52,11 @@ func (n *News) GetCreatedAt() time.Time {
 	return n.createdAt
 }
 
-func (n *News) Update(title, content, imgUrl string) error {
-	if title == "" {
+func (n *News) Update(title, content i18n.MlString, imgUrl string) error {
+	if err := title.ValidateAtLeastOne(); err != nil {
 		return exceptions.ErrInvalidNewsTitle
 	}
-	if content == "" {
+	if err := content.ValidateAtLeastOne(); err != nil {
 		return exceptions.ErrInvalidNewsContent
 	}
 	n.title = title
@@ -63,7 +65,7 @@ func (n *News) Update(title, content, imgUrl string) error {
 	return nil
 }
 
-func UnmarshalNewsFromDatabase(id uuid.UUID, title, content, imgUrl string, createdAt time.Time) *News {
+func UnmarshalNewsFromDatabase(id uuid.UUID, title, content i18n.MlString, imgUrl string, createdAt time.Time) *News {
 	return &News{
 		id:        id,
 		title:     title,

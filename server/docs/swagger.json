@@ -1,0 +1,215 @@
+{
+    "schemes": [
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "Detailed info about all endpoints",
+        "title": "Ardo Backend API",
+        "contact": {
+            "name": "API Support",
+            "url": "https://t.me/nassyrovich"
+        },
+        "version": "0.0.1"
+    },
+    "host": "https://api.nop.kz",
+    "paths": {
+        "/upload/category-image": {
+            "post": {
+                "description": "This can only be done by the logged-in user.",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Upload"
+                ],
+                "summary": "Uploads a category image",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "file to upload",
+                        "name": "data",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Success"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/response.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/upload/product-image": {
+            "post": {
+                "description": "This can only be done by the logged-in user.",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Upload"
+                ],
+                "summary": "Uploads a product image",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "file to upload",
+                        "name": "data",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Success"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/response.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/upload/section-image": {
+            "post": {
+                "description": "This can only be done by the logged-in user.",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Upload"
+                ],
+                "summary": "Uploads a section image",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "file to upload",
+                        "name": "data",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Success"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/response.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/upload/slide-image": {
+            "post": {
+                "description": "This can only be done by the logged-in user.",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Upload"
+                ],
+                "summary": "Uploads a slide image",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "file to upload",
+                        "name": "data",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Success"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/response.Error"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "response.Error": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "error message"
+                    ]
+                },
+                "success": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "traceId": {
+                    "type": "string",
+                    "example": "string"
+                }
+            }
+        },
+        "response.Success": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "success": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "traceId": {
+                    "type": "string",
+                    "example": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Cookie",
+            "in": "header"
+        }
+    }
+}

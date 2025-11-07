@@ -2,8 +2,10 @@ package news
 
 import (
 	"context"
+
 	"github.com/nnniyaz/nop/server/domain/base/uuid"
 	"github.com/nnniyaz/nop/server/domain/news"
+	"github.com/nnniyaz/nop/server/internal/i18n"
 	"github.com/nnniyaz/nop/server/pkg/logger"
 	"github.com/nnniyaz/nop/server/repo"
 )
@@ -11,8 +13,8 @@ import (
 type NewsService interface {
 	Get(ctx context.Context) ([]*news.News, error)
 	GetById(ctx context.Context, newsId string) (*news.News, error)
-	Create(ctx context.Context, title, content, imgUrl string) error
-	Update(ctx context.Context, newsId, title, content, imgUrl string) error
+	Create(ctx context.Context, title, content i18n.MlString, imgUrl string) error
+	Update(ctx context.Context, newsId string, title, content i18n.MlString, imgUrl string) error
 	Delete(ctx context.Context, newsId string) error
 }
 
@@ -37,7 +39,7 @@ func (s *newsService) GetById(ctx context.Context, newsId string) (*news.News, e
 	return s.newsRepo.GetById(ctx, convertedId)
 }
 
-func (s *newsService) Create(ctx context.Context, title, content, imgUrl string) error {
+func (s *newsService) Create(ctx context.Context, title, content i18n.MlString, imgUrl string) error {
 	n, err := news.NewNews(title, content, imgUrl)
 	if err != nil {
 		return err
@@ -45,7 +47,7 @@ func (s *newsService) Create(ctx context.Context, title, content, imgUrl string)
 	return s.newsRepo.Create(ctx, n)
 }
 
-func (s *newsService) Update(ctx context.Context, newsId, title, content, imgUrl string) error {
+func (s *newsService) Update(ctx context.Context, newsId string, title, content i18n.MlString, imgUrl string) error {
 	convertedId, err := uuid.UUIDFromString(newsId)
 	if err != nil {
 		return err

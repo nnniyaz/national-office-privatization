@@ -2,13 +2,14 @@ package auth
 
 import (
 	"encoding/json"
+	"net/http"
+	"time"
+
 	"github.com/nnniyaz/nop/server/domain/user"
 	"github.com/nnniyaz/nop/server/handler/http/response"
 	"github.com/nnniyaz/nop/server/pkg/logger"
 	"github.com/nnniyaz/nop/server/pkg/web"
 	"github.com/nnniyaz/nop/server/service/auth"
-	"net/http"
-	"time"
 )
 
 type HttpDelivery struct {
@@ -48,6 +49,17 @@ func newUser(u *user.User) *User {
 	}
 }
 
+// GetCurrentUser godoc
+// @Summary Get current authenticated user
+// @Description Returns the currently logged in user's information
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Success 200 {object} User
+// @Failure 401 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /api/auth/me [get]
+// @Security Bearer
 func (hd *HttpDelivery) GetCurrentUser(w http.ResponseWriter, r *http.Request) {
 	u := r.Context().Value("user").(user.User)
 	response.NewSuccess(hd.logger, w, r, newUser(&u))
@@ -58,6 +70,18 @@ type LoginIn struct {
 	Password string `json:"password"`
 }
 
+// Login godoc
+// @Summary User login
+// @Description Authenticates a user and returns a session cookie
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param credentials body LoginIn true "Login credentials"
+// @Success 200 {object} SuccessResponse
+// @Failure 400 {object} ErrorResponse
+// @Failure 401 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /api/auth/login [post]
 func (hd *HttpDelivery) Login(w http.ResponseWriter, r *http.Request) {
 	requestInfo := r.Context().Value("requestInfo").(web.RequestInfo)
 
@@ -84,6 +108,17 @@ func (hd *HttpDelivery) Login(w http.ResponseWriter, r *http.Request) {
 	response.NewSuccess(hd.logger, w, r, nil)
 }
 
+// Logout godoc
+// @Summary User logout
+// @Description Logs out the current user and clears the session cookie
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Success 200 {object} SuccessResponse
+// @Failure 400 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /api/auth/logout [post]
+// @Security Bearer
 func (hd *HttpDelivery) Logout(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie("nop-app-session")
 	if err != nil {

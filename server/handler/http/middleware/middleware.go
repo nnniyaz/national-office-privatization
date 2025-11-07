@@ -3,6 +3,8 @@ package middleware
 import (
 	"context"
 	"fmt"
+	"net/http"
+
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/nnniyaz/nop/server/handler/http/response"
 	"github.com/nnniyaz/nop/server/pkg/core"
@@ -11,7 +13,6 @@ import (
 	"github.com/nnniyaz/nop/server/service/auth"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.uber.org/zap"
-	"net/http"
 )
 
 type Middleware struct {

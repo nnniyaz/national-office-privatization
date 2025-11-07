@@ -2,6 +2,7 @@ package contacts
 
 import (
 	"context"
+
 	"github.com/nnniyaz/nop/server/domain/contacts"
 	"github.com/nnniyaz/nop/server/pkg/logger"
 	"github.com/nnniyaz/nop/server/repo"

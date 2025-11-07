@@ -2,13 +2,14 @@ package application
 
 import (
 	"encoding/json"
+	"net/http"
+	"time"
+
 	"github.com/go-chi/chi/v5"
 	"github.com/nnniyaz/nop/server/domain/application"
 	"github.com/nnniyaz/nop/server/handler/http/response"
 	"github.com/nnniyaz/nop/server/pkg/logger"
 	applicationService "github.com/nnniyaz/nop/server/service/application"
-	"net/http"
-	"time"
 )
 
 type HttpDelivery struct {
@@ -66,6 +67,16 @@ func NewApplications(applications []*application.Application) *Applications {
 // Queries
 // -----------------------------------------------------------------------------
 
+// GetApplications godoc
+// @Summary Get all applications
+// @Description Retrieves a list of all enterprise applications
+// @Tags applications
+// @Accept json
+// @Produce json
+// @Success 200 {object} Applications
+// @Failure 500 {object} ErrorResponse
+// @Router /api/application [get]
+// @Security Bearer
 func (hd *HttpDelivery) GetApplications(w http.ResponseWriter, r *http.Request) {
 	applications, err := hd.service.Get(r.Context())
 	if err != nil {
@@ -75,6 +86,18 @@ func (hd *HttpDelivery) GetApplications(w http.ResponseWriter, r *http.Request) 
 	response.NewSuccess(hd.logger, w, r, NewApplications(applications))
 }
 
+// GetApplicationById godoc
+// @Summary Get application by ID
+// @Description Retrieves a single application by ID
+// @Tags applications
+// @Accept json
+// @Produce json
+// @Param application_id path string true "Application ID"
+// @Success 200 {object} Application
+// @Failure 404 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /api/application/{application_id} [get]
+// @Security Bearer
 func (hd *HttpDelivery) GetApplicationById(w http.ResponseWriter, r *http.Request) {
 	applicationId := chi.URLParam(r, "application_id")
 	application, err := hd.service.GetById(r.Context(), applicationId)
@@ -98,6 +121,17 @@ type CreateApplicationIn struct {
 	Message      string `json:"message"`
 }
 
+// CreateApplication godoc
+// @Summary Create a new application
+// @Description Creates a new enterprise application
+// @Tags applications
+// @Accept json
+// @Produce json
+// @Param application body CreateApplicationIn true "Application data"
+// @Success 200 {object} SuccessResponse
+// @Failure 400 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /api/application [post]
 func (hd *HttpDelivery) CreateApplication(w http.ResponseWriter, r *http.Request) {
 	var in CreateApplicationIn
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
@@ -121,6 +155,19 @@ type UpdateApplicationIn struct {
 	Message      string `json:"message"`
 }
 
+// UpdateApplication godoc
+// @Summary Update an application
+// @Description Updates an existing application
+// @Tags applications
+// @Accept json
+// @Produce json
+// @Param application body UpdateApplicationIn true "Application update data"
+// @Success 200 {object} SuccessResponse
+// @Failure 400 {object} ErrorResponse
+// @Failure 404 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /api/application [put]
+// @Security Bearer
 func (hd *HttpDelivery) UpdateApplication(w http.ResponseWriter, r *http.Request) {
 	var in UpdateApplicationIn
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
@@ -134,6 +181,18 @@ func (hd *HttpDelivery) UpdateApplication(w http.ResponseWriter, r *http.Request
 	response.NewSuccess(hd.logger, w, r, nil)
 }
 
+// DeleteApplication godoc
+// @Summary Delete an application
+// @Description Deletes an application by ID
+// @Tags applications
+// @Accept json
+// @Produce json
+// @Param application_id path string true "Application ID"
+// @Success 200 {object} SuccessResponse
+// @Failure 404 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /api/application/{application_id} [delete]
+// @Security Bearer
 func (hd *HttpDelivery) DeleteApplication(w http.ResponseWriter, r *http.Request) {
 	applicationId := chi.URLParam(r, "application_id")
 	if err := hd.service.Delete(r.Context(), applicationId); err != nil {

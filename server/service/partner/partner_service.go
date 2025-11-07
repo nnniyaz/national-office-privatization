@@ -2,8 +2,10 @@ package partner
 
 import (
 	"context"
+
 	"github.com/nnniyaz/nop/server/domain/base/uuid"
 	"github.com/nnniyaz/nop/server/domain/partner"
+	"github.com/nnniyaz/nop/server/internal/i18n"
 	"github.com/nnniyaz/nop/server/pkg/logger"
 	"github.com/nnniyaz/nop/server/repo"
 )
@@ -11,8 +13,8 @@ import (
 type PartnerService interface {
 	Get(ctx context.Context) ([]*partner.Partner, error)
 	GetById(ctx context.Context, id string) (*partner.Partner, error)
-	Create(ctx context.Context, name, link string) error
-	Update(ctx context.Context, id, name, link string) error
+	Create(ctx context.Context, name i18n.MlString, link string) error
+	Update(ctx context.Context, id string, name i18n.MlString, link string) error
 	Delete(ctx context.Context, id string) error
 }
 
@@ -37,7 +39,7 @@ func (s *partnerService) GetById(ctx context.Context, id string) (*partner.Partn
 	return s.partnerRepo.GetById(ctx, convertedId)
 }
 
-func (s *partnerService) Create(ctx context.Context, name, link string) error {
+func (s *partnerService) Create(ctx context.Context, name i18n.MlString, link string) error {
 	p, err := partner.NewPartner(name, link)
 	if err != nil {
 		return err
@@ -45,7 +47,7 @@ func (s *partnerService) Create(ctx context.Context, name, link string) error {
 	return s.partnerRepo.Create(ctx, p)
 }
 
-func (s *partnerService) Update(ctx context.Context, id, name, link string) error {
+func (s *partnerService) Update(ctx context.Context, id string, name i18n.MlString, link string) error {
 	convertedId, err := uuid.UUIDFromString(id)
 	if err != nil {
 		return err

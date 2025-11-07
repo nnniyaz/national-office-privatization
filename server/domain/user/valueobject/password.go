@@ -1,10 +1,11 @@
 package valueobject
 
 import (
+	"unicode/utf8"
+
 	"github.com/nnniyaz/nop/server/pkg/core"
 	"github.com/nnniyaz/nop/server/pkg/crypto"
 	"github.com/nnniyaz/nop/server/pkg/hash"
-	"unicode/utf8"
 )
 
 const (

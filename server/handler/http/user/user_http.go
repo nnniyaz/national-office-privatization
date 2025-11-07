@@ -2,13 +2,14 @@ package user
 
 import (
 	"encoding/json"
+	"net/http"
+	"time"
+
 	"github.com/go-chi/chi/v5"
 	"github.com/nnniyaz/nop/server/domain/user"
 	"github.com/nnniyaz/nop/server/handler/http/response"
 	"github.com/nnniyaz/nop/server/pkg/logger"
 	userService "github.com/nnniyaz/nop/server/service/user"
-	"net/http"
-	"time"
 )
 
 type HttpDelivery struct {
@@ -64,6 +65,16 @@ func NewUsers(users []*user.User) *Users {
 	}
 }
 
+// GetUsers godoc
+// @Summary Get all users
+// @Description Retrieves a list of all users
+// @Tags users
+// @Accept json
+// @Produce json
+// @Success 200 {object} Users
+// @Failure 500 {object} ErrorResponse
+// @Router /api/user [get]
+// @Security Bearer
 func (hd *HttpDelivery) GetUsers(w http.ResponseWriter, r *http.Request) {
 	users, err := hd.service.Get(r.Context())
 	if err != nil {
@@ -73,6 +84,18 @@ func (hd *HttpDelivery) GetUsers(w http.ResponseWriter, r *http.Request) {
 	response.NewSuccess(hd.logger, w, r, NewUsers(users))
 }
 
+// GetUserById godoc
+// @Summary Get user by ID
+// @Description Retrieves a single user by ID
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param user_id path string true "User ID"
+// @Success 200 {object} User
+// @Failure 404 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /api/user/{user_id} [get]
+// @Security Bearer
 func (hd *HttpDelivery) GetUserById(w http.ResponseWriter, r *http.Request) {
 	userId := chi.URLParam(r, "user_id")
 	u, err := hd.service.GetByID(r.Context(), userId)
@@ -95,6 +118,18 @@ type CreateUserIn struct {
 	Role      string `json:"role"`
 }
 
+// CreateUser godoc
+// @Summary Create a new user
+// @Description Creates a new user with credentials
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param user body CreateUserIn true "User data"
+// @Success 200 {object} SuccessResponse
+// @Failure 400 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /api/user [post]
+// @Security Bearer
 func (hd *HttpDelivery) CreateUser(w http.ResponseWriter, r *http.Request) {
 	in := CreateUserIn{}
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
@@ -115,6 +150,19 @@ type UpdateUserIn struct {
 	Role      string `json:"role"`
 }
 
+// UpdateUser godoc
+// @Summary Update user credentials
+// @Description Updates user's first name, last name, and role
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param user body UpdateUserIn true "User update data"
+// @Success 200 {object} SuccessResponse
+// @Failure 400 {object} ErrorResponse
+// @Failure 404 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /api/user [put]
+// @Security Bearer
 func (hd *HttpDelivery) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	in := UpdateUserIn{}
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
@@ -133,6 +181,19 @@ type UpdateUserPasswordIn struct {
 	Password string `json:"password"`
 }
 
+// UpdateUserPassword godoc
+// @Summary Update user password
+// @Description Updates user's password
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param password body UpdateUserPasswordIn true "Password update data"
+// @Success 200 {object} SuccessResponse
+// @Failure 400 {object} ErrorResponse
+// @Failure 404 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /api/user/password [put]
+// @Security Bearer
 func (hd *HttpDelivery) UpdateUserPassword(w http.ResponseWriter, r *http.Request) {
 	in := UpdateUserPasswordIn{}
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
@@ -146,6 +207,18 @@ func (hd *HttpDelivery) UpdateUserPassword(w http.ResponseWriter, r *http.Reques
 	response.NewSuccess(hd.logger, w, r, nil)
 }
 
+// DeleteUser godoc
+// @Summary Delete/disable a user
+// @Description Soft deletes a user by marking as disabled
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param user_id path string true "User ID"
+// @Success 200 {object} SuccessResponse
+// @Failure 404 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /api/user/{user_id} [delete]
+// @Security Bearer
 func (hd *HttpDelivery) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	userId := chi.URLParam(r, "user_id")
 	if err := hd.service.Delete(r.Context(), userId); err != nil {
@@ -155,6 +228,18 @@ func (hd *HttpDelivery) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	response.NewSuccess(hd.logger, w, r, nil)
 }
 
+// RecoverUser godoc
+// @Summary Recover/enable a user
+// @Description Restores a disabled user
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param user_id path string true "User ID"
+// @Success 200 {object} SuccessResponse
+// @Failure 404 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /api/user/{user_id}/recover [post]
+// @Security Bearer
 func (hd *HttpDelivery) RecoverUser(w http.ResponseWriter, r *http.Request) {
 	userId := chi.URLParam(r, "user_id")
 	if err := hd.service.Recover(r.Context(), userId); err != nil {

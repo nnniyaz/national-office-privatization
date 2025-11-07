@@ -2,10 +2,11 @@ package contacts
 
 import (
 	"encoding/json"
+	"net/http"
+
 	"github.com/nnniyaz/nop/server/handler/http/response"
 	"github.com/nnniyaz/nop/server/pkg/logger"
 	"github.com/nnniyaz/nop/server/service/contacts"
-	"net/http"
 )
 
 type HttpDelivery struct {
@@ -30,6 +31,15 @@ type Contacts struct {
 	Email                  string `json:"email"`
 }
 
+// GetContacts godoc
+// @Summary Get contacts
+// @Description Retrieves the contact information
+// @Tags contacts
+// @Accept json
+// @Produce json
+// @Success 200 {object} Contacts
+// @Failure 500 {object} ErrorResponse
+// @Router /api/contacts [get]
 func (hd *HttpDelivery) GetContacts(w http.ResponseWriter, r *http.Request) {
 	foundContacts, err := hd.service.Get(r.Context())
 	if err != nil {
@@ -58,6 +68,18 @@ type CreateContactIn struct {
 	Email                  string `json:"email"`
 }
 
+// CreateContact godoc
+// @Summary Create contact information
+// @Description Creates the contact information
+// @Tags contacts
+// @Accept json
+// @Produce json
+// @Param contact body CreateContactIn true "Contact data"
+// @Success 200 {object} SuccessResponse
+// @Failure 400 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /api/contacts [post]
+// @Security Bearer
 func (hd *HttpDelivery) CreateContact(w http.ResponseWriter, r *http.Request) {
 	in := CreateContactIn{}
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
@@ -80,6 +102,18 @@ type UpdateContactIn struct {
 	Email                  string `json:"email"`
 }
 
+// UpdateContact godoc
+// @Summary Update contact information
+// @Description Updates the contact information
+// @Tags contacts
+// @Accept json
+// @Produce json
+// @Param contact body UpdateContactIn true "Contact update data"
+// @Success 200 {object} SuccessResponse
+// @Failure 400 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /api/contacts [put]
+// @Security Bearer
 func (hd *HttpDelivery) UpdateContact(w http.ResponseWriter, r *http.Request) {
 	in := UpdateContactIn{}
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {

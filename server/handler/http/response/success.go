@@ -1,9 +1,10 @@
 package response
 
 import (
+	"net/http"
+
 	"github.com/nnniyaz/nop/server/pkg/logger"
 	"go.uber.org/zap"
-	"net/http"
 )
 
 type Success struct {

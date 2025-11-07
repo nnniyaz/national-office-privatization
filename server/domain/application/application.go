@@ -1,9 +1,10 @@
 package application
 
 import (
+	"time"
+
 	"github.com/nnniyaz/nop/server/domain/base/uuid"
 	"github.com/nnniyaz/nop/server/service/application/exceptions"
-	"time"
 )
 
 type Application struct {

@@ -2,10 +2,11 @@ package response
 
 import (
 	"context"
+	"net/http"
+
 	"github.com/nnniyaz/nop/server/pkg/core"
 	"github.com/nnniyaz/nop/server/pkg/logger"
 	"go.uber.org/zap"
-	"net/http"
 )
 
 var (

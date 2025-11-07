@@ -2,8 +2,10 @@ package employee
 
 import (
 	"context"
+
 	"github.com/nnniyaz/nop/server/domain/base/uuid"
 	"github.com/nnniyaz/nop/server/domain/employee"
+	"github.com/nnniyaz/nop/server/internal/i18n"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -21,9 +23,9 @@ func (r *RepoEmployee) Coll() *mongo.Collection {
 }
 
 type mongoEmployee struct {
-	Id    uuid.UUID `bson:"_id"`
-	Name  string    `bson:"name"`
-	Group string    `bson:"group"`
+	Id    uuid.UUID     `bson:"_id"`
+	Name  i18n.MlString `bson:"name"`
+	Group string        `bson:"group"`
 }
 
 func newFromEmployee(e *employee.Employee) *mongoEmployee {

@@ -1,23 +1,25 @@
 package event
 
 import (
+	"time"
+
 	"github.com/nnniyaz/nop/server/domain/base/uuid"
 	"github.com/nnniyaz/nop/server/domain/event/exceptions"
-	"time"
+	"github.com/nnniyaz/nop/server/internal/i18n"
 )
 
 type Event struct {
 	id        uuid.UUID
-	name      string
-	desc      string
+	name      i18n.MlString
+	desc      i18n.MlString
 	imgUrl    string
 	plannedAt time.Time
 	createdAt time.Time
 	updatedAt time.Time
 }
 
-func NewEvent(name, desc, imgUrl string, plannedAt time.Time) (*Event, error) {
-	if name == "" {
+func NewEvent(name, desc i18n.MlString, imgUrl string, plannedAt time.Time) (*Event, error) {
+	if err := name.ValidateAtLeastOne(); err != nil {
 		return nil, exceptions.ErrInvalidEventName
 	}
 	return &Event{
@@ -35,11 +37,11 @@ func (e *Event) GetID() uuid.UUID {
 	return e.id
 }
 
-func (e *Event) GetName() string {
+func (e *Event) GetName() i18n.MlString {
 	return e.name
 }
 
-func (e *Event) GetDesc() string {
+func (e *Event) GetDesc() i18n.MlString {
 	return e.desc
 }
 
@@ -59,8 +61,8 @@ func (e *Event) GetUpdatedAt() time.Time {
 	return e.updatedAt
 }
 
-func (e *Event) Update(name, desc, imgUrl string, plannedAt time.Time) error {
-	if name == "" {
+func (e *Event) Update(name, desc i18n.MlString, imgUrl string, plannedAt time.Time) error {
+	if err := name.ValidateAtLeastOne(); err != nil {
 		return exceptions.ErrInvalidEventName
 	}
 	e.name = name
@@ -71,7 +73,7 @@ func (e *Event) Update(name, desc, imgUrl string, plannedAt time.Time) error {
 	return nil
 }
 
-func UnmarshalEventFromDatabase(id uuid.UUID, name, desc, imgUrl string, plannedAt, createdAt, updatedAt time.Time) *Event {
+func UnmarshalEventFromDatabase(id uuid.UUID, name, desc i18n.MlString, imgUrl string, plannedAt, createdAt, updatedAt time.Time) *Event {
 	return &Event{
 		id:        id,
 		name:      name,

@@ -2,6 +2,7 @@ package contacts
 
 import (
 	"context"
+
 	"github.com/nnniyaz/nop/server/domain/base/uuid"
 	"github.com/nnniyaz/nop/server/domain/contacts"
 	"go.mongodb.org/mongo-driver/bson"

@@ -2,8 +2,10 @@ package document
 
 import (
 	"context"
+
 	"github.com/nnniyaz/nop/server/domain/base/uuid"
 	"github.com/nnniyaz/nop/server/domain/document"
+	"github.com/nnniyaz/nop/server/internal/i18n"
 	"github.com/nnniyaz/nop/server/pkg/logger"
 	"github.com/nnniyaz/nop/server/repo"
 )
@@ -11,8 +13,8 @@ import (
 type DocumentService interface {
 	Get(ctx context.Context) ([]*document.Document, error)
 	GetById(ctx context.Context, documentId string) (*document.Document, error)
-	Create(ctx context.Context, title, filename string) error
-	Update(ctx context.Context, documentId, title, filename string) error
+	Create(ctx context.Context, title i18n.MlString, filename string) error
+	Update(ctx context.Context, documentId string, title i18n.MlString, filename string) error
 	Delete(ctx context.Context, documentId string) error
 }
 
@@ -37,7 +39,7 @@ func (s *documentService) GetById(ctx context.Context, documentId string) (*docu
 	return s.documentRepo.GetById(ctx, convertedId)
 }
 
-func (s *documentService) Create(ctx context.Context, title, filename string) error {
+func (s *documentService) Create(ctx context.Context, title i18n.MlString, filename string) error {
 	d, err := document.NewDocument(title, filename)
 	if err != nil {
 		return err
@@ -45,7 +47,7 @@ func (s *documentService) Create(ctx context.Context, title, filename string) er
 	return s.documentRepo.Create(ctx, d)
 }
 
-func (s *documentService) Update(ctx context.Context, documentId, title, filename string) error {
+func (s *documentService) Update(ctx context.Context, documentId string, title i18n.MlString, filename string) error {
 	convertedId, err := uuid.UUIDFromString(documentId)
 	if err != nil {
 		return err
@@ -54,7 +56,9 @@ func (s *documentService) Update(ctx context.Context, documentId, title, filenam
 	if err != nil {
 		return err
 	}
-	foundDocument.Update(title, filename)
+	if err := foundDocument.Update(title, filename); err != nil {
+		return err
+	}
 	return s.documentRepo.Update(ctx, foundDocument)
 }
 

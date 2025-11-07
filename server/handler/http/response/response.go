@@ -2,11 +2,12 @@ package response
 
 import (
 	"encoding/json"
+	"net/http"
+	"strconv"
+
 	"github.com/nnniyaz/nop/server/pkg/logger"
 	"github.com/nnniyaz/nop/server/pkg/web"
 	"go.uber.org/zap"
-	"net/http"
-	"strconv"
 )
 
 func writeJSON(w http.ResponseWriter, data interface{}) error {

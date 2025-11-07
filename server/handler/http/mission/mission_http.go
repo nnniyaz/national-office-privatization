@@ -2,10 +2,12 @@ package mission
 
 import (
 	"encoding/json"
+	"net/http"
+
 	"github.com/nnniyaz/nop/server/handler/http/response"
+	"github.com/nnniyaz/nop/server/internal/i18n"
 	"github.com/nnniyaz/nop/server/pkg/logger"
 	"github.com/nnniyaz/nop/server/service/mission"
-	"net/http"
 )
 
 type HttpDelivery struct {
@@ -21,11 +23,21 @@ func NewHttpDelivery(l logger.Logger, service mission.MissionService) *HttpDeliv
 // Queries
 // -----------------------------------------------------------------------------
 
+// Mission represents the mission statement
 type Mission struct {
-	Id   string `json:"id"`
-	Text string `json:"text"`
+	Id   string        `json:"id"`
+	Text i18n.MlString `json:"text"`
 }
 
+// GetMission godoc
+// @Summary Get mission
+// @Description Retrieves the mission statement with multilingual text
+// @Tags mission
+// @Accept json
+// @Produce json
+// @Success 200 {object} Mission
+// @Failure 500 {object} ErrorResponse
+// @Router /api/mission [get]
 func (hd *HttpDelivery) GetMission(w http.ResponseWriter, r *http.Request) {
 	foundMission, err := hd.service.Get(r.Context())
 	if err != nil {
@@ -44,9 +56,21 @@ func (hd *HttpDelivery) GetMission(w http.ResponseWriter, r *http.Request) {
 // -----------------------------------------------------------------------------
 
 type CreateMissionIn struct {
-	Text string `json:"text"`
+	Text i18n.MlString `json:"text"`
 }
 
+// CreateMission godoc
+// @Summary Create mission
+// @Description Creates a new mission statement
+// @Tags mission
+// @Accept json
+// @Produce json
+// @Param mission body CreateMissionIn true "Mission data"
+// @Success 200 {object} SuccessResponse
+// @Failure 400 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /api/mission [post]
+// @Security Bearer
 func (hd *HttpDelivery) CreateMission(w http.ResponseWriter, r *http.Request) {
 	in := CreateMissionIn{}
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
@@ -63,9 +87,21 @@ func (hd *HttpDelivery) CreateMission(w http.ResponseWriter, r *http.Request) {
 }
 
 type UpdateMissionIn struct {
-	Text string `json:"text"`
+	Text i18n.MlString `json:"text"`
 }
 
+// UpdateMission godoc
+// @Summary Update mission
+// @Description Updates the mission statement
+// @Tags mission
+// @Accept json
+// @Produce json
+// @Param mission body UpdateMissionIn true "Mission update data"
+// @Success 200 {object} SuccessResponse
+// @Failure 400 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /api/mission [put]
+// @Security Bearer
 func (hd *HttpDelivery) UpdateMission(w http.ResponseWriter, r *http.Request) {
 	in := UpdateMissionIn{}
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {

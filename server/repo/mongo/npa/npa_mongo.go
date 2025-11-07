@@ -2,12 +2,14 @@ package npa
 
 import (
 	"context"
+	"time"
+
 	"github.com/nnniyaz/nop/server/domain/base/uuid"
 	"github.com/nnniyaz/nop/server/domain/npa"
+	"github.com/nnniyaz/nop/server/internal/i18n"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"time"
 )
 
 type RepoNpa struct {
@@ -23,11 +25,11 @@ func (r *RepoNpa) Coll() *mongo.Collection {
 }
 
 type mongoNpa struct {
-	Id        uuid.UUID `bson:"_id"`
-	Title     string    `bson:"title"`
-	Filename  string    `bson:"filename"`
-	CreatedAt time.Time `bson:"createdAt"`
-	UpdatedAt time.Time `bson:"updatedAt"`
+	Id        uuid.UUID     `bson:"_id"`
+	Title     i18n.MlString `bson:"title"`
+	Filename  string        `bson:"filename"`
+	CreatedAt time.Time     `bson:"createdAt"`
+	UpdatedAt time.Time     `bson:"updatedAt"`
 }
 
 func newFromNpa(d *npa.Npa) *mongoNpa {

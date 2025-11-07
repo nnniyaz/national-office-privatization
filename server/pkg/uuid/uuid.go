@@ -2,12 +2,13 @@ package uuid
 
 import (
 	"fmt"
+	"reflect"
+
 	"github.com/nnniyaz/nop/server/domain/base/uuid"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/bsoncodec"
 	"go.mongodb.org/mongo-driver/bson/bsonrw"
 	"go.mongodb.org/mongo-driver/bson/bsontype"
-	"reflect"
 )
 
 // This is a value (de|en)coder for the github.com/google/uuid UUID type. For best experience, register

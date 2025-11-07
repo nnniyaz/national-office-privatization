@@ -2,11 +2,13 @@ package event
 
 import (
 	"context"
+	"time"
+
 	"github.com/nnniyaz/nop/server/domain/base/uuid"
 	"github.com/nnniyaz/nop/server/domain/event"
+	"github.com/nnniyaz/nop/server/internal/i18n"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
-	"time"
 )
 
 type RepoEvent struct {
@@ -22,13 +24,13 @@ func (r *RepoEvent) Coll() *mongo.Collection {
 }
 
 type mongoEvent struct {
-	Id        uuid.UUID `bson:"_id"`
-	Name      string    `bson:"name"`
-	Desc      string    `bson:"desc"`
-	ImgUrl    string    `bson:"imgUrl"`
-	PlannedAt time.Time `bson:"plannedAt"`
-	CreatedAt time.Time `bson:"createdAt"`
-	UpdatedAt time.Time `bson:"updatedAt"`
+	Id        uuid.UUID     `bson:"_id"`
+	Name      i18n.MlString `bson:"name"`
+	Desc      i18n.MlString `bson:"desc"`
+	ImgUrl    string        `bson:"imgUrl"`
+	PlannedAt time.Time     `bson:"plannedAt"`
+	CreatedAt time.Time     `bson:"createdAt"`
+	UpdatedAt time.Time     `bson:"updatedAt"`
 }
 
 func newFromEvent(e *event.Event) *mongoEvent {

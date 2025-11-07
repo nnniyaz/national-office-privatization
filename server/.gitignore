@@ -1,1 +1,5 @@
 .env
+.cache
+.gopath
+.cache/go-build
+.cache/gomod

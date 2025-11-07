@@ -1,21 +1,23 @@
 package document
 
 import (
+	"time"
+
 	"github.com/nnniyaz/nop/server/domain/base/uuid"
 	"github.com/nnniyaz/nop/server/domain/document/exceptions"
-	"time"
+	"github.com/nnniyaz/nop/server/internal/i18n"
 )
 
 type Document struct {
 	id        uuid.UUID
-	title     string
+	title     i18n.MlString
 	filename  string
 	createdAt time.Time
 	updatedAt time.Time
 }
 
-func NewDocument(title, filename string) (*Document, error) {
-	if title == "" {
+func NewDocument(title i18n.MlString, filename string) (*Document, error) {
+	if err := title.ValidateAtLeastOne(); err != nil {
 		return nil, exceptions.ErrInvalidDocumentLabel
 	}
 	if filename == "" {
@@ -34,7 +36,7 @@ func (d *Document) GetID() uuid.UUID {
 	return d.id
 }
 
-func (d *Document) GetTitle() string {
+func (d *Document) GetTitle() i18n.MlString {
 	return d.title
 }
 
@@ -50,13 +52,17 @@ func (d *Document) GetUpdatedAt() time.Time {
 	return d.updatedAt
 }
 
-func (d *Document) Update(title, filename string) {
+func (d *Document) Update(title i18n.MlString, filename string) error {
+	if err := title.ValidateAtLeastOne(); err != nil {
+		return exceptions.ErrInvalidDocumentLabel
+	}
 	d.title = title
 	d.filename = filename
 	d.updatedAt = time.Now()
+	return nil
 }
 
-func UnmarshalDocumentFromDatabase(id uuid.UUID, title, filename string, createdAt, updatedAt time.Time) *Document {
+func UnmarshalDocumentFromDatabase(id uuid.UUID, title i18n.MlString, filename string, createdAt, updatedAt time.Time) *Document {
 	return &Document{
 		id:        id,
 		title:     title,

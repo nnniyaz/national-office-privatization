@@ -3,8 +3,10 @@ package mission
 import (
 	"context"
 	"errors"
+
 	"github.com/nnniyaz/nop/server/domain/base/uuid"
 	"github.com/nnniyaz/nop/server/domain/mission"
+	"github.com/nnniyaz/nop/server/internal/i18n"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -22,8 +24,8 @@ func (r *RepoMission) Coll() *mongo.Collection {
 }
 
 type mongoMission struct {
-	Id   uuid.UUID `bson:"_id"`
-	Text string    `bson:"text"`
+	Id   uuid.UUID     `bson:"_id"`
+	Text i18n.MlString `bson:"text"`
 }
 
 func newFromMission(m *mission.Mission) *mongoMission {

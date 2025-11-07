@@ -2,6 +2,8 @@ package auth
 
 import (
 	"context"
+	"sort"
+
 	"github.com/nnniyaz/nop/server/config"
 	"github.com/nnniyaz/nop/server/domain/base/uuid"
 	"github.com/nnniyaz/nop/server/domain/session"
@@ -12,7 +14,6 @@ import (
 	sessionService "github.com/nnniyaz/nop/server/service/session"
 	userService "github.com/nnniyaz/nop/server/service/user"
 	"go.uber.org/zap"
-	"sort"
 )
 
 const maxSessionsCount = 5

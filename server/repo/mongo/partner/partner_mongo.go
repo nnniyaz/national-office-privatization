@@ -2,8 +2,10 @@ package partner
 
 import (
 	"context"
+
 	"github.com/nnniyaz/nop/server/domain/base/uuid"
 	"github.com/nnniyaz/nop/server/domain/partner"
+	"github.com/nnniyaz/nop/server/internal/i18n"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -21,9 +23,9 @@ func (r *RepoPartner) Coll() *mongo.Collection {
 }
 
 type mongoPartner struct {
-	Id   uuid.UUID `bson:"_id"`
-	Name string    `bson:"name"`
-	Link string    `bson:"link"`
+	Id   uuid.UUID     `bson:"_id"`
+	Name i18n.MlString `bson:"name"`
+	Link string        `bson:"link"`
 }
 
 func newFromPartner(p *partner.Partner) *mongoPartner {

@@ -1,10 +1,11 @@
 package user
 
 import (
+	"time"
+
 	"github.com/nnniyaz/nop/server/domain/base/uuid"
 	"github.com/nnniyaz/nop/server/domain/user/exceptions"
 	"github.com/nnniyaz/nop/server/domain/user/valueobject"
-	"time"
 )
 
 type User struct {
