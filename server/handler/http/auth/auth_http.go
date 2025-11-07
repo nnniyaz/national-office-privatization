@@ -50,16 +50,17 @@ func newUser(u *user.User) *User {
 }
 
 // GetCurrentUser godoc
-// @Summary Get current authenticated user
-// @Description Returns the currently logged in user's information
-// @Tags auth
-// @Accept json
-// @Produce json
-// @Success 200 {object} User
-// @Failure 401 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
-// @Router /api/auth/me [get]
-// @Security Bearer
+//
+//	@Summary		Get current authenticated user
+//	@Description	Returns the currently logged in user's information
+//	@Tags			auth
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	User
+//	@Failure		401	{object}	response.Error
+//	@Failure		500	{object}	response.Error
+//	@Router			/api/auth/me [get]
+//	@Security		Bearer
 func (hd *HttpDelivery) GetCurrentUser(w http.ResponseWriter, r *http.Request) {
 	u := r.Context().Value("user").(user.User)
 	response.NewSuccess(hd.logger, w, r, newUser(&u))
@@ -71,17 +72,18 @@ type LoginIn struct {
 }
 
 // Login godoc
-// @Summary User login
-// @Description Authenticates a user and returns a session cookie
-// @Tags auth
-// @Accept json
-// @Produce json
-// @Param credentials body LoginIn true "Login credentials"
-// @Success 200 {object} SuccessResponse
-// @Failure 400 {object} ErrorResponse
-// @Failure 401 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
-// @Router /api/auth/login [post]
+//
+//	@Summary		User login
+//	@Description	Authenticates a user and returns a session cookie
+//	@Tags			auth
+//	@Accept			json
+//	@Produce		json
+//	@Param			credentials	body		LoginIn	true	"Login credentials"
+//	@Success		200			{object}	response.Success
+//	@Failure		400			{object}	response.Error
+//	@Failure		401			{object}	response.Error
+//	@Failure		500			{object}	response.Error
+//	@Router			/api/auth/login [post]
 func (hd *HttpDelivery) Login(w http.ResponseWriter, r *http.Request) {
 	requestInfo := r.Context().Value("requestInfo").(web.RequestInfo)
 
@@ -109,16 +111,17 @@ func (hd *HttpDelivery) Login(w http.ResponseWriter, r *http.Request) {
 }
 
 // Logout godoc
-// @Summary User logout
-// @Description Logs out the current user and clears the session cookie
-// @Tags auth
-// @Accept json
-// @Produce json
-// @Success 200 {object} SuccessResponse
-// @Failure 400 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
-// @Router /api/auth/logout [post]
-// @Security Bearer
+//
+//	@Summary		User logout
+//	@Description	Logs out the current user and clears the session cookie
+//	@Tags			auth
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	response.Success
+//	@Failure		400	{object}	response.Error
+//	@Failure		500	{object}	response.Error
+//	@Router			/api/auth/logout [post]
+//	@Security		Bearer
 func (hd *HttpDelivery) Logout(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie("nop-app-session")
 	if err != nil {

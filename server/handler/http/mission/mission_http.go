@@ -30,14 +30,15 @@ type Mission struct {
 }
 
 // GetMission godoc
-// @Summary Get mission
-// @Description Retrieves the mission statement with multilingual text
-// @Tags mission
-// @Accept json
-// @Produce json
-// @Success 200 {object} Mission
-// @Failure 500 {object} ErrorResponse
-// @Router /api/mission [get]
+//
+//	@Summary		Get mission
+//	@Description	Retrieves the mission statement with multilingual text
+//	@Tags			mission
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	Mission
+//	@Failure		500	{object}	response.Error
+//	@Router			/api/mission [get]
 func (hd *HttpDelivery) GetMission(w http.ResponseWriter, r *http.Request) {
 	foundMission, err := hd.service.Get(r.Context())
 	if err != nil {
@@ -60,17 +61,18 @@ type CreateMissionIn struct {
 }
 
 // CreateMission godoc
-// @Summary Create mission
-// @Description Creates a new mission statement
-// @Tags mission
-// @Accept json
-// @Produce json
-// @Param mission body CreateMissionIn true "Mission data"
-// @Success 200 {object} SuccessResponse
-// @Failure 400 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
-// @Router /api/mission [post]
-// @Security Bearer
+//
+//	@Summary		Create mission
+//	@Description	Creates a new mission statement
+//	@Tags			mission
+//	@Accept			json
+//	@Produce		json
+//	@Param			mission	body		CreateMissionIn	true	"Mission data"
+//	@Success		200		{object}	response.Success
+//	@Failure		400		{object}	response.Error
+//	@Failure		500		{object}	response.Error
+//	@Router			/api/mission [post]
+//	@Security		Bearer
 func (hd *HttpDelivery) CreateMission(w http.ResponseWriter, r *http.Request) {
 	in := CreateMissionIn{}
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
@@ -91,17 +93,18 @@ type UpdateMissionIn struct {
 }
 
 // UpdateMission godoc
-// @Summary Update mission
-// @Description Updates the mission statement
-// @Tags mission
-// @Accept json
-// @Produce json
-// @Param mission body UpdateMissionIn true "Mission update data"
-// @Success 200 {object} SuccessResponse
-// @Failure 400 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
-// @Router /api/mission [put]
-// @Security Bearer
+//
+//	@Summary		Update mission
+//	@Description	Updates the mission statement
+//	@Tags			mission
+//	@Accept			json
+//	@Produce		json
+//	@Param			mission	body		UpdateMissionIn	true	"Mission update data"
+//	@Success		200		{object}	response.Success
+//	@Failure		400		{object}	response.Error
+//	@Failure		500		{object}	response.Error
+//	@Router			/api/mission [put]
+//	@Security		Bearer
 func (hd *HttpDelivery) UpdateMission(w http.ResponseWriter, r *http.Request) {
 	in := UpdateMissionIn{}
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {

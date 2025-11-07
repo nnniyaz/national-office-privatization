@@ -114,19 +114,20 @@ func NewEnterprises(enterprises []*enterprise.Enterprise, count int64) *Enterpri
 // -----------------------------------------------------------------------------
 
 // GetEnterprises godoc
-// @Summary Get all enterprises
-// @Description Retrieves a paginated list of enterprises with search, region, and field filters
-// @Tags enterprises
-// @Accept json
-// @Produce json
-// @Param offset query int false "Offset for pagination" default(0)
-// @Param limit query int false "Limit for pagination" default(10)
-// @Param search query string false "Search by name"
-// @Param region query string false "Filter by region/location"
-// @Param field query string false "Filter by industry"
-// @Success 200 {object} Enterprises
-// @Failure 500 {object} ErrorResponse
-// @Router /api/enterprise [get]
+//
+//	@Summary		Get all enterprises
+//	@Description	Retrieves a paginated list of enterprises with search, region, and field filters
+//	@Tags			enterprises
+//	@Accept			json
+//	@Produce		json
+//	@Param			offset	query		int		false	"Offset for pagination"	default(0)
+//	@Param			limit	query		int		false	"Limit for pagination"	default(10)
+//	@Param			search	query		string	false	"Search by name"
+//	@Param			region	query		string	false	"Filter by region/location"
+//	@Param			field	query		string	false	"Filter by industry"
+//	@Success		200		{object}	Enterprises
+//	@Failure		500		{object}	response.Error
+//	@Router			/api/enterprise [get]
 func (hd *HttpDelivery) GetEnterprises(w http.ResponseWriter, r *http.Request) {
 	offset := r.Context().Value("offset").(int64)
 	limit := r.Context().Value("limit").(int64)
@@ -142,16 +143,17 @@ func (hd *HttpDelivery) GetEnterprises(w http.ResponseWriter, r *http.Request) {
 }
 
 // GetEnterpriseById godoc
-// @Summary Get enterprise by ID
-// @Description Retrieves a single enterprise with full details
-// @Tags enterprises
-// @Accept json
-// @Produce json
-// @Param enterprise_id path string true "Enterprise ID"
-// @Success 200 {object} Enterprise
-// @Failure 404 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
-// @Router /api/enterprise/{enterprise_id} [get]
+//
+//	@Summary		Get enterprise by ID
+//	@Description	Retrieves a single enterprise with full details
+//	@Tags			enterprises
+//	@Accept			json
+//	@Produce		json
+//	@Param			enterprise_id	path		string	true	"Enterprise ID"
+//	@Success		200				{object}	Enterprise
+//	@Failure		404				{object}	response.Error
+//	@Failure		500				{object}	response.Error
+//	@Router			/api/enterprise/{enterprise_id} [get]
 func (hd *HttpDelivery) GetEnterpriseById(w http.ResponseWriter, r *http.Request) {
 	enterpriseId := chi.URLParam(r, "enterprise_id")
 	foundEnterprise, err := hd.service.GetById(r.Context(), enterpriseId)
@@ -199,17 +201,18 @@ type CreateEnterpriseIn struct {
 }
 
 // CreateEnterprise godoc
-// @Summary Create a new enterprise
-// @Description Creates a new enterprise with complete financial and operational data
-// @Tags enterprises
-// @Accept json
-// @Produce json
-// @Param enterprise body CreateEnterpriseIn true "Enterprise data"
-// @Success 200 {object} SuccessResponse
-// @Failure 400 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
-// @Router /api/enterprise [post]
-// @Security Bearer
+//
+//	@Summary		Create a new enterprise
+//	@Description	Creates a new enterprise with complete financial and operational data
+//	@Tags			enterprises
+//	@Accept			json
+//	@Produce		json
+//	@Param			enterprise	body		CreateEnterpriseIn	true	"Enterprise data"
+//	@Success		200			{object}	response.Success
+//	@Failure		400			{object}	response.Error
+//	@Failure		500			{object}	response.Error
+//	@Router			/api/enterprise [post]
+//	@Security		Bearer
 func (hd *HttpDelivery) CreateEnterprise(w http.ResponseWriter, r *http.Request) {
 	in := CreateEnterpriseIn{}
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
@@ -257,18 +260,19 @@ type UpdateEnterpriseIn struct {
 }
 
 // UpdateEnterprise godoc
-// @Summary Update an enterprise
-// @Description Updates an existing enterprise with new data
-// @Tags enterprises
-// @Accept json
-// @Produce json
-// @Param enterprise body UpdateEnterpriseIn true "Enterprise update data"
-// @Success 200 {object} SuccessResponse
-// @Failure 400 {object} ErrorResponse
-// @Failure 404 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
-// @Router /api/enterprise [put]
-// @Security Bearer
+//
+//	@Summary		Update an enterprise
+//	@Description	Updates an existing enterprise with new data
+//	@Tags			enterprises
+//	@Accept			json
+//	@Produce		json
+//	@Param			enterprise	body		UpdateEnterpriseIn	true	"Enterprise update data"
+//	@Success		200			{object}	response.Success
+//	@Failure		400			{object}	response.Error
+//	@Failure		404			{object}	response.Error
+//	@Failure		500			{object}	response.Error
+//	@Router			/api/enterprise [put]
+//	@Security		Bearer
 func (hd *HttpDelivery) UpdateEnterprise(w http.ResponseWriter, r *http.Request) {
 	in := UpdateEnterpriseIn{}
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
@@ -283,17 +287,18 @@ func (hd *HttpDelivery) UpdateEnterprise(w http.ResponseWriter, r *http.Request)
 }
 
 // DeleteEnterprise godoc
-// @Summary Delete an enterprise
-// @Description Deletes an enterprise by ID
-// @Tags enterprises
-// @Accept json
-// @Produce json
-// @Param enterprise_id path string true "Enterprise ID"
-// @Success 200 {object} SuccessResponse
-// @Failure 404 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
-// @Router /api/enterprise/{enterprise_id} [delete]
-// @Security Bearer
+//
+//	@Summary		Delete an enterprise
+//	@Description	Deletes an enterprise by ID
+//	@Tags			enterprises
+//	@Accept			json
+//	@Produce		json
+//	@Param			enterprise_id	path		string	true	"Enterprise ID"
+//	@Success		200				{object}	response.Success
+//	@Failure		404				{object}	response.Error
+//	@Failure		500				{object}	response.Error
+//	@Router			/api/enterprise/{enterprise_id} [delete]
+//	@Security		Bearer
 func (hd *HttpDelivery) DeleteEnterprise(w http.ResponseWriter, r *http.Request) {
 	enterpriseId := chi.URLParam(r, "enterprise_id")
 	if err := hd.service.Delete(r.Context(), enterpriseId); err != nil {

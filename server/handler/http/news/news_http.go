@@ -67,14 +67,15 @@ func NewNewsList(news []*news.News) *NewsList {
 }
 
 // GetNews godoc
-// @Summary Get all news
-// @Description Retrieves a list of all news articles with multilingual title and content
-// @Tags news
-// @Accept json
-// @Produce json
-// @Success 200 {object} NewsList
-// @Failure 500 {object} ErrorResponse
-// @Router /api/news [get]
+//
+//	@Summary		Get all news
+//	@Description	Retrieves a list of all news articles with multilingual title and content
+//	@Tags			news
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	NewsList
+//	@Failure		500	{object}	response.Error
+//	@Router			/api/news [get]
 func (hd *HttpDelivery) GetNews(w http.ResponseWriter, r *http.Request) {
 	news, err := hd.service.Get(r.Context())
 	if err != nil {
@@ -85,16 +86,17 @@ func (hd *HttpDelivery) GetNews(w http.ResponseWriter, r *http.Request) {
 }
 
 // GetNewsById godoc
-// @Summary Get news by ID
-// @Description Retrieves a single news article by its ID
-// @Tags news
-// @Accept json
-// @Produce json
-// @Param news_id path string true "News ID"
-// @Success 200 {object} News
-// @Failure 404 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
-// @Router /api/news/{news_id} [get]
+//
+//	@Summary		Get news by ID
+//	@Description	Retrieves a single news article by its ID
+//	@Tags			news
+//	@Accept			json
+//	@Produce		json
+//	@Param			news_id	path		string	true	"News ID"
+//	@Success		200		{object}	News
+//	@Failure		404		{object}	response.Error
+//	@Failure		500		{object}	response.Error
+//	@Router			/api/news/{news_id} [get]
 func (hd *HttpDelivery) GetNewsById(w http.ResponseWriter, r *http.Request) {
 	news, err := hd.service.GetById(r.Context(), chi.URLParam(r, "news_id"))
 	if err != nil {
@@ -115,17 +117,18 @@ type CreateNewsIn struct {
 }
 
 // CreateNews godoc
-// @Summary Create a new news article
-// @Description Creates a new news article with multilingual title and content
-// @Tags news
-// @Accept json
-// @Produce json
-// @Param news body CreateNewsIn true "News data"
-// @Success 200 {object} SuccessResponse
-// @Failure 400 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
-// @Router /api/news [post]
-// @Security Bearer
+//
+//	@Summary		Create a new news article
+//	@Description	Creates a new news article with multilingual title and content
+//	@Tags			news
+//	@Accept			json
+//	@Produce		json
+//	@Param			news	body		CreateNewsIn	true	"News data"
+//	@Success		200		{object}	response.Success
+//	@Failure		400		{object}	response.Error
+//	@Failure		500		{object}	response.Error
+//	@Router			/api/news [post]
+//	@Security		Bearer
 func (hd *HttpDelivery) CreateNews(w http.ResponseWriter, r *http.Request) {
 	var in CreateNewsIn
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
@@ -148,18 +151,19 @@ type UpdateNewsIn struct {
 }
 
 // UpdateNews godoc
-// @Summary Update a news article
-// @Description Updates an existing news article
-// @Tags news
-// @Accept json
-// @Produce json
-// @Param news body UpdateNewsIn true "News update data"
-// @Success 200 {object} SuccessResponse
-// @Failure 400 {object} ErrorResponse
-// @Failure 404 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
-// @Router /api/news [put]
-// @Security Bearer
+//
+//	@Summary		Update a news article
+//	@Description	Updates an existing news article
+//	@Tags			news
+//	@Accept			json
+//	@Produce		json
+//	@Param			news	body		UpdateNewsIn	true	"News update data"
+//	@Success		200		{object}	response.Success
+//	@Failure		400		{object}	response.Error
+//	@Failure		404		{object}	response.Error
+//	@Failure		500		{object}	response.Error
+//	@Router			/api/news [put]
+//	@Security		Bearer
 func (hd *HttpDelivery) UpdateNews(w http.ResponseWriter, r *http.Request) {
 	var in UpdateNewsIn
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
@@ -175,17 +179,18 @@ func (hd *HttpDelivery) UpdateNews(w http.ResponseWriter, r *http.Request) {
 }
 
 // DeleteNews godoc
-// @Summary Delete a news article
-// @Description Deletes a news article by ID
-// @Tags news
-// @Accept json
-// @Produce json
-// @Param news_id path string true "News ID"
-// @Success 200 {object} SuccessResponse
-// @Failure 404 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
-// @Router /api/news/{news_id} [delete]
-// @Security Bearer
+//
+//	@Summary		Delete a news article
+//	@Description	Deletes a news article by ID
+//	@Tags			news
+//	@Accept			json
+//	@Produce		json
+//	@Param			news_id	path		string	true	"News ID"
+//	@Success		200		{object}	response.Success
+//	@Failure		404		{object}	response.Error
+//	@Failure		500		{object}	response.Error
+//	@Router			/api/news/{news_id} [delete]
+//	@Security		Bearer
 func (hd *HttpDelivery) DeleteNews(w http.ResponseWriter, r *http.Request) {
 	newsId := chi.URLParam(r, "news_id")
 	if err := hd.service.Delete(r.Context(), newsId); err != nil {

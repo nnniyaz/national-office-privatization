@@ -1,3 +1,5 @@
+import type { MlString } from '../../shared/i18n/types';
+
 export interface EventData {
     events: Event[]
     count: number
@@ -5,8 +7,8 @@ export interface EventData {
 
 export interface Event {
     id: string
-    name: string
-    desc: string
+    name: MlString
+    desc: MlString
     imgUrl: string
     plannedAt: string
     createdAt: string

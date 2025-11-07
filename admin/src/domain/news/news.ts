@@ -1,3 +1,5 @@
+import type { MlString } from '../../shared/i18n/types';
+
 export interface NewsData {
     news: News[]
     count: number
@@ -5,8 +7,8 @@ export interface NewsData {
 
 export interface News {
     id: string
-    title: string
-    content: string
+    title: MlString
+    content: MlString
     imgUrl: string
     createdAt: string
 }

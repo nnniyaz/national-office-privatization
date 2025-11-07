@@ -32,14 +32,15 @@ type Contacts struct {
 }
 
 // GetContacts godoc
-// @Summary Get contacts
-// @Description Retrieves the contact information
-// @Tags contacts
-// @Accept json
-// @Produce json
-// @Success 200 {object} Contacts
-// @Failure 500 {object} ErrorResponse
-// @Router /api/contacts [get]
+//
+//	@Summary		Get contacts
+//	@Description	Retrieves the contact information
+//	@Tags			contacts
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	Contacts
+//	@Failure		500	{object}	response.Error
+//	@Router			/api/contacts [get]
 func (hd *HttpDelivery) GetContacts(w http.ResponseWriter, r *http.Request) {
 	foundContacts, err := hd.service.Get(r.Context())
 	if err != nil {
@@ -69,17 +70,18 @@ type CreateContactIn struct {
 }
 
 // CreateContact godoc
-// @Summary Create contact information
-// @Description Creates the contact information
-// @Tags contacts
-// @Accept json
-// @Produce json
-// @Param contact body CreateContactIn true "Contact data"
-// @Success 200 {object} SuccessResponse
-// @Failure 400 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
-// @Router /api/contacts [post]
-// @Security Bearer
+//
+//	@Summary		Create contact information
+//	@Description	Creates the contact information
+//	@Tags			contacts
+//	@Accept			json
+//	@Produce		json
+//	@Param			contact	body		CreateContactIn	true	"Contact data"
+//	@Success		200		{object}	response.Success
+//	@Failure		400		{object}	response.Error
+//	@Failure		500		{object}	response.Error
+//	@Router			/api/contacts [post]
+//	@Security		Bearer
 func (hd *HttpDelivery) CreateContact(w http.ResponseWriter, r *http.Request) {
 	in := CreateContactIn{}
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
@@ -103,17 +105,18 @@ type UpdateContactIn struct {
 }
 
 // UpdateContact godoc
-// @Summary Update contact information
-// @Description Updates the contact information
-// @Tags contacts
-// @Accept json
-// @Produce json
-// @Param contact body UpdateContactIn true "Contact update data"
-// @Success 200 {object} SuccessResponse
-// @Failure 400 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
-// @Router /api/contacts [put]
-// @Security Bearer
+//
+//	@Summary		Update contact information
+//	@Description	Updates the contact information
+//	@Tags			contacts
+//	@Accept			json
+//	@Produce		json
+//	@Param			contact	body		UpdateContactIn	true	"Contact update data"
+//	@Success		200		{object}	response.Success
+//	@Failure		400		{object}	response.Error
+//	@Failure		500		{object}	response.Error
+//	@Router			/api/contacts [put]
+//	@Security		Bearer
 func (hd *HttpDelivery) UpdateContact(w http.ResponseWriter, r *http.Request) {
 	in := UpdateContactIn{}
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
