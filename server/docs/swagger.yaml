@@ -1,4 +1,616 @@
 definitions:
+  application.Applications:
+    properties:
+      applications:
+        items:
+          $ref: '#/definitions/github_com_nnniyaz_nop_server_handler_http_application.Application'
+        type: array
+      count:
+        type: integer
+    type: object
+  application.CreateApplicationIn:
+    properties:
+      bin:
+        type: string
+      email:
+        type: string
+      enterpriseId:
+        type: string
+      fio:
+        type: string
+      message:
+        type: string
+      phone:
+        type: string
+    type: object
+  application.UpdateApplicationIn:
+    properties:
+      bin:
+        type: string
+      email:
+        type: string
+      enterpriseId:
+        type: string
+      fio:
+        type: string
+      id:
+        type: string
+      message:
+        type: string
+      phone:
+        type: string
+    type: object
+  auth.LoginIn:
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+    type: object
+  auth.User:
+    properties:
+      createdAt:
+        type: string
+      disabled:
+        type: boolean
+      firstName:
+        type: string
+      id:
+        type: string
+      lastName:
+        type: string
+      login:
+        type: string
+      role:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  contacts.CreateContactIn:
+    properties:
+      email:
+        type: string
+      primaryContact:
+        type: string
+      primaryContactPerson:
+        type: string
+      secondaryContact:
+        type: string
+      secondaryContactPerson:
+        type: string
+    type: object
+  contacts.UpdateContactIn:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      primaryContact:
+        type: string
+      primaryContactPerson:
+        type: string
+      secondaryContact:
+        type: string
+      secondaryContactPerson:
+        type: string
+    type: object
+  document.CreateDocumentIn:
+    properties:
+      filename:
+        type: string
+      title:
+        $ref: '#/definitions/i18n.MlString'
+    type: object
+  document.Documents:
+    properties:
+      count:
+        type: integer
+      documents:
+        items:
+          $ref: '#/definitions/github_com_nnniyaz_nop_server_handler_http_document.Document'
+        type: array
+    type: object
+  document.UpdateDocumentIn:
+    properties:
+      filename:
+        type: string
+      id:
+        type: string
+      title:
+        $ref: '#/definitions/i18n.MlString'
+    type: object
+  employee.CreateEmployeeIn:
+    properties:
+      group:
+        type: string
+      name:
+        $ref: '#/definitions/i18n.MlString'
+    type: object
+  employee.Employees:
+    properties:
+      count:
+        type: integer
+      employees:
+        items:
+          $ref: '#/definitions/github_com_nnniyaz_nop_server_handler_http_employee.Employee'
+        type: array
+    type: object
+  employee.UpdateEmployeeIn:
+    properties:
+      group:
+        type: string
+      id:
+        type: string
+      name:
+        $ref: '#/definitions/i18n.MlString'
+    type: object
+  enterprise.CreateEnterpriseIn:
+    properties:
+      additionalInfo:
+        type: string
+      additionalTerms:
+        type: string
+      assets:
+        type: number
+      assetsComment:
+        type: string
+      authorizedCapital:
+        type: number
+      authorizedCapitalComment:
+        type: string
+      equity:
+        type: number
+      equityComment:
+        type: string
+      governmentShare:
+        type: number
+      implementationForm:
+        type: string
+      income:
+        type: number
+      incomeComment:
+        type: string
+      industry:
+        type: string
+      juridicalForm:
+        type: string
+      keyTerms:
+        type: string
+      location:
+        type: string
+      mainActivity:
+        type: string
+      name:
+        type: string
+      netProfit:
+        type: number
+      netProfitComment:
+        type: string
+      numberOfEmployees:
+        type: integer
+      numberOfEmployeesComment:
+        type: string
+      owner:
+        type: string
+      propertyComplex:
+        type: string
+      salePurpose:
+        type: string
+      salesRecommendations:
+        type: string
+      totalLiabilities:
+        type: number
+      totalLiabilitiesComment:
+        type: string
+      year:
+        type: integer
+    type: object
+  enterprise.Enterprises:
+    properties:
+      count:
+        type: integer
+      enterprises:
+        items:
+          $ref: '#/definitions/github_com_nnniyaz_nop_server_handler_http_enterprise.Enterprise'
+        type: array
+    type: object
+  enterprise.UpdateEnterpriseIn:
+    properties:
+      additionalInfo:
+        type: string
+      additionalTerms:
+        type: string
+      assets:
+        type: number
+      assetsComment:
+        type: string
+      authorizedCapital:
+        type: number
+      authorizedCapitalComment:
+        type: string
+      equity:
+        type: number
+      equityComment:
+        type: string
+      governmentShare:
+        type: number
+      id:
+        type: string
+      implementationForm:
+        type: string
+      income:
+        type: number
+      incomeComment:
+        type: string
+      industry:
+        type: string
+      juridicalForm:
+        type: string
+      keyTerms:
+        type: string
+      location:
+        type: string
+      mainActivity:
+        type: string
+      name:
+        type: string
+      netProfit:
+        type: number
+      netProfitComment:
+        type: string
+      numberOfEmployees:
+        type: integer
+      numberOfEmployeesComment:
+        type: string
+      owner:
+        type: string
+      propertyComplex:
+        type: string
+      salePurpose:
+        type: string
+      salesRecommendations:
+        type: string
+      totalLiabilities:
+        type: number
+      totalLiabilitiesComment:
+        type: string
+      year:
+        type: integer
+    type: object
+  event.CreateEventIn:
+    properties:
+      desc:
+        $ref: '#/definitions/i18n.MlString'
+      imgUrl:
+        type: string
+      name:
+        $ref: '#/definitions/i18n.MlString'
+      plannedAt:
+        type: string
+    type: object
+  event.Events:
+    properties:
+      count:
+        type: integer
+      events:
+        items:
+          $ref: '#/definitions/github_com_nnniyaz_nop_server_handler_http_event.Event'
+        type: array
+    type: object
+  event.UpdateEventIn:
+    properties:
+      desc:
+        $ref: '#/definitions/i18n.MlString'
+      id:
+        type: string
+      imgUrl:
+        type: string
+      name:
+        $ref: '#/definitions/i18n.MlString'
+      plannedAt:
+        type: string
+    type: object
+  github_com_nnniyaz_nop_server_handler_http_application.Application:
+    properties:
+      bin:
+        type: string
+      createdAt:
+        type: string
+      email:
+        type: string
+      enterpriseId:
+        type: string
+      fio:
+        type: string
+      id:
+        type: string
+      message:
+        type: string
+      phone:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  github_com_nnniyaz_nop_server_handler_http_contacts.Contacts:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      primaryContact:
+        type: string
+      primaryContactPerson:
+        type: string
+      secondaryContact:
+        type: string
+      secondaryContactPerson:
+        type: string
+    type: object
+  github_com_nnniyaz_nop_server_handler_http_document.Document:
+    properties:
+      createdAt:
+        type: string
+      filename:
+        type: string
+      id:
+        type: string
+      title:
+        $ref: '#/definitions/i18n.MlString'
+      updatedAt:
+        type: string
+    type: object
+  github_com_nnniyaz_nop_server_handler_http_employee.Employee:
+    properties:
+      group:
+        type: string
+      id:
+        type: string
+      name:
+        $ref: '#/definitions/i18n.MlString'
+    type: object
+  github_com_nnniyaz_nop_server_handler_http_enterprise.Enterprise:
+    properties:
+      additionalInfo:
+        type: string
+      additionalTerms:
+        type: string
+      assets:
+        type: number
+      assetsComment:
+        type: string
+      authorizedCapital:
+        type: number
+      authorizedCapitalComment:
+        type: string
+      createdAt:
+        type: string
+      equity:
+        type: number
+      equityComment:
+        type: string
+      governmentShare:
+        type: number
+      id:
+        type: string
+      implementationForm:
+        type: string
+      income:
+        type: number
+      incomeComment:
+        type: string
+      industry:
+        type: string
+      juridicalForm:
+        type: string
+      keyTerms:
+        type: string
+      location:
+        type: string
+      mainActivity:
+        type: string
+      name:
+        type: string
+      netProfit:
+        type: number
+      netProfitComment:
+        type: string
+      numberOfEmployees:
+        type: integer
+      numberOfEmployeesComment:
+        type: string
+      owner:
+        type: string
+      propertyComplex:
+        type: string
+      salePurpose:
+        type: string
+      salesRecommendations:
+        type: string
+      totalLiabilities:
+        type: number
+      totalLiabilitiesComment:
+        type: string
+      updatedAt:
+        type: string
+      year:
+        type: integer
+    type: object
+  github_com_nnniyaz_nop_server_handler_http_event.Event:
+    properties:
+      createdAt:
+        type: string
+      desc:
+        $ref: '#/definitions/i18n.MlString'
+      id:
+        type: string
+      imgUrl:
+        type: string
+      name:
+        $ref: '#/definitions/i18n.MlString'
+      plannedAt:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  github_com_nnniyaz_nop_server_handler_http_mission.Mission:
+    properties:
+      id:
+        type: string
+      text:
+        $ref: '#/definitions/i18n.MlString'
+    type: object
+  github_com_nnniyaz_nop_server_handler_http_news.News:
+    properties:
+      content:
+        $ref: '#/definitions/i18n.MlString'
+      createdAt:
+        type: string
+      id:
+        type: string
+      imgUrl:
+        type: string
+      title:
+        $ref: '#/definitions/i18n.MlString'
+    type: object
+  github_com_nnniyaz_nop_server_handler_http_npa.Npa:
+    properties:
+      createdAt:
+        type: string
+      filename:
+        type: string
+      id:
+        type: string
+      title:
+        $ref: '#/definitions/i18n.MlString'
+      updatedAt:
+        type: string
+    type: object
+  github_com_nnniyaz_nop_server_handler_http_partner.Partner:
+    properties:
+      id:
+        type: string
+      link:
+        type: string
+      name:
+        $ref: '#/definitions/i18n.MlString'
+    type: object
+  github_com_nnniyaz_nop_server_handler_http_user.User:
+    properties:
+      createdAt:
+        type: string
+      disabled:
+        type: boolean
+      firstName:
+        type: string
+      id:
+        type: string
+      lastName:
+        type: string
+      login:
+        type: string
+      role:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  i18n.MlString:
+    properties:
+      en:
+        type: string
+      kz:
+        type: string
+      ru:
+        type: string
+    type: object
+  mission.CreateMissionIn:
+    properties:
+      text:
+        $ref: '#/definitions/i18n.MlString'
+    type: object
+  mission.UpdateMissionIn:
+    properties:
+      text:
+        $ref: '#/definitions/i18n.MlString'
+    type: object
+  news.CreateNewsIn:
+    properties:
+      content:
+        $ref: '#/definitions/i18n.MlString'
+      imgUrl:
+        type: string
+      title:
+        $ref: '#/definitions/i18n.MlString'
+    type: object
+  news.NewsList:
+    properties:
+      count:
+        type: integer
+      news:
+        items:
+          $ref: '#/definitions/github_com_nnniyaz_nop_server_handler_http_news.News'
+        type: array
+    type: object
+  news.UpdateNewsIn:
+    properties:
+      content:
+        $ref: '#/definitions/i18n.MlString'
+      id:
+        type: string
+      imgUrl:
+        type: string
+      title:
+        $ref: '#/definitions/i18n.MlString'
+    type: object
+  npa.CreateNpaIn:
+    properties:
+      filename:
+        type: string
+      title:
+        $ref: '#/definitions/i18n.MlString'
+    type: object
+  npa.Npas:
+    properties:
+      count:
+        type: integer
+      npas:
+        items:
+          $ref: '#/definitions/github_com_nnniyaz_nop_server_handler_http_npa.Npa'
+        type: array
+    type: object
+  npa.UpdateNpaIn:
+    properties:
+      filename:
+        type: string
+      id:
+        type: string
+      title:
+        $ref: '#/definitions/i18n.MlString'
+    type: object
+  partner.CreatePartnerIn:
+    properties:
+      link:
+        type: string
+      name:
+        $ref: '#/definitions/i18n.MlString'
+    type: object
+  partner.Partners:
+    properties:
+      count:
+        type: integer
+      partners:
+        items:
+          $ref: '#/definitions/github_com_nnniyaz_nop_server_handler_http_partner.Partner'
+        type: array
+    type: object
+  partner.UpdatePartnerIn:
+    properties:
+      id:
+        type: string
+      link:
+        type: string
+      name:
+        $ref: '#/definitions/i18n.MlString'
+    type: object
   response.Error:
     properties:
       messages:
@@ -24,6 +636,46 @@ definitions:
         example: string
         type: string
     type: object
+  user.CreateUserIn:
+    properties:
+      firstName:
+        type: string
+      lastName:
+        type: string
+      login:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+    type: object
+  user.UpdateUserIn:
+    properties:
+      firstName:
+        type: string
+      id:
+        type: string
+      lastName:
+        type: string
+      role:
+        type: string
+    type: object
+  user.UpdateUserPasswordIn:
+    properties:
+      id:
+        type: string
+      password:
+        type: string
+    type: object
+  user.Users:
+    properties:
+      count:
+        type: integer
+      users:
+        items:
+          $ref: '#/definitions/github_com_nnniyaz_nop_server_handler_http_user.User'
+        type: array
+    type: object
 host: https://api.nop.kz
 info:
   contact:
@@ -33,6 +685,1662 @@ info:
   title: Ardo Backend API
   version: 0.0.1
 paths:
+  /api/application:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of all enterprise applications
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/application.Applications'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Get all applications
+      tags:
+      - applications
+    post:
+      consumes:
+      - application/json
+      description: Creates a new enterprise application
+      parameters:
+      - description: Application data
+        in: body
+        name: application
+        required: true
+        schema:
+          $ref: '#/definitions/application.CreateApplicationIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Create a new application
+      tags:
+      - applications
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing application
+      parameters:
+      - description: Application update data
+        in: body
+        name: application
+        required: true
+        schema:
+          $ref: '#/definitions/application.UpdateApplicationIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Update an application
+      tags:
+      - applications
+  /api/application/{application_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes an application by ID
+      parameters:
+      - description: Application ID
+        in: path
+        name: application_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Delete an application
+      tags:
+      - applications
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a single application by ID
+      parameters:
+      - description: Application ID
+        in: path
+        name: application_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_nnniyaz_nop_server_handler_http_application.Application'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Get application by ID
+      tags:
+      - applications
+  /api/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticates a user and returns a session cookie
+      parameters:
+      - description: Login credentials
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/auth.LoginIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: User login
+      tags:
+      - auth
+  /api/auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: Logs out the current user and clears the session cookie
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: User logout
+      tags:
+      - auth
+  /api/auth/me:
+    get:
+      consumes:
+      - application/json
+      description: Returns the currently logged in user's information
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.User'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Get current authenticated user
+      tags:
+      - auth
+  /api/contacts:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves the contact information
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_nnniyaz_nop_server_handler_http_contacts.Contacts'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Get contacts
+      tags:
+      - contacts
+    post:
+      consumes:
+      - application/json
+      description: Creates the contact information
+      parameters:
+      - description: Contact data
+        in: body
+        name: contact
+        required: true
+        schema:
+          $ref: '#/definitions/contacts.CreateContactIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Create contact information
+      tags:
+      - contacts
+    put:
+      consumes:
+      - application/json
+      description: Updates the contact information
+      parameters:
+      - description: Contact update data
+        in: body
+        name: contact
+        required: true
+        schema:
+          $ref: '#/definitions/contacts.UpdateContactIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Update contact information
+      tags:
+      - contacts
+  /api/document:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of all documents with multilingual titles
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/document.Documents'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Get all documents
+      tags:
+      - documents
+    post:
+      consumes:
+      - application/json
+      description: Creates a new document with multilingual title
+      parameters:
+      - description: Document data
+        in: body
+        name: document
+        required: true
+        schema:
+          $ref: '#/definitions/document.CreateDocumentIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Create a new document
+      tags:
+      - documents
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing document
+      parameters:
+      - description: Document update data
+        in: body
+        name: document
+        required: true
+        schema:
+          $ref: '#/definitions/document.UpdateDocumentIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Update a document
+      tags:
+      - documents
+  /api/document/{document_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a document by ID
+      parameters:
+      - description: Document ID
+        in: path
+        name: document_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Delete a document
+      tags:
+      - documents
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a single document by its ID
+      parameters:
+      - description: Document ID
+        in: path
+        name: document_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_nnniyaz_nop_server_handler_http_document.Document'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Get document by ID
+      tags:
+      - documents
+  /api/employee:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of all employees with multilingual names
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/employee.Employees'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Get all employees
+      tags:
+      - employees
+    post:
+      consumes:
+      - application/json
+      description: Creates a new employee with multilingual name
+      parameters:
+      - description: Employee data
+        in: body
+        name: employee
+        required: true
+        schema:
+          $ref: '#/definitions/employee.CreateEmployeeIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Create a new employee
+      tags:
+      - employees
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing employee
+      parameters:
+      - description: Employee update data
+        in: body
+        name: employee
+        required: true
+        schema:
+          $ref: '#/definitions/employee.UpdateEmployeeIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Update an employee
+      tags:
+      - employees
+  /api/employee/{employee_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes an employee by ID
+      parameters:
+      - description: Employee ID
+        in: path
+        name: employee_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Delete an employee
+      tags:
+      - employees
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a single employee by ID
+      parameters:
+      - description: Employee ID
+        in: path
+        name: employee_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_nnniyaz_nop_server_handler_http_employee.Employee'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Get employee by ID
+      tags:
+      - employees
+  /api/enterprise:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a paginated list of enterprises with search, region,
+        and field filters
+      parameters:
+      - default: 0
+        description: Offset for pagination
+        in: query
+        name: offset
+        type: integer
+      - default: 10
+        description: Limit for pagination
+        in: query
+        name: limit
+        type: integer
+      - description: Search by name
+        in: query
+        name: search
+        type: string
+      - description: Filter by region/location
+        in: query
+        name: region
+        type: string
+      - description: Filter by industry
+        in: query
+        name: field
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/enterprise.Enterprises'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Get all enterprises
+      tags:
+      - enterprises
+    post:
+      consumes:
+      - application/json
+      description: Creates a new enterprise with complete financial and operational
+        data
+      parameters:
+      - description: Enterprise data
+        in: body
+        name: enterprise
+        required: true
+        schema:
+          $ref: '#/definitions/enterprise.CreateEnterpriseIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Create a new enterprise
+      tags:
+      - enterprises
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing enterprise with new data
+      parameters:
+      - description: Enterprise update data
+        in: body
+        name: enterprise
+        required: true
+        schema:
+          $ref: '#/definitions/enterprise.UpdateEnterpriseIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Update an enterprise
+      tags:
+      - enterprises
+  /api/enterprise/{enterprise_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes an enterprise by ID
+      parameters:
+      - description: Enterprise ID
+        in: path
+        name: enterprise_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Delete an enterprise
+      tags:
+      - enterprises
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a single enterprise with full details
+      parameters:
+      - description: Enterprise ID
+        in: path
+        name: enterprise_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_nnniyaz_nop_server_handler_http_enterprise.Enterprise'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Get enterprise by ID
+      tags:
+      - enterprises
+  /api/event:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of all events with multilingual support
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/event.Events'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Get all events
+      tags:
+      - events
+    post:
+      consumes:
+      - application/json
+      description: Creates a new event with multilingual name and description
+      parameters:
+      - description: Event data
+        in: body
+        name: event
+        required: true
+        schema:
+          $ref: '#/definitions/event.CreateEventIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Create a new event
+      tags:
+      - events
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing event with new data
+      parameters:
+      - description: Event update data
+        in: body
+        name: event
+        required: true
+        schema:
+          $ref: '#/definitions/event.UpdateEventIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Update an event
+      tags:
+      - events
+  /api/event/{event_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes an event by ID
+      parameters:
+      - description: Event ID
+        in: path
+        name: event_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Delete an event
+      tags:
+      - events
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a single event by its ID
+      parameters:
+      - description: Event ID
+        in: path
+        name: event_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_nnniyaz_nop_server_handler_http_event.Event'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Get event by ID
+      tags:
+      - events
+  /api/mission:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves the mission statement with multilingual text
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_nnniyaz_nop_server_handler_http_mission.Mission'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Get mission
+      tags:
+      - mission
+    post:
+      consumes:
+      - application/json
+      description: Creates a new mission statement
+      parameters:
+      - description: Mission data
+        in: body
+        name: mission
+        required: true
+        schema:
+          $ref: '#/definitions/mission.CreateMissionIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Create mission
+      tags:
+      - mission
+    put:
+      consumes:
+      - application/json
+      description: Updates the mission statement
+      parameters:
+      - description: Mission update data
+        in: body
+        name: mission
+        required: true
+        schema:
+          $ref: '#/definitions/mission.UpdateMissionIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Update mission
+      tags:
+      - mission
+  /api/news:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of all news articles with multilingual title and
+        content
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/news.NewsList'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Get all news
+      tags:
+      - news
+    post:
+      consumes:
+      - application/json
+      description: Creates a new news article with multilingual title and content
+      parameters:
+      - description: News data
+        in: body
+        name: news
+        required: true
+        schema:
+          $ref: '#/definitions/news.CreateNewsIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Create a new news article
+      tags:
+      - news
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing news article
+      parameters:
+      - description: News update data
+        in: body
+        name: news
+        required: true
+        schema:
+          $ref: '#/definitions/news.UpdateNewsIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Update a news article
+      tags:
+      - news
+  /api/news/{news_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a news article by ID
+      parameters:
+      - description: News ID
+        in: path
+        name: news_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Delete a news article
+      tags:
+      - news
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a single news article by its ID
+      parameters:
+      - description: News ID
+        in: path
+        name: news_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_nnniyaz_nop_server_handler_http_news.News'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Get news by ID
+      tags:
+      - news
+  /api/npa:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of all normative legal acts with multilingual
+        titles
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/npa.Npas'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Get all NPAs
+      tags:
+      - npa
+    post:
+      consumes:
+      - application/json
+      description: Creates a new normative legal act with multilingual title
+      parameters:
+      - description: NPA data
+        in: body
+        name: npa
+        required: true
+        schema:
+          $ref: '#/definitions/npa.CreateNpaIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Create a new NPA
+      tags:
+      - npa
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing normative legal act
+      parameters:
+      - description: NPA update data
+        in: body
+        name: npa
+        required: true
+        schema:
+          $ref: '#/definitions/npa.UpdateNpaIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Update an NPA
+      tags:
+      - npa
+  /api/npa/{npa_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a normative legal act by ID
+      parameters:
+      - description: NPA ID
+        in: path
+        name: npa_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Delete an NPA
+      tags:
+      - npa
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a single NPA by its ID
+      parameters:
+      - description: NPA ID
+        in: path
+        name: npa_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_nnniyaz_nop_server_handler_http_npa.Npa'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Get NPA by ID
+      tags:
+      - npa
+  /api/partner:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of all partners with multilingual names
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/partner.Partners'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Get all partners
+      tags:
+      - partners
+    post:
+      consumes:
+      - application/json
+      description: Creates a new partner with multilingual name
+      parameters:
+      - description: Partner data
+        in: body
+        name: partner
+        required: true
+        schema:
+          $ref: '#/definitions/partner.CreatePartnerIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Create a new partner
+      tags:
+      - partners
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing partner
+      parameters:
+      - description: Partner update data
+        in: body
+        name: partner
+        required: true
+        schema:
+          $ref: '#/definitions/partner.UpdatePartnerIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Update a partner
+      tags:
+      - partners
+  /api/partner/{partner_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a partner by ID
+      parameters:
+      - description: Partner ID
+        in: path
+        name: partner_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Delete a partner
+      tags:
+      - partners
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a single partner by its ID
+      parameters:
+      - description: Partner ID
+        in: path
+        name: partner_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_nnniyaz_nop_server_handler_http_partner.Partner'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Get partner by ID
+      tags:
+      - partners
+  /api/user:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of all users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.Users'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Get all users
+      tags:
+      - users
+    post:
+      consumes:
+      - application/json
+      description: Creates a new user with credentials
+      parameters:
+      - description: User data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/user.CreateUserIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Create a new user
+      tags:
+      - users
+    put:
+      consumes:
+      - application/json
+      description: Updates user's first name, last name, and role
+      parameters:
+      - description: User update data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/user.UpdateUserIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Update user credentials
+      tags:
+      - users
+  /api/user/{user_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Soft deletes a user by marking as disabled
+      parameters:
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Delete/disable a user
+      tags:
+      - users
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a single user by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_nnniyaz_nop_server_handler_http_user.User'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Get user by ID
+      tags:
+      - users
+  /api/user/{user_id}/recover:
+    post:
+      consumes:
+      - application/json
+      description: Restores a disabled user
+      parameters:
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Recover/enable a user
+      tags:
+      - users
+  /api/user/password:
+    put:
+      consumes:
+      - application/json
+      description: Updates user's password
+      parameters:
+      - description: Password update data
+        in: body
+        name: password
+        required: true
+        schema:
+          $ref: '#/definitions/user.UpdateUserPasswordIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Update user password
+      tags:
+      - users
   /upload/category-image:
     post:
       consumes:

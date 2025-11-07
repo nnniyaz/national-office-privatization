@@ -113,105 +113,107 @@ func (h *Handler) InitRoutes(isDevMode bool) *chi.Mux {
 
 	r.Get("/swagger/*", httpSwagger.WrapHandler)
 
-	r.Route("/auth", func(r chi.Router) {
-		r.Post("/logout", h.Auth.Logout)
-		r.With(h.Middleware.UserAuth).Get("/me", h.Auth.GetCurrentUser)
-		r.With(h.Middleware.NoAuth).Post("/login", h.Auth.Login)
-	})
+	r.Route("/api", func(r chi.Router) {
+		r.Route("/auth", func(r chi.Router) {
+			r.Post("/logout", h.Auth.Logout)
+			r.With(h.Middleware.UserAuth).Get("/me", h.Auth.GetCurrentUser)
+			r.With(h.Middleware.NoAuth).Post("/login", h.Auth.Login)
+		})
 
-	r.Route("/users", func(r chi.Router) {
-		r.Use(h.Middleware.UserAuth)
-		r.Get("/", h.User.GetUsers)
-		r.Get("/{user_id}", h.User.GetUserById)
-		r.Post("/", h.User.CreateUser)
-		r.Put("/", h.User.UpdateUser)
-		r.Put("/password", h.User.UpdateUserPassword)
-		r.Delete("/{user_id}", h.User.DeleteUser)
-		r.Put("/{user_id}", h.User.RecoverUser)
-	})
+		r.Route("/users", func(r chi.Router) {
+			r.Use(h.Middleware.UserAuth)
+			r.Get("/", h.User.GetUsers)
+			r.Get("/{user_id}", h.User.GetUserById)
+			r.Post("/", h.User.CreateUser)
+			r.Put("/", h.User.UpdateUser)
+			r.Put("/password", h.User.UpdateUserPassword)
+			r.Delete("/{user_id}", h.User.DeleteUser)
+			r.Put("/{user_id}", h.User.RecoverUser)
+		})
 
-	r.Route("/contacts", func(r chi.Router) {
-		r.Get("/", h.Contacts.GetContacts)
-		r.With(h.Middleware.UserAuth).Post("/", h.Contacts.CreateContact)
-		r.With(h.Middleware.UserAuth).Put("/", h.Contacts.UpdateContact)
-	})
+		r.Route("/contacts", func(r chi.Router) {
+			r.Get("/", h.Contacts.GetContacts)
+			r.With(h.Middleware.UserAuth).Post("/", h.Contacts.CreateContact)
+			r.With(h.Middleware.UserAuth).Put("/", h.Contacts.UpdateContact)
+		})
 
-	r.Route("/mission", func(r chi.Router) {
-		r.Get("/", h.Mission.GetMission)
-		r.With(h.Middleware.UserAuth).Post("/", h.Mission.CreateMission)
-		r.With(h.Middleware.UserAuth).Put("/", h.Mission.UpdateMission)
-	})
+		r.Route("/mission", func(r chi.Router) {
+			r.Get("/", h.Mission.GetMission)
+			r.With(h.Middleware.UserAuth).Post("/", h.Mission.CreateMission)
+			r.With(h.Middleware.UserAuth).Put("/", h.Mission.UpdateMission)
+		})
 
-	r.Route("/employee", func(r chi.Router) {
-		r.Get("/", h.Employee.GetEmployees)
-		r.With(h.Middleware.UserAuth).Get("/{employee_id}", h.Employee.GetEmployeeById)
-		r.With(h.Middleware.UserAuth).Post("/", h.Employee.CreateEmployee)
-		r.With(h.Middleware.UserAuth).Put("/", h.Employee.UpdateEmployee)
-		r.With(h.Middleware.UserAuth).Delete("/{employee_id}", h.Employee.DeleteEmployee)
-	})
+		r.Route("/employee", func(r chi.Router) {
+			r.Get("/", h.Employee.GetEmployees)
+			r.With(h.Middleware.UserAuth).Get("/{employee_id}", h.Employee.GetEmployeeById)
+			r.With(h.Middleware.UserAuth).Post("/", h.Employee.CreateEmployee)
+			r.With(h.Middleware.UserAuth).Put("/", h.Employee.UpdateEmployee)
+			r.With(h.Middleware.UserAuth).Delete("/{employee_id}", h.Employee.DeleteEmployee)
+		})
 
-	r.Route("/partner", func(r chi.Router) {
-		r.Get("/", h.Partner.GetPartners)
-		r.With(h.Middleware.UserAuth).Get("/{partner_id}", h.Partner.GetPartnerById)
-		r.With(h.Middleware.UserAuth).Post("/", h.Partner.CreatePartner)
-		r.With(h.Middleware.UserAuth).Put("/", h.Partner.UpdatePartner)
-		r.With(h.Middleware.UserAuth).Delete("/{partner_id}", h.Partner.DeletePartner)
-	})
+		r.Route("/partner", func(r chi.Router) {
+			r.Get("/", h.Partner.GetPartners)
+			r.With(h.Middleware.UserAuth).Get("/{partner_id}", h.Partner.GetPartnerById)
+			r.With(h.Middleware.UserAuth).Post("/", h.Partner.CreatePartner)
+			r.With(h.Middleware.UserAuth).Put("/", h.Partner.UpdatePartner)
+			r.With(h.Middleware.UserAuth).Delete("/{partner_id}", h.Partner.DeletePartner)
+		})
 
-	r.Route("/document", func(r chi.Router) {
-		r.Get("/", h.Document.GetDocuments)
-		r.With(h.Middleware.UserAuth).Get("/{document_id}", h.Document.GetDocumentById)
-		r.With(h.Middleware.UserAuth).Post("/", h.Document.CreateDocument)
-		r.With(h.Middleware.UserAuth).Put("/", h.Document.UpdateDocument)
-		r.With(h.Middleware.UserAuth).Delete("/{document_id}", h.Document.DeleteDocument)
-	})
+		r.Route("/document", func(r chi.Router) {
+			r.Get("/", h.Document.GetDocuments)
+			r.With(h.Middleware.UserAuth).Get("/{document_id}", h.Document.GetDocumentById)
+			r.With(h.Middleware.UserAuth).Post("/", h.Document.CreateDocument)
+			r.With(h.Middleware.UserAuth).Put("/", h.Document.UpdateDocument)
+			r.With(h.Middleware.UserAuth).Delete("/{document_id}", h.Document.DeleteDocument)
+		})
 
-	r.Route("/news", func(r chi.Router) {
-		r.Get("/", h.News.GetNews)
-		r.Get("/{news_id}", h.News.GetNewsById)
-		r.With(h.Middleware.UserAuth).Post("/", h.News.CreateNews)
-		r.With(h.Middleware.UserAuth).Put("/", h.News.UpdateNews)
-		r.With(h.Middleware.UserAuth).Delete("/{news_id}", h.News.DeleteNews)
-	})
+		r.Route("/news", func(r chi.Router) {
+			r.Get("/", h.News.GetNews)
+			r.Get("/{news_id}", h.News.GetNewsById)
+			r.With(h.Middleware.UserAuth).Post("/", h.News.CreateNews)
+			r.With(h.Middleware.UserAuth).Put("/", h.News.UpdateNews)
+			r.With(h.Middleware.UserAuth).Delete("/{news_id}", h.News.DeleteNews)
+		})
 
-	r.Route("/enterprise", func(r chi.Router) {
-		r.With(h.Middleware.PaginationParams).Get("/", h.Enterprise.GetEnterprises)
-		r.Get("/{enterprise_id}", h.Enterprise.GetEnterpriseById)
-		r.With(h.Middleware.UserAuth).Post("/", h.Enterprise.CreateEnterprise)
-		r.With(h.Middleware.UserAuth).Put("/", h.Enterprise.UpdateEnterprise)
-		r.With(h.Middleware.UserAuth).Delete("/{enterprise_id}", h.Enterprise.DeleteEnterprise)
-	})
+		r.Route("/enterprise", func(r chi.Router) {
+			r.With(h.Middleware.PaginationParams).Get("/", h.Enterprise.GetEnterprises)
+			r.Get("/{enterprise_id}", h.Enterprise.GetEnterpriseById)
+			r.With(h.Middleware.UserAuth).Post("/", h.Enterprise.CreateEnterprise)
+			r.With(h.Middleware.UserAuth).Put("/", h.Enterprise.UpdateEnterprise)
+			r.With(h.Middleware.UserAuth).Delete("/{enterprise_id}", h.Enterprise.DeleteEnterprise)
+		})
 
-	r.Route("/npa", func(r chi.Router) {
-		r.Get("/", h.Npa.GetNpas)
-		r.With(h.Middleware.UserAuth).Get("/{npa_id}", h.Npa.GetNpaById)
-		r.With(h.Middleware.UserAuth).Post("/", h.Npa.CreateNpa)
-		r.With(h.Middleware.UserAuth).Put("/", h.Npa.UpdateNpa)
-		r.With(h.Middleware.UserAuth).Delete("/{npa_id}", h.Npa.DeleteNpa)
-	})
+		r.Route("/npa", func(r chi.Router) {
+			r.Get("/", h.Npa.GetNpas)
+			r.With(h.Middleware.UserAuth).Get("/{npa_id}", h.Npa.GetNpaById)
+			r.With(h.Middleware.UserAuth).Post("/", h.Npa.CreateNpa)
+			r.With(h.Middleware.UserAuth).Put("/", h.Npa.UpdateNpa)
+			r.With(h.Middleware.UserAuth).Delete("/{npa_id}", h.Npa.DeleteNpa)
+		})
 
-	r.Route("/event", func(r chi.Router) {
-		r.Get("/", h.Event.GetEvents)
-		r.With(h.Middleware.UserAuth).Get("/{event_id}", h.Event.GetEventById)
-		r.With(h.Middleware.UserAuth).Post("/", h.Event.CreateEvent)
-		r.With(h.Middleware.UserAuth).Put("/", h.Event.UpdateEvent)
-		r.With(h.Middleware.UserAuth).Delete("/{event_id}", h.Event.DeleteEvent)
-	})
+		r.Route("/event", func(r chi.Router) {
+			r.Get("/", h.Event.GetEvents)
+			r.With(h.Middleware.UserAuth).Get("/{event_id}", h.Event.GetEventById)
+			r.With(h.Middleware.UserAuth).Post("/", h.Event.CreateEvent)
+			r.With(h.Middleware.UserAuth).Put("/", h.Event.UpdateEvent)
+			r.With(h.Middleware.UserAuth).Delete("/{event_id}", h.Event.DeleteEvent)
+		})
 
-	r.Route("/application", func(r chi.Router) {
-		r.With(h.Middleware.UserAuth).Get("/", h.Application.GetApplications)
-		r.With(h.Middleware.UserAuth).Get("/{application_id}", h.Application.GetApplicationById)
-		r.Post("/", h.Application.CreateApplication)
-		r.With(h.Middleware.UserAuth).Put("/", h.Application.UpdateApplication)
-		r.With(h.Middleware.UserAuth).Delete("/{application_id}", h.Application.DeleteApplication)
-	})
+		r.Route("/application", func(r chi.Router) {
+			r.With(h.Middleware.UserAuth).Get("/", h.Application.GetApplications)
+			r.With(h.Middleware.UserAuth).Get("/{application_id}", h.Application.GetApplicationById)
+			r.Post("/", h.Application.CreateApplication)
+			r.With(h.Middleware.UserAuth).Put("/", h.Application.UpdateApplication)
+			r.With(h.Middleware.UserAuth).Delete("/{application_id}", h.Application.DeleteApplication)
+		})
 
-	r.Route("/upload", func(r chi.Router) {
-		r.Use(h.Middleware.UserAuth)
-		r.Post("/document", h.Upload.UploadDocuments)
-		r.Post("/npa", h.Upload.UploadNpa)
-		r.Post("/news-image", h.Upload.UploadNewsImage)
-		r.Post("/event-image", h.Upload.UploadEventImage)
+		r.Route("/upload", func(r chi.Router) {
+			r.Use(h.Middleware.UserAuth)
+			r.Post("/document", h.Upload.UploadDocuments)
+			r.Post("/npa", h.Upload.UploadNpa)
+			r.Post("/news-image", h.Upload.UploadNewsImage)
+			r.Post("/event-image", h.Upload.UploadEventImage)
+		})
 	})
 
 	return r

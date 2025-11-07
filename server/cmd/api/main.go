@@ -27,7 +27,7 @@ import (
 
 const port = 8080
 
-//	@title			Ardo Backend API
+//	@title			NOP API
 //	@version		0.0.1
 //	@description	Detailed info about all endpoints
 
