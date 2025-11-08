@@ -64,6 +64,7 @@ func TestDocument_Update_EmptyTitle_ShouldFail(t *testing.T) {
 	title := i18n.MlString{EN: "Title"}
 	d, err := document.NewDocument(title, "file.pdf")
 	require.NoError(t, err)
+	require.NotNil(t, d)
 
 	emptyTitle := i18n.MlString{}
 
@@ -72,3 +73,13 @@ func TestDocument_Update_EmptyTitle_ShouldFail(t *testing.T) {
 	assert.Error(t, err)
 }
 
+func TestDocument_Update_EmptyFilename_ShouldFail(t *testing.T) {
+	title := i18n.MlString{EN: "Title"}
+	d, err := document.NewDocument(title, "file.pdf")
+	require.NoError(t, err)
+	require.NotNil(t, d)
+
+	err = d.Update(title, "")
+
+	assert.Error(t, err)
+}

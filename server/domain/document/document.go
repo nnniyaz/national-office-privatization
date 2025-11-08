@@ -56,6 +56,9 @@ func (d *Document) Update(title i18n.MlString, filename string) error {
 	if err := title.ValidateAtLeastOne(); err != nil {
 		return exceptions.ErrInvalidDocumentLabel
 	}
+	if filename == "" {
+		return exceptions.ErrInvalidDocumentFilename
+	}
 	d.title = title
 	d.filename = filename
 	d.updatedAt = time.Now()
