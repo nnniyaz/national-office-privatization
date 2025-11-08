@@ -32,6 +32,7 @@ export default function Employee() {
             key: "name",
             title: translate("name", lang),
             dataIndex: "name",
+            render: (name) => name?.[lang] || name?.kz || name?.ru || name?.en || '-',
         },
         {
             key: "group",

@@ -6,6 +6,8 @@ import {translate} from "../../../../shared/translate/translate.ts";
 import {useEffect} from "react";
 import {Upload} from "../../../../shared/ui/Upload/Upload.tsx";
 import {useWatch} from "antd/es/form/Form";
+import MlStringInput from "../../../../shared/ui/MlStringInput/MlStringInput.tsx";
+import type {MlString} from "../../../../shared/i18n/types.ts";
 
 export default function EventEdit() {
     const {id} = useParams();
@@ -65,12 +67,12 @@ export default function EventEdit() {
     return (
         <Card bodyStyle={{padding: "10px"}} style={{maxWidth: "500px"}} loading={isLoading}>
             <h2>{event?.id}</h2>
-            <p style={{marginBottom: "5px"}}><b>{`${translate("name", lang)}: `}</b><i>{event?.name}</i></p>
+            <p style={{marginBottom: "5px"}}><b>{`${translate("name", lang)}: `}</b><i>{event?.name?.[lang] || event?.name?.kz || event?.name?.ru || event?.name?.en || '-'}</i></p>
             <p style={{marginBottom: "5px"}}><b>{`${translate("planned_at", lang)}: `}</b><i>{new Date(event?.plannedAt || "").toLocaleString()}</i></p>
             <p style={{marginBottom: "5px"}}><b>{`${translate("created_at", lang)}: `}</b><i>{new Date(event?.createdAt || "").toLocaleString()}</i></p>
             <p style={{marginBottom: "5px"}}><b>{`${translate("updated_at", lang)}: `}</b><i>{new Date(event?.updatedAt || "").toLocaleString()}</i></p>
             <p style={{marginBottom: "5px"}}><b>{`${translate("desc", lang)}: `}</b></p>
-            <p><i>{event?.desc}</i></p>
+            <p><i>{event?.desc?.[lang] || event?.desc?.kz || event?.desc?.ru || event?.desc?.en || '-'}</i></p>
 
             <Divider/>
 
@@ -81,18 +83,46 @@ export default function EventEdit() {
                 onFinish={onFinish}
             >
                 <Form.Item
-                    label={translate("name", lang)}
+                    label=""
                     name={"name"}
-                    rules={[{required: true, message: translate("please_enter_name", lang)}]}
+                    rules={[{
+                        required: true,
+                        validator: (_, value: MlString) => {
+                            if (!value || (!value.kz && !value.ru && !value.en)) {
+                                return Promise.reject(translate("please_enter_name", lang));
+                            }
+                            return Promise.resolve();
+                        }
+                    }]}
                 >
-                    <Input placeholder={translate("enter_name", lang)}/>
+                    <MlStringInput
+                        label={translate("name", lang)}
+                        value={form.getFieldValue("name") || {}}
+                        onChange={(v) => form.setFieldValue("name", v)}
+                        required
+                        rows={2}
+                    />
                 </Form.Item>
                 <Form.Item
-                    label={translate("desc", lang)}
+                    label=""
                     name={"desc"}
-                    rules={[{required: true, message: translate("please_enter_desc", lang)}]}
+                    rules={[{
+                        required: true,
+                        validator: (_, value: MlString) => {
+                            if (!value || (!value.kz && !value.ru && !value.en)) {
+                                return Promise.reject(translate("please_enter_desc", lang));
+                            }
+                            return Promise.resolve();
+                        }
+                    }]}
                 >
-                    <Input placeholder={translate("enter_desc", lang)}/>
+                    <MlStringInput
+                        label={translate("desc", lang)}
+                        value={form.getFieldValue("desc") || {}}
+                        onChange={(v) => form.setFieldValue("desc", v)}
+                        required
+                        rows={5}
+                    />
                 </Form.Item>
                 <Form.Item
                     label={translate("file", lang)}

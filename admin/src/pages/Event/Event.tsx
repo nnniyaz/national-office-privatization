@@ -32,6 +32,7 @@ export default function Event() {
             key: "name",
             title: translate("name", lang),
             dataIndex: "name",
+            render: (name) => name?.[lang] || name?.kz || name?.ru || name?.en || '-',
         },
         {
             key: "plannedAt",

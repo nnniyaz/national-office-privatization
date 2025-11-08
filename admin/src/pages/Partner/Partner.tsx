@@ -33,6 +33,7 @@ export default function Partner() {
             key: "name",
             title: txts.name[lang],
             dataIndex: "name",
+            render: (name) => name?.[lang] || name?.kz || name?.ru || name?.en || '-',
         },
         {
             key: "link",

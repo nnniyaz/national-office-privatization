@@ -4,6 +4,8 @@ import {useActions} from "../../../../shared/hooks/useActions.ts";
 import {Button, Card, Divider, Form, Input} from "antd";
 import {translate} from "../../../../shared/translate/translate.ts";
 import {useEffect} from "react";
+import MlStringInput from "../../../../shared/ui/MlStringInput/MlStringInput.tsx";
+import type {MlString} from "../../../../shared/i18n/types.ts";
 
 export default function PartnerEdit() {
     const {id} = useParams();
@@ -47,7 +49,7 @@ export default function PartnerEdit() {
     return (
         <Card bodyStyle={{padding: "10px"}} style={{maxWidth: "500px"}} loading={isLoading}>
             <h2>{partner?.id}</h2>
-            <p>{`${translate("name", lang)}: `}<i>{partner?.name}</i></p>
+            <p>{`${translate("name", lang)}: `}<i>{partner?.name?.[lang] || partner?.name?.kz || partner?.name?.ru || partner?.name?.en || '-'}</i></p>
             <p>{`${translate("link", lang)}: `}<i>{partner?.link}</i></p>
 
             <Divider/>
@@ -58,11 +60,25 @@ export default function PartnerEdit() {
                 onFinish={onFinish}
             >
                 <Form.Item
-                    label={translate("name", lang)}
+                    label=""
                     name={"name"}
-                    rules={[{required: true, message: translate("please_enter_name", lang)}]}
+                    rules={[{
+                        required: true,
+                        validator: (_, value: MlString) => {
+                            if (!value || (!value.kz && !value.ru && !value.en)) {
+                                return Promise.reject(translate("please_enter_name", lang));
+                            }
+                            return Promise.resolve();
+                        }
+                    }]}
                 >
-                    <Input placeholder={translate("enter_name", lang)}/>
+                    <MlStringInput
+                        label={translate("name", lang)}
+                        value={formGeneral.getFieldValue("name") || {}}
+                        onChange={(v) => formGeneral.setFieldValue("name", v)}
+                        required
+                        rows={2}
+                    />
                 </Form.Item>
                 <Form.Item
                     label={translate("link", lang)}

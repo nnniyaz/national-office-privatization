@@ -1,10 +1,12 @@
-import {Button, Card, Form, Input} from "antd";
+import {Button, Card, Form} from "antd";
 import {useTypedSelector} from "../../../../shared/hooks/useTypedSelector.ts";
 import {useActions} from "../../../../shared/hooks/useActions.ts";
 import {useNavigate} from "react-router-dom";
 import {translate} from "../../../../shared/translate/translate.ts";
 import {Upload} from "../../../../shared/ui/Upload/Upload.tsx";
 import {useWatch} from "antd/es/form/Form";
+import MlStringInput from "../../../../shared/ui/MlStringInput/MlStringInput.tsx";
+import type {MlString} from "../../../../shared/i18n/types.ts";
 
 export default function DocumentCreate() {
     const navigate = useNavigate();
@@ -39,11 +41,25 @@ export default function DocumentCreate() {
                 onFinish={onFinish}
             >
                 <Form.Item
-                    label={translate("title", lang)}
+                    label=""
                     name={"title"}
-                    rules={[{required: true, message: translate("please_enter_title", lang)}]}
+                    rules={[{
+                        required: true,
+                        validator: (_,  value: MlString) => {
+                            if (!value || (!value.kz && !value.ru && !value.en)) {
+                                return Promise.reject(translate("please_enter_title", lang));
+                            }
+                            return Promise.resolve();
+                        }
+                    }]}
                 >
-                    <Input placeholder={translate("enter_title", lang)}/>
+                    <MlStringInput
+                        label={translate("title", lang)}
+                        value={form.getFieldValue("title") || {}}
+                        onChange={(v) => form.setFieldValue("title", v)}
+                        required
+                        rows={2}
+                    />
                 </Form.Item>
                 <Form.Item
                     label={translate("file", lang)}

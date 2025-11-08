@@ -3,7 +3,8 @@ import {useTypedSelector} from "../../../../shared/hooks/useTypedSelector.ts";
 import {useActions} from "../../../../shared/hooks/useActions.ts";
 import {useNavigate} from "react-router-dom";
 import {translate} from "../../../../shared/translate/translate.ts";
-import TextArea from "antd/es/input/TextArea";
+import MlStringInput from "../../../../shared/ui/MlStringInput/MlStringInput.tsx";
+import type {MlString} from "../../../../shared/i18n/types.ts";
 
 export default function MissionCreate() {
     const navigate = useNavigate();
@@ -25,12 +26,23 @@ export default function MissionCreate() {
                 onFinish={onFinish}
             >
                 <Form.Item
-                    label={translate("text", lang)}
+                    label=""
                     name={"text"}
-                    rules={[{required: true, message: translate("please_enter_text", lang)}]}
+                    rules={[{
+                        required: true,
+                        validator: (_, value: MlString) => {
+                            if (!value || (!value.kz && !value.ru && !value.en)) {
+                                return Promise.reject(translate("please_enter_text", lang));
+                            }
+                            return Promise.resolve();
+                        }
+                    }]}
                 >
-                    <TextArea
-                        placeholder={translate("enter_text", lang)}
+                    <MlStringInput
+                        label={translate("text", lang)}
+                        value={form.getFieldValue("text") || {}}
+                        onChange={(v) => form.setFieldValue("text", v)}
+                        required
                         rows={10}
                     />
                 </Form.Item>

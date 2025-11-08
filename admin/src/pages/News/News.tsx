@@ -32,6 +32,7 @@ export default function News() {
             key: "title",
             title: translate("title", lang),
             dataIndex: "title",
+            render: (title) => title?.[lang] || title?.kz || title?.ru || title?.en || '-',
         },
         {
             key: "createdAt",

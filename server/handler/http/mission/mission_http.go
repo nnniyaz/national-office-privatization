@@ -45,6 +45,11 @@ func (hd *HttpDelivery) GetMission(w http.ResponseWriter, r *http.Request) {
 		response.NewError(hd.logger, w, r, err)
 		return
 	}
+	// Mission может быть nil если ещё не создана (singleton)
+	if foundMission == nil {
+		response.NewSuccess(hd.logger, w, r, nil)
+		return
+	}
 	m := Mission{
 		Id:   foundMission.GetID().String(),
 		Text: foundMission.GetText(),

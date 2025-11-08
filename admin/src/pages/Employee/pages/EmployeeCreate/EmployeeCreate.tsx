@@ -3,6 +3,8 @@ import {useTypedSelector} from "../../../../shared/hooks/useTypedSelector.ts";
 import {useActions} from "../../../../shared/hooks/useActions.ts";
 import {useNavigate} from "react-router-dom";
 import {translate} from "../../../../shared/translate/translate.ts";
+import MlStringInput from "../../../../shared/ui/MlStringInput/MlStringInput.tsx";
+import type {MlString} from "../../../../shared/i18n/types.ts";
 
 export default function EmployeeCreate() {
     const navigate = useNavigate();
@@ -24,11 +26,25 @@ export default function EmployeeCreate() {
                 onFinish={onFinish}
             >
                 <Form.Item
-                    label={translate("name", lang)}
+                    label=""
                     name={"name"}
-                    rules={[{required: true, message: translate("please_enter_name", lang)}]}
+                    rules={[{
+                        required: true,
+                        validator: (_, value: MlString) => {
+                            if (!value || (!value.kz && !value.ru && !value.en)) {
+                                return Promise.reject(translate("please_enter_name", lang));
+                            }
+                            return Promise.resolve();
+                        }
+                    }]}
                 >
-                    <Input placeholder={translate("enter_name", lang)}/>
+                    <MlStringInput
+                        label={translate("name", lang)}
+                        value={form.getFieldValue("name") || {}}
+                        onChange={(v) => form.setFieldValue("name", v)}
+                        required
+                        rows={2}
+                    />
                 </Form.Item>
                 <Form.Item
                     label={translate("group", lang)}

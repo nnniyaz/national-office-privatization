@@ -23,11 +23,12 @@ func (m *MockMissionRepo) Get(ctx context.Context) (*mission.Mission, error) {
 	m.mu.RLock()
 	defer m.mu.RUnlock()
 
-	// Mission is singleton - return first one or nil
+	// Mission is singleton - return first one or nil if doesn't exist
 	for _, mission := range m.missions {
 		return mission, nil
 	}
-	return nil, errors.New("mission not found")
+	// Return nil without error when mission doesn't exist yet
+	return nil, nil
 }
 
 func (m *MockMissionRepo) Create(ctx context.Context, mission *mission.Mission) error {

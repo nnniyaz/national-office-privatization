@@ -1,12 +1,13 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {useTypedSelector} from "../../../../shared/hooks/useTypedSelector.ts";
 import {useActions} from "../../../../shared/hooks/useActions.ts";
-import {Button, Card, Divider, Form, Input} from "antd";
+import {Button, Card, Divider, Form} from "antd";
 import {translate} from "../../../../shared/translate/translate.ts";
 import {useEffect} from "react";
-import TextArea from "antd/es/input/TextArea";
 import {Upload} from "../../../../shared/ui/Upload/Upload.tsx";
 import {useWatch} from "antd/es/form/Form";
+import MlStringInput from "../../../../shared/ui/MlStringInput/MlStringInput.tsx";
+import type {MlString} from "../../../../shared/i18n/types.ts";
 
 export default function NewsEdit() {
     const {id} = useParams();
@@ -65,10 +66,10 @@ export default function NewsEdit() {
     return (
         <Card bodyStyle={{padding: "10px"}} style={{maxWidth: "500px"}} loading={isLoading}>
             <h2>{news?.id}</h2>
-            <p style={{marginBottom: "5px"}}><b>{`${translate("title", lang)}: `}</b><i>{news?.title}</i></p>
+            <p style={{marginBottom: "5px"}}><b>{`${translate("title", lang)}: `}</b><i>{news?.title?.[lang] || news?.title?.kz || news?.title?.ru || news?.title?.en || '-'}</i></p>
             <p style={{marginBottom: "5px"}}><b>{`${translate("created_at", lang)}: `}</b><i>{new Date(news?.createdAt || "").toLocaleString()}</i></p>
             <p style={{marginBottom: "5px"}}><b>{`${translate("content", lang)}: `}</b></p>
-            <p><i>{news?.content}</i></p>
+            <p><i>{news?.content?.[lang] || news?.content?.kz || news?.content?.ru || news?.content?.en || '-'}</i></p>
 
             <Divider/>
 
@@ -79,11 +80,25 @@ export default function NewsEdit() {
                 onFinish={onFinish}
             >
                 <Form.Item
-                    label={translate("title", lang)}
+                    label=""
                     name={"title"}
-                    rules={[{required: true, message: translate("please_enter_title", lang)}]}
+                    rules={[{
+                        required: true,
+                        validator: (_, value: MlString) => {
+                            if (!value || (!value.kz && !value.ru && !value.en)) {
+                                return Promise.reject(translate("please_enter_title", lang));
+                            }
+                            return Promise.resolve();
+                        }
+                    }]}
                 >
-                    <Input placeholder={translate("enter_title", lang)}/>
+                    <MlStringInput
+                        label={translate("title", lang)}
+                        value={form.getFieldValue("title") || {}}
+                        onChange={(v) => form.setFieldValue("title", v)}
+                        required
+                        rows={2}
+                    />
                 </Form.Item>
                 <Form.Item
                     label={translate("file", lang)}
@@ -106,12 +121,23 @@ export default function NewsEdit() {
                     />
                 </Form.Item>
                 <Form.Item
-                    label={translate("content", lang)}
+                    label=""
                     name={"content"}
-                    rules={[{required: true, message: translate("please_enter_content", lang)}]}
+                    rules={[{
+                        required: true,
+                        validator: (_, value: MlString) => {
+                            if (!value || (!value.kz && !value.ru && !value.en)) {
+                                return Promise.reject(translate("please_enter_content", lang));
+                            }
+                            return Promise.resolve();
+                        }
+                    }]}
                 >
-                    <TextArea
-                        placeholder={translate("enter_content", lang)}
+                    <MlStringInput
+                        label={translate("content", lang)}
+                        value={form.getFieldValue("content") || {}}
+                        onChange={(v) => form.setFieldValue("content", v)}
+                        required
                         rows={10}
                     />
                 </Form.Item>

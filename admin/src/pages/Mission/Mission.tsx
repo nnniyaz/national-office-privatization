@@ -41,7 +41,7 @@ export default function Mission() {
             </Row>
             <p
                 style={{padding: "10px"}}
-                dangerouslySetInnerHTML={{__html: !!mission ? mission.text.replace(/\n/g, "<br/>") : translate("mission_is_not_set", lang)}}
+                dangerouslySetInnerHTML={{__html: !!mission ? (mission.text?.[lang] || mission.text?.kz || mission.text?.ru || mission.text?.en || '').replace(/\n/g, "<br/>") : translate("mission_is_not_set", lang)}}
             ></p>
         </Card>
     )

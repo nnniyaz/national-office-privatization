@@ -1,11 +1,13 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {useTypedSelector} from "../../../../shared/hooks/useTypedSelector.ts";
 import {useActions} from "../../../../shared/hooks/useActions.ts";
-import {Button, Card, Divider, Form, Input} from "antd";
+import {Button, Card, Divider, Form} from "antd";
 import {translate} from "../../../../shared/translate/translate.ts";
 import {useEffect} from "react";
 import {Upload} from "../../../../shared/ui/Upload/Upload.tsx";
 import {useWatch} from "antd/es/form/Form";
+import MlStringInput from "../../../../shared/ui/MlStringInput/MlStringInput.tsx";
+import type {MlString} from "../../../../shared/i18n/types.ts";
 
 export default function DocumentEdit() {
     const {id} = useParams();
@@ -63,7 +65,7 @@ export default function DocumentEdit() {
     return (
         <Card bodyStyle={{padding: "10px"}} style={{maxWidth: "500px"}} loading={isLoading}>
             <h2>{document?.id}</h2>
-            <p>{`${translate("title", lang)}: `}<i>{document?.title}</i></p>
+            <p>{`${translate("title", lang)}: `}<i>{document?.title?.kz || document?.title?.ru || document?.title?.en || '-'}</i></p>
             <p>{`${translate("created_at", lang)}: `}<i>{new Date(document?.createdAt || "").toLocaleString()}</i></p>
             <p>{`${translate("updated_at", lang)}: `}<i>{new Date(document?.updatedAt || "").toLocaleString()}</i></p>
 
@@ -75,11 +77,25 @@ export default function DocumentEdit() {
                 onFinish={onFinish}
             >
                 <Form.Item
-                    label={translate("title", lang)}
+                    label=""
                     name={"title"}
-                    rules={[{required: true, message: translate("please_enter_title", lang)}]}
+                    rules={[{
+                        required: true,
+                        validator: (_, value: MlString) => {
+                            if (!value || (!value.kz && !value.ru && !value.en)) {
+                                return Promise.reject(translate("please_enter_title", lang));
+                            }
+                            return Promise.resolve();
+                        }
+                    }]}
                 >
-                    <Input placeholder={translate("enter_title", lang)}/>
+                    <MlStringInput
+                        label={translate("title", lang)}
+                        value={form.getFieldValue("title") || {}}
+                        onChange={(v) => form.setFieldValue("title", v)}
+                        required
+                        rows={2}
+                    />
                 </Form.Item>
                 <Form.Item
                     label={translate("file", lang)}

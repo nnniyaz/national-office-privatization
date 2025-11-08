@@ -72,6 +72,28 @@ func TestCreateMission_HTTP(t *testing.T) {
 	require.Equal(t, http.StatusOK, rr.Code)
 }
 
+func TestGetMission_HTTP_Empty(t *testing.T) {
+	t.Parallel()
+
+	h := newTestMissionHandler(t)
+
+	// Get mission when it doesn't exist yet
+	req := httptest.NewRequest(http.MethodGet, "/api/mission", nil)
+	rr := httptest.NewRecorder()
+
+	h.ServeHTTP(rr, req)
+
+	require.Equal(t, http.StatusOK, rr.Code)
+
+	var resp struct {
+		Success bool        `json:"success"`
+		Data    interface{} `json:"data"`
+	}
+	require.NoError(t, json.Unmarshal(rr.Body.Bytes(), &resp))
+	assert.True(t, resp.Success)
+	assert.Nil(t, resp.Data) // Should be null when mission doesn't exist
+}
+
 func TestGetMission_HTTP(t *testing.T) {
 	t.Parallel()
 

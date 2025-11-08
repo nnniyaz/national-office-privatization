@@ -4,6 +4,8 @@ import {useActions} from "../../../../shared/hooks/useActions.ts";
 import {Button, Card, Divider, Form, Input} from "antd";
 import {translate} from "../../../../shared/translate/translate.ts";
 import {useEffect} from "react";
+import MlStringInput from "../../../../shared/ui/MlStringInput/MlStringInput.tsx";
+import type {MlString} from "../../../../shared/i18n/types.ts";
 
 export default function EmployeeEdit() {
     const {id} = useParams();
@@ -47,7 +49,7 @@ export default function EmployeeEdit() {
     return (
         <Card bodyStyle={{padding: "10px"}} style={{maxWidth: "500px"}} loading={isLoading}>
             <h2>{employee?.id}</h2>
-            <p>{`${translate("name", lang)}: `}<i>{employee?.name}</i></p>
+            <p>{`${translate("name", lang)}: `}<i>{employee?.name?.[lang] || employee?.name?.kz || employee?.name?.ru || employee?.name?.en || '-'}</i></p>
             <p>{`${translate("group", lang)}: `}<i>{employee?.group}</i></p>
 
             <Divider/>
@@ -58,11 +60,25 @@ export default function EmployeeEdit() {
                 onFinish={onFinish}
             >
                 <Form.Item
-                    label={translate("name", lang)}
+                    label=""
                     name={"name"}
-                    rules={[{required: true, message: translate("please_enter_name", lang)}]}
+                    rules={[{
+                        required: true,
+                        validator: (_, value: MlString) => {
+                            if (!value || (!value.kz && !value.ru && !value.en)) {
+                                return Promise.reject(translate("please_enter_name", lang));
+                            }
+                            return Promise.resolve();
+                        }
+                    }]}
                 >
-                    <Input placeholder={translate("enter_name", lang)}/>
+                    <MlStringInput
+                        label={translate("name", lang)}
+                        value={form.getFieldValue("name") || {}}
+                        onChange={(v) => form.setFieldValue("name", v)}
+                        required
+                        rows={2}
+                    />
                 </Form.Item>
                 <Form.Item
                     label={translate("group", lang)}
