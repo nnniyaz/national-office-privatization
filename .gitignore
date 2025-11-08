@@ -3,3 +3,7 @@
 admin/.env
 client/.env
 server/.env
+
+# Go test cache
+server/.cache/
+server/.gopath/
