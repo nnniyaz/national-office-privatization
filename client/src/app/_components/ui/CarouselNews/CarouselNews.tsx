@@ -11,6 +11,7 @@ import {Autoplay} from 'swiper/modules';
 import classes from "./CarouselNews.module.scss";
 import {tPick, type Lang, type MlString} from "@/domain/base/mlString/mlString";
 import {News as NewsDomain} from "@domain/news/news";
+import {translate} from "@/pkg/translate/translate";
 
 function getWindowDimensions() {
     const {innerWidth: width} = window;
@@ -72,7 +73,7 @@ export default function CarouselNews({lang}: { lang: Lang }) {
                                         minute: 'numeric'
                                     })
                                 }
-                                title={tPick(news.title, lang)}
+                                title={translate(news.title as MlString, lang)}
                                 link={`/${lang.toLowerCase()}/news?id=${news.id}`}
                             />
                         </SwiperSlide>
@@ -94,7 +95,7 @@ export default function CarouselNews({lang}: { lang: Lang }) {
                                     minute: 'numeric'
                                 })
                             }
-                            title={tPick(news.title, lang)}
+                            title={translate(news.title as MlString, lang)}
                             link={`/${lang.toLowerCase()}/news?id=${news.id}`}
                             key={index}
                         />

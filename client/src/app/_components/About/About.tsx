@@ -3,7 +3,7 @@
 import React, {useEffect, useState} from "react";
 import Map from "@components/ui/Map/Map";
 import DocSVG from "@assets/document-text.svg";
-import {Langs} from "@domain/base/mlString/mlString";
+import {Langs, MlString} from "@domain/base/mlString/mlString";
 import classes from "./About.module.scss";
 import {translate} from "@/pkg/translate/translate";
 import {Partner, PartnerData} from "@domain/partner/partner";
@@ -23,7 +23,7 @@ export default function About({lang}: { lang: Langs }) {
         "contacts": translate("contacts", lang),
     }
 
-    const [missionText, setMissionText] = useState<string>('');
+    const [missionText, setMissionText] = useState<MlString | null>(null);
     const [contacts, setContacts] = useState<Contacts>({} as Contacts);
     const [employee, setEmployee] = useState<Employee[]>([]);
     const [npa, setNpa] = useState<Npa[]>([]);
@@ -139,7 +139,7 @@ export default function About({lang}: { lang: Langs }) {
                                         </h2>
                                         <p
                                             className={classes.mission__text}
-                                            dangerouslySetInnerHTML={{__html: missionText.replace(/(\r\n|\r|\n)/g, '<br>')}}
+                                            dangerouslySetInnerHTML={{__html: translate(missionText as MlString, lang).replace(/(\r\n|\r|\n)/g, '<br>')}}
                                         />
                                     </>
                                 )
@@ -179,7 +179,7 @@ export default function About({lang}: { lang: Langs }) {
                                         <ol className={classes.staff}>
                                             {
                                                 employee.filter(item => item.group === currentSubTab).map((item, index) => (
-                                                    <li key={index}>{item.name}</li>
+                                                    <li key={index}>{translate(item.name as MlString, lang)}</li>
                                                 ))
                                             }
                                         </ol>
@@ -201,10 +201,10 @@ export default function About({lang}: { lang: Langs }) {
                                             npa.map((item, index) => (
                                                 <div className={classes.doc} key={index}>
                                                     <div className={classes.doc__group}>
-                                                        <div className={classes.doc__title}>
-                                                            {item.title}
-                                                        </div>
                                                         <DocSVG className={classes.doc__symbol}/>
+                                                        <div className={classes.doc__title} style={{width: "fit-content"}}>
+                                                            {translate(item.title as MlString, lang)}
+                                                        </div>
                                                     </div>
                                                     <a
                                                         className={classes.doc__download}

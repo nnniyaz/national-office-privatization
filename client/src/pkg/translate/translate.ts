@@ -14,8 +14,8 @@ export function translate(word: string | MlString, lang: Langs | Lang | string):
     if (typeof word === 'string') {
         if (txts?.[word]) {
             // txts использует uppercase ключи (KZ, RU, EN), конвертируем
-            const upperLang = normalizedLang.toUpperCase();
-            return txts[word]?.[upperLang] ?? "Not translated";
+            const upperLang = normalizedLang.toLowerCase();
+            return txts[word]?.[upperLang as keyof MlString] ?? "Not translated";
         }
         return "Word not found";
     } else {

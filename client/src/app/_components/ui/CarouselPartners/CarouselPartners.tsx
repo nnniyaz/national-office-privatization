@@ -10,7 +10,8 @@ import classes from "./CarouselPartners.module.scss";
 import {Autoplay} from 'swiper/modules';
 import {ErrorResponse, SuccessResponse} from "@domain/base/response/response";
 import {PartnerData, Partner} from "@domain/partner/partner";
-import {tPick, type Lang} from "@/domain/base/mlString/mlString";
+import {tPick, type Lang, MlString} from "@/domain/base/mlString/mlString";
+import {translate} from "@/pkg/translate/translate";
 
 function getWindowDimensions() {
     const {innerWidth: width} = window;
@@ -56,7 +57,7 @@ export default function CarouselPartners() {
                 {
                     partners.map((partner, index) => (
                         <SwiperSlide key={index}>
-                            <PartnerItem title={tPick(partner.name, lang)} link={partner.link}/>
+                            <PartnerItem title={translate(partner.name as MlString, lang)} link={partner.link}/>
                         </SwiperSlide>
                     ))
                 }
@@ -65,7 +66,7 @@ export default function CarouselPartners() {
             <div className={classes.partner_list}>
                 {
                     partners.map((partner, index) => (
-                        <PartnerItem title={tPick(partner.name, lang)} link={partner.link} key={index}/>
+                        <PartnerItem title={translate(partner.name as MlString, lang)} link={partner.link} key={index}/>
                     ))
                 }
             </div>

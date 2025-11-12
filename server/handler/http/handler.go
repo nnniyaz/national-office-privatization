@@ -91,6 +91,8 @@ func (h *Handler) InitRoutes(isDevMode bool) *chi.Mux {
 			AllowedOrigins: []string{
 				"https://admin.nop.kz",
 				"https://azrk.nop.kz",
+				"https://demo-admin.nop.kz",
+				"https://demo-azrk.nop.kz",
 			},
 			AllowedMethods: []string{
 				http.MethodHead,

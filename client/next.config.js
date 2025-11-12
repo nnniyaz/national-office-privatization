@@ -12,7 +12,7 @@ const nextConfig = {
         domains: ['salam-dev.fra1.digitaloceanspaces.com'],
     },
     env: {
-        NEXT_PUBLIC_API_URL: "http://localhost:8000/api",
+        NEXT_PUBLIC_API_URL: "http://localhost:8080/api",
         NEXT_PUBLIC_SPACE_HOST: "https://salam-dev.fra1.digitaloceanspaces.com"
     },
     rewrites: async () => {

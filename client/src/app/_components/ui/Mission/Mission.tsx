@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import {useParams} from "next/navigation";
 import classes from "../../Home/Home.module.scss";
 import {tPick, type Lang, type MlString} from "@/domain/base/mlString/mlString";
+import {translate} from "@/pkg/translate/translate";
 
 export default function MissionBlock() {
     const params = useParams();
@@ -21,12 +22,12 @@ export default function MissionBlock() {
         fetchMission();
     }, []);
 
-    const text = tPick(missionText, lang);
+    console.log(missionText);
 
     return (
         <p
             className={classes.mission__group__text}
-            dangerouslySetInnerHTML={{__html: text.replace(/(\r\n|\r|\n)/g, '<br>')}}
+            dangerouslySetInnerHTML={{__html: translate(missionText as MlString, lang).replace(/(\r\n|\r|\n)/g, '<br>')}}
         />
     )
 }

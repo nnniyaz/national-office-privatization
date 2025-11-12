@@ -4,7 +4,8 @@ import classes from "./News.module.scss";
 import React, {useEffect} from "react";
 import {useSearchParams, useParams} from "next/navigation";
 import {News as NewsDomain} from "@domain/news/news";
-import {tPick, type Lang} from "@/domain/base/mlString/mlString";
+import {tPick, type Lang, MlString} from "@/domain/base/mlString/mlString";
+import {translate} from "@/pkg/translate/translate";
 
 export default function News() {
     const routeParams = useParams();
@@ -38,7 +39,7 @@ export default function News() {
     return (
         <div className={classes.main}>
             <h2 className={classes.title}>
-                {tPick(news?.title, lang)}
+                {translate(news?.title as MlString, lang)}
             </h2>
 
             <NewsItem news={news} lang={lang}/>
@@ -47,8 +48,8 @@ export default function News() {
 }
 
 const NewsItem = ({news, lang}: {news: NewsDomain | null, lang: Lang}) => {
-    const content = tPick(news?.content, lang);
-    const title = tPick(news?.title, lang);
+    const content = translate(news?.content as MlString, lang);
+    const title = translate(news?.title as MlString, lang);
     
     return (
         <>

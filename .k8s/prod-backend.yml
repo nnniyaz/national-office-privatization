@@ -44,6 +44,11 @@ spec:
                 secretKeyRef:
                   name: prod-nop-secret
                   key: MONGO_URI
+            - name: SPACE_BUCKET
+              valueFrom:
+                secretKeyRef:
+                  name: prod-nop-secret
+                  key: SPACE_BUCKET
             - name: SPACE_KEY
               valueFrom:
                 secretKeyRef:

@@ -18,7 +18,7 @@ spec:
           image: <IMAGE>
           env:
             - name: NEXT_PUBLIC_API_URL
-              value: "https://api.nop.kz"
+              value: "https://demo-api.nop.kz"
             - name: NEXT_PUBLIC_SPACE_HOST
               valueFrom:
                 secretKeyRef:

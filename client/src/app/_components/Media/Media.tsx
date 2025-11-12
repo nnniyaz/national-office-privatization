@@ -2,7 +2,7 @@
 
 import React, {useEffect, useState} from "react";
 import Image from "next/image";
-import {tPick, type Lang} from "@/domain/base/mlString/mlString";
+import {tPick, type Lang, MlString} from "@/domain/base/mlString/mlString";
 import classes from "./Media.module.scss";
 import {translate} from "@/pkg/translate/translate";
 import {News as NewsDomain} from "@domain/news/news";
@@ -132,7 +132,7 @@ export default function Media({lang}: { lang: Lang }) {
                                                                 minute: 'numeric'
                                                             })
                                                         }
-                                                        title={tPick(news.title, lang)}
+                                                        title={translate(news.title as MlString, lang)}
                                                         link={`/${lang.toLowerCase()}/news?id=${news.id}`}
                                                     />
                                                 ))
@@ -176,7 +176,7 @@ export default function Media({lang}: { lang: Lang }) {
                                                                     minute: 'numeric'
                                                                 })
                                                             }
-                                                            title={tPick(event.name, lang)}
+                                                            title={translate(event.name as MlString, lang)}
                                                             link={`/${lang.toLowerCase()}/news?id=${event.id}`}
                                                             lang={lang}
                                                         />
@@ -206,10 +206,10 @@ export default function Media({lang}: { lang: Lang }) {
                                                 documents.map((item, index) => (
                                                     <div className={classes.doc} key={index}>
                                                         <div className={classes.doc__group}>
-                                                            <div className={classes.doc__title}>
-                                                                {tPick(item.title, lang)}
-                                                            </div>
                                                             <DocSVG className={classes.doc__symbol}/>
+                                                            <div className={classes.doc__title} style={{width: "fit-content"}}>
+                                                                {translate(item.title as MlString, lang)}
+                                                            </div>
                                                         </div>
                                                         <a
                                                             className={classes.doc__download}

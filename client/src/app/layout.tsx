@@ -4,10 +4,10 @@ import {Montserrat} from "next/font/google";
 import NextTopLoader from 'nextjs-toploader';
 import Footer from "@/app/_components/Footer/Footer";
 import Header from "@/app/_components/Header/Header";
-import {Langs, type Lang} from "@domain/base/mlString/mlString";
 import "./layout.scss";
 import {Contacts} from "@domain/contacts/contacts";
 import {ErrorResponse, SuccessResponse} from "@domain/base/response/response";
+import React from "react";
 
 const montserrat = Montserrat({subsets: ["latin"]});
 
@@ -38,6 +38,7 @@ export const metadata: Metadata = {
 const fetchData = async (): Promise<SuccessResponse<Contacts> | ErrorResponse> => {
     try {
         const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/contacts");
+        // const response = await fetch("http://localhost:8080/api/contacts");
         return await response.json();
     } catch (e: any) {
         console.log(e);
@@ -52,9 +53,9 @@ export default async function RootLayout({children}: Readonly<{ children: React.
         const validLangs = ['kz', 'ru', 'en'];
         
         if (pathLang && validLangs.includes(pathLang)) {
-            return pathLang;
+            return pathLang.toUpperCase();
         }
-        return 'en';
+        return 'EN';
     };
     const contacts = await fetchData();
 
@@ -68,7 +69,11 @@ export default async function RootLayout({children}: Readonly<{ children: React.
             </head>
             <body className={montserrat.className} suppressHydrationWarning={true}>
             <main className={"main"}>
-                <div style={{padding: "50px"}}>Please, contact technical support.</div>
+                <div style={{padding: "50px", textAlign: "center"}}>
+                    <p style={{marginBottom: "10px"}}>Техникалық қолдау қызметіне хабарласыңыз.</p>
+                    <p style={{marginBottom: "10px"}}>Пожалуйста, обратитесь в службу технической поддержки.</p>
+                    <p>Please, contact technical support.</p>
+                </div>
             </main>
             </body>
             </html>
