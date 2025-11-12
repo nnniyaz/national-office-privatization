@@ -1,8 +1,24 @@
+export type Lang = 'kz' | 'ru' | 'en';
+
+export type MlString = {
+    kz?: string;
+    ru?: string;
+    en?: string;
+};
+
+// Backward compatibility with old enum
 export enum Langs {
-    key = "key",
-    KZ = "KZ",
-    RU = "RU",
-    EN = "EN",
+    KZ = "kz",
+    RU = "ru",
+    EN = "en"
 }
 
-export type MlString = Record<Langs, string>
+export function tPick(v?: MlString, lang: Lang = 'en'): string {
+    if (!v) return '';
+    const order: Lang[] = [lang, 'kz', 'ru', 'en'];
+    for (const l of order) {
+        const val = v[l];
+        if (val && val.trim()) return val;
+    }
+    return '';
+}

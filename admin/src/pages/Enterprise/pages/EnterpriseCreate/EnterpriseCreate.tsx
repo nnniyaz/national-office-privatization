@@ -13,7 +13,14 @@ export default function EnterpriseCreate() {
     const [form] = Form.useForm();
 
     const onFinish = () => {
-        createEnterprise({...form.getFieldsValue()}, {navigate});
+        const formValues = form.getFieldsValue();
+        const request = {
+            name: formValues.name || "",
+            location: formValues.location || "",
+            industry: formValues.industry || "",
+            governmentShare: formValues.governmentShare || 0,
+        };
+        createEnterprise(request, {navigate});
     }
 
     return (
@@ -33,21 +40,18 @@ export default function EnterpriseCreate() {
                 <Form.Item
                     label={translate("location", lang)}
                     name={"location"}
-                    rules={[{required: true, message: translate("please_enter_location", lang)}]}
                 >
                     <Input placeholder={translate("enter_location", lang)}/>
                 </Form.Item>
                 <Form.Item
                     label={translate("industry", lang)}
                     name={"industry"}
-                    rules={[{required: true, message: translate("please_enter_industry", lang)}]}
                 >
                     <Input placeholder={translate("enter_industry", lang)}/>
                 </Form.Item>
                 <Form.Item
                     label={translate("government_share", lang)}
                     name={"governmentShare"}
-                    rules={[{required: true, message: translate("please_enter_government_share", lang)}]}
                 >
                     <Input
                         placeholder={translate("enter_government_share", lang)}

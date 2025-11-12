@@ -2,7 +2,7 @@
 
 import React, {useEffect, useState} from "react";
 import Image from "next/image";
-import {Langs} from "@domain/base/mlString/mlString";
+import {tPick, type Lang} from "@/domain/base/mlString/mlString";
 import classes from "./Media.module.scss";
 import {translate} from "@/pkg/translate/translate";
 import {News as NewsDomain} from "@domain/news/news";
@@ -10,7 +10,7 @@ import {Event as EventDomain} from "@domain/event/event";
 import {Document as DocumentDomain} from "@domain/document/document";
 import DocSVG from "@assets/document-text.svg";
 
-export default function Media({lang}: { lang: Langs }) {
+export default function Media({lang}: { lang: Lang }) {
     const [isMounted, setMounted] = useState(false);
     const [currentTab, setCurrentTab] = useState("news");
     const [currentSubTab, setCurrentSubTab] = useState(1);
@@ -132,7 +132,7 @@ export default function Media({lang}: { lang: Langs }) {
                                                                 minute: 'numeric'
                                                             })
                                                         }
-                                                        title={news.title}
+                                                        title={tPick(news.title, lang)}
                                                         link={`/${lang.toLowerCase()}/news?id=${news.id}`}
                                                     />
                                                 ))
@@ -176,7 +176,7 @@ export default function Media({lang}: { lang: Langs }) {
                                                                     minute: 'numeric'
                                                                 })
                                                             }
-                                                            title={event.name}
+                                                            title={tPick(event.name, lang)}
                                                             link={`/${lang.toLowerCase()}/news?id=${event.id}`}
                                                             lang={lang}
                                                         />
@@ -207,7 +207,7 @@ export default function Media({lang}: { lang: Langs }) {
                                                     <div className={classes.doc} key={index}>
                                                         <div className={classes.doc__group}>
                                                             <div className={classes.doc__title}>
-                                                                {item.title}
+                                                                {tPick(item.title, lang)}
                                                             </div>
                                                             <DocSVG className={classes.doc__symbol}/>
                                                         </div>
@@ -276,7 +276,7 @@ interface EventProps {
     plannedAt: string,
     title: string,
     link: string,
-    lang: Langs
+    lang: Lang
 }
 
 function Event({cover, date, plannedAt, title, link, lang}: EventProps) {

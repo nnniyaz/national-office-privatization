@@ -4,17 +4,67 @@ import {Enterprise as EnterpriseModel, EnterpriseData} from "../../../domain/ent
 
 export interface EnterpriseCreateReq {
     "name": string
-    "location": string
-    "industry": string
-    "governmentShare": number
+    "location"?: string
+    "industry"?: string
+    "governmentShare"?: number
+    "juridicalForm"?: string
+    "year"?: number
+    "owner"?: string
+    "mainActivity"?: string
+    "authorizedCapital"?: number
+    "authorizedCapitalComment"?: string
+    "assets"?: number
+    "assetsComment"?: string
+    "equity"?: number
+    "equityComment"?: string
+    "income"?: number
+    "incomeComment"?: string
+    "netProfit"?: number
+    "netProfitComment"?: string
+    "numberOfEmployees"?: number
+    "numberOfEmployeesComment"?: string
+    "totalLiabilities"?: number
+    "totalLiabilitiesComment"?: string
+    "propertyComplex"?: string
+    "additionalInfo"?: string
+    "salesRecommendations"?: string
+    "implementationForm"?: string
+    "salePurpose"?: string
+    "keyTerms"?: string
+    "additionalTerms"?: string
 }
 
 export interface EnterpriseUpdateReq {
     "id": string
     "name": string
-    "location": string
-    "industry": string
-    "governmentShare": number
+    "location"?: string
+    "industry"?: string
+    "governmentShare"?: number
+    "juridicalForm"?: string
+    "year"?: number
+    "owner"?: string
+    "mainActivity"?: string
+    "authorizedCapital"?: number
+    "authorizedCapitalComment"?: string
+    "assets"?: number
+    "assetsComment"?: string
+    "equity"?: number
+    "equityComment"?: string
+    "income"?: number
+    "incomeComment"?: string
+    "netProfit"?: number
+    "netProfitComment"?: string
+    "numberOfEmployees"?: number
+    "numberOfEmployeesComment"?: string
+    "totalLiabilities"?: number
+    "totalLiabilitiesComment"?: string
+    "propertyComplex"?: string
+    "additionalInfo"?: string
+    "salesRecommendations"?: string
+    "implementationForm"?: string
+    "salePurpose"?: string
+    "keyTerms"?: string
+    "additionalTerms"?: string
 }
 
 export interface Pagination {

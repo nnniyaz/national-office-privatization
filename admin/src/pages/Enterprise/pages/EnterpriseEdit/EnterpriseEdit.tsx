@@ -51,10 +51,15 @@ export default function EnterpriseEdit() {
 
     const onFinish = () => {
         if (!id) return;
-        updateEnterprise({
+        const formValues = form.getFieldsValue();
+        const request = {
             id: id,
-            ...form.getFieldsValue()
-        }, id, {navigate});
+            name: formValues.name || "",
+            location: formValues.location || "",
+            industry: formValues.industry || "",
+            governmentShare: formValues.governmentShare || 0,
+        };
+        updateEnterprise(request, id, {navigate});
     }
 
     const onFinishDelete = () => {

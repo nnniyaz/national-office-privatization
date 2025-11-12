@@ -4,7 +4,7 @@ import {Montserrat} from "next/font/google";
 import NextTopLoader from 'nextjs-toploader';
 import Footer from "@/app/_components/Footer/Footer";
 import Header from "@/app/_components/Header/Header";
-import {Langs} from "@domain/base/mlString/mlString";
+import {Langs, type Lang} from "@domain/base/mlString/mlString";
 import "./layout.scss";
 import {Contacts} from "@domain/contacts/contacts";
 import {ErrorResponse, SuccessResponse} from "@domain/base/response/response";
@@ -40,18 +40,21 @@ const fetchData = async (): Promise<SuccessResponse<Contacts> | ErrorResponse> =
         const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/contacts");
         return await response.json();
     } catch (e: any) {
+        console.log(e);
         return {success: false, messages: [e]};
     }
 }
 
 export default async function RootLayout({children}: Readonly<{ children: React.ReactNode }>) {
     const headersList = headers();
-    const lang = () => {
-        let langFromThePath = headersList.get("x-pathname")?.split("/")?.[2] as Langs;
-        if (!(langFromThePath in Langs)) {
-            langFromThePath = Langs.EN;
+    const lang = (): string => {
+        const pathLang = headersList.get("x-pathname")?.split("/")?.[1];
+        const validLangs = ['kz', 'ru', 'en'];
+        
+        if (pathLang && validLangs.includes(pathLang)) {
+            return pathLang;
         }
-        return langFromThePath.toLowerCase();
+        return 'en';
     };
     const contacts = await fetchData();
 

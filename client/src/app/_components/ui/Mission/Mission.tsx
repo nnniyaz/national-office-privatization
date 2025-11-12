@@ -1,26 +1,32 @@
 'use client';
 
 import {useEffect, useState} from "react";
+import {useParams} from "next/navigation";
 import classes from "../../Home/Home.module.scss";
+import {tPick, type Lang, type MlString} from "@/domain/base/mlString/mlString";
 
 export default function MissionBlock() {
-    const [missionText, setMissionText] = useState<string>('');
+    const params = useParams();
+    const lang = (params.lang || 'en') as Lang;
+    const [missionText, setMissionText] = useState<MlString | null>(null);
 
     useEffect(() => {
         const fetchMission = async () => {
             const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/mission`);
             const data = await res.json();
-            if (data.success) {
+            if (data.success && data.data) {
                 setMissionText(data.data.text);
             }
         }
         fetchMission();
     }, []);
 
+    const text = tPick(missionText, lang);
+
     return (
         <p
             className={classes.mission__group__text}
-            dangerouslySetInnerHTML={{__html: missionText.replace(/(\r\n|\r|\n)/g, '<br>')}}
+            dangerouslySetInnerHTML={{__html: text.replace(/(\r\n|\r|\n)/g, '<br>')}}
         />
     )
 }

@@ -1,6 +1,7 @@
 'use client'
 
 import {useEffect, useState} from "react";
+import {useParams} from "next/navigation";
 import {Swiper} from "swiper";
 import {Swiper as SwiperComponent, SwiperSlide} from 'swiper/react';
 import GerbSVG from "@assets/gerb.svg";
@@ -9,6 +10,7 @@ import classes from "./CarouselPartners.module.scss";
 import {Autoplay} from 'swiper/modules';
 import {ErrorResponse, SuccessResponse} from "@domain/base/response/response";
 import {PartnerData, Partner} from "@domain/partner/partner";
+import {tPick, type Lang} from "@/domain/base/mlString/mlString";
 
 function getWindowDimensions() {
     const {innerWidth: width} = window;
@@ -16,6 +18,8 @@ function getWindowDimensions() {
 }
 
 export default function CarouselPartners() {
+    const params = useParams();
+    const lang = (params.lang || 'en') as Lang;
     const [swiper, setSwiper] = useState<Swiper | null>(null);
     const [partners, setPartners] = useState<Partner[]>([])
 
@@ -52,7 +56,7 @@ export default function CarouselPartners() {
                 {
                     partners.map((partner, index) => (
                         <SwiperSlide key={index}>
-                            <PartnerItem title={partner.name} link={partner.link}/>
+                            <PartnerItem title={tPick(partner.name, lang)} link={partner.link}/>
                         </SwiperSlide>
                     ))
                 }
@@ -61,7 +65,7 @@ export default function CarouselPartners() {
             <div className={classes.partner_list}>
                 {
                     partners.map((partner, index) => (
-                        <PartnerItem title={partner.name} link={partner.link} key={index}/>
+                        <PartnerItem title={tPick(partner.name, lang)} link={partner.link} key={index}/>
                     ))
                 }
             </div>

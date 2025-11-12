@@ -2,12 +2,15 @@
 
 import classes from "./News.module.scss";
 import React, {useEffect} from "react";
-import {useSearchParams} from "next/navigation";
+import {useSearchParams, useParams} from "next/navigation";
 import {News as NewsDomain} from "@domain/news/news";
+import {tPick, type Lang} from "@/domain/base/mlString/mlString";
 
 export default function News() {
-    const params = useSearchParams();
-    const id = params.get("id");
+    const routeParams = useParams();
+    const lang = (routeParams.lang || 'en') as Lang;
+    const searchParams = useSearchParams();
+    const id = searchParams.get("id");
     const [news, setNews] = React.useState<NewsDomain | null>(null);
     const [loading, setLoading] = React.useState<boolean>(true);
 
@@ -35,23 +38,26 @@ export default function News() {
     return (
         <div className={classes.main}>
             <h2 className={classes.title}>
-                {news?.title}
+                {tPick(news?.title, lang)}
             </h2>
 
-            <NewsItem news={news}/>
+            <NewsItem news={news} lang={lang}/>
         </div>
     )
 }
 
-const NewsItem = ({news}: {news: NewsDomain | null}) => {
+const NewsItem = ({news, lang}: {news: NewsDomain | null, lang: Lang}) => {
+    const content = tPick(news?.content, lang);
+    const title = tPick(news?.title, lang);
+    
     return (
         <>
             <img
                 className={classes.news__img}
                 src={`${process.env.NEXT_PUBLIC_SPACE_HOST}/news/${news?.imgUrl}`}
-                alt={news?.title}
+                alt={title}
             />
-            <p dangerouslySetInnerHTML={{__html: `${news?.content.replace(/(\r\n|\r|\n)/g, '<br>')}`}}/>
+            <p dangerouslySetInnerHTML={{__html: content.replace(/(\r\n|\r|\n)/g, '<br>')}}/>
         </>
     )
 }

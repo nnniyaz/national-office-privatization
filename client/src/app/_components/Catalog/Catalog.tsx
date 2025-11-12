@@ -1,6 +1,6 @@
 'use client'
 
-import {Langs} from "@domain/base/mlString/mlString";
+import type {Lang} from "@/domain/base/mlString/mlString";
 import classes from "./Catalog.module.scss";
 import SearchSVG from "@assets/search.svg";
 import CrossSVG from "@assets/x.svg";
@@ -19,7 +19,7 @@ function getWindowDimensions() {
     return width;
 }
 
-export default function Catalog({lang}: { lang: Langs }) {
+export default function Catalog({lang}: { lang: Lang }) {
     const params = useParams();
     const [objects, setObjects] = useState<Enterprise[]>([]);
     const [selectedItem, setSelectedItem] = useState<string>("");
@@ -401,13 +401,24 @@ export default function Catalog({lang}: { lang: Langs }) {
     )
 }
 
+// Helper component for displaying enterprise details
+function DetailRow({label, value}: {label: string, value: string | undefined}) {
+    if (!value || value === '-') return null;
+    return (
+        <div style={{display: "flex", marginBottom: "8px", fontSize: "14px"}}>
+            <div style={{fontWeight: "500", minWidth: "200px", color: "#666"}}>{label}:</div>
+            <div style={{flex: 1}}>{value}</div>
+        </div>
+    );
+}
+
 function EnterpriseItem({id, title, field, desc, active, lang}: {
     id: string,
     title: string,
     field: string,
     desc: string,
     active: boolean,
-    lang: Langs
+    lang: Lang
 }) {
     return (
         <div className={active ? classes.enterprise_item__active : classes.enterprise_item} id={id}>
@@ -425,7 +436,7 @@ function EnterpriseItem({id, title, field, desc, active, lang}: {
     )
 }
 
-function EnterpriseDetail({item, lang}: { item: Enterprise | undefined, lang: Langs }) {
+function EnterpriseDetail({item, lang}: { item: Enterprise | undefined, lang: Lang }) {
     const [isOpen, setIsOpen] = useState(false);
     const [form] = useForm();
     const [api, contextHolder] = notification.useNotification();
@@ -454,52 +465,129 @@ function EnterpriseDetail({item, lang}: { item: Enterprise | undefined, lang: La
         form.resetFields();
     }
 
+    const [showAllDetails, setShowAllDetails] = useState(false);
+
     if (!item) return null
+    
+    const formatNumber = (num: number) => num ? num.toLocaleString('ru-RU') : '-';
+    const formatCurrency = (num: number, comment?: string) => {
+        if (!num && !comment) return '-';
+        return `${formatNumber(num)} тг${comment ? ` (${comment})` : ''}`;
+    };
+
     return (
         <div className={classes.details}>
             {contextHolder}
-            <h3 style={{fontSize: "20px", lineHeight: "normal"}}>{item.name}</h3>
+            <h3 style={{fontSize: "20px", lineHeight: "normal", marginBottom: "20px"}}>{item.name}</h3>
 
+            {/* Основная информация */}
             <div className={classes.row}>
-                <div className={classes.row__label}>
-                    {translate("name", lang)}:
-                </div>
-                <div className={classes.row__value}>
-                    {item.name}
-                </div>
+                <div className={classes.row__label}>{translate("name", lang)}:</div>
+                <div className={classes.row__value}>{item.name}</div>
             </div>
 
             <div className={classes.row}>
-                <div className={classes.row__label}>
-                    {translate("location", lang)}:
-                </div>
-                <div className={classes.row__value}>
-                    {translate(item.location.toLowerCase(), lang)}
-                </div>
+                <div className={classes.row__label}>{translate("location", lang)}:</div>
+                <div className={classes.row__value}>{translate(item.location.toLowerCase(), lang)}</div>
             </div>
 
             <div className={classes.row}>
-                <div className={classes.row__label}>
-                    {translate("industry", lang)}:
-                </div>
-                <div className={classes.row__value}>
-                    {item.industry}
-                </div>
+                <div className={classes.row__label}>{translate("industry", lang)}:</div>
+                <div className={classes.row__value}>{item.industry}</div>
             </div>
 
             <div className={classes.row}>
-                <div className={classes.row__label}>
-                    {`${translate("gov_participation", lang)} (%)`}:
-                </div>
-                <div className={classes.row__value}>
-                    {item.governmentShare}
-                </div>
+                <div className={classes.row__label}>{`${translate("gov_participation", lang)} (%)`}:</div>
+                <div className={classes.row__value}>{item.governmentShare}%</div>
             </div>
+
+            <div className={classes.row}>
+                <div className={classes.row__label}>{translate("juridical_form", lang)}:</div>
+                <div className={classes.row__value}>{item.juridicalForm || '-'}</div>
+            </div>
+
+            <div className={classes.row}>
+                <div className={classes.row__label}>{translate("year", lang)}:</div>
+                <div className={classes.row__value}>{item.year || '-'}</div>
+            </div>
+
+            <AntdButton
+                type="link"
+                onClick={() => setShowAllDetails(true)}
+                style={{padding: 0, marginBottom: "10px", fontSize: "14px"}}
+            >
+                {translate("view_full_info", lang)} →
+            </AntdButton>
 
             <Button
                 label={translate("submit_application", lang)}
                 onClick={() => setIsOpen(true)}
             />
+
+            {/* Модалка с полной информацией */}
+            <Modal
+                open={showAllDetails}
+                onCancel={() => setShowAllDetails(false)}
+                footer={[
+                    <AntdButton key="close" onClick={() => setShowAllDetails(false)}>
+                        {translate("close", lang)}
+                    </AntdButton>
+                ]}
+                width={800}
+                title={item.name}
+            >
+                <div style={{maxHeight: "70vh", overflowY: "auto", padding: "10px 0"}}>
+                    <h4 style={{marginTop: "20px", marginBottom: "10px", borderBottom: "1px solid #eee", paddingBottom: "5px"}}>
+                        {translate("general_info", lang)}
+                    </h4>
+                    
+                    <DetailRow label={translate("name", lang)} value={item.name} />
+                    <DetailRow label={translate("location", lang)} value={translate(item.location.toLowerCase(), lang)} />
+                    <DetailRow label={translate("industry", lang)} value={item.industry} />
+                    <DetailRow label={translate("juridical_form", lang)} value={item.juridicalForm} />
+                    <DetailRow label={translate("year", lang)} value={item.year?.toString()} />
+                    <DetailRow label={translate("owner", lang)} value={item.owner} />
+                    <DetailRow label={translate("main_activity", lang)} value={item.mainActivity} />
+                    <DetailRow label={`${translate("gov_participation", lang)} (%)`} value={`${item.governmentShare}%`} />
+
+                    <h4 style={{marginTop: "20px", marginBottom: "10px", borderBottom: "1px solid #eee", paddingBottom: "5px"}}>
+                        {translate("financial_info", lang)}
+                    </h4>
+                    
+                    <DetailRow label={translate("authorized_capital", lang)} value={formatCurrency(item.authorizedCapital, item.authorizedCapitalComment)} />
+                    <DetailRow label={translate("assets", lang)} value={formatCurrency(item.assets, item.assetsComment)} />
+                    <DetailRow label={translate("equity", lang)} value={formatCurrency(item.equity, item.equityComment)} />
+                    <DetailRow label={translate("income", lang)} value={formatCurrency(item.income, item.incomeComment)} />
+                    <DetailRow label={translate("net_profit", lang)} value={formatCurrency(item.netProfit, item.netProfitComment)} />
+                    <DetailRow label={translate("total_liabilities", lang)} value={formatCurrency(item.totalLiabilities, item.totalLiabilitiesComment)} />
+
+                    <h4 style={{marginTop: "20px", marginBottom: "10px", borderBottom: "1px solid #eee", paddingBottom: "5px"}}>
+                        {translate("hr_info", lang)}
+                    </h4>
+                    
+                    <DetailRow 
+                        label={translate("number_of_employees", lang)} 
+                        value={item.numberOfEmployees ? `${item.numberOfEmployees}${item.numberOfEmployeesComment ? ` (${item.numberOfEmployeesComment})` : ''}` : '-'} 
+                    />
+
+                    <h4 style={{marginTop: "20px", marginBottom: "10px", borderBottom: "1px solid #eee", paddingBottom: "5px"}}>
+                        {translate("additional_info", lang)}
+                    </h4>
+                    
+                    <DetailRow label={translate("property_complex", lang)} value={item.propertyComplex} />
+                    <DetailRow label={translate("additional_info", lang)} value={item.additionalInfo} />
+
+                    <h4 style={{marginTop: "20px", marginBottom: "10px", borderBottom: "1px solid #eee", paddingBottom: "5px"}}>
+                        {translate("sale_info", lang)}
+                    </h4>
+                    
+                    <DetailRow label={translate("sales_recommendations", lang)} value={item.salesRecommendations} />
+                    <DetailRow label={translate("implementation_form", lang)} value={item.implementationForm} />
+                    <DetailRow label={translate("sale_purpose", lang)} value={item.salePurpose} />
+                    <DetailRow label={translate("key_terms", lang)} value={item.keyTerms} />
+                    <DetailRow label={translate("additional_terms", lang)} value={item.additionalTerms} />
+                </div>
+            </Modal>
 
             <Modal
                 open={isOpen}

@@ -9,7 +9,7 @@ import ArrowRight from "@assets/chevron-right.svg";
 import 'swiper/css';
 import {Autoplay} from 'swiper/modules';
 import classes from "./CarouselNews.module.scss";
-import {Langs} from "@domain/base/mlString/mlString";
+import {tPick, type Lang, type MlString} from "@/domain/base/mlString/mlString";
 import {News as NewsDomain} from "@domain/news/news";
 
 function getWindowDimensions() {
@@ -17,7 +17,7 @@ function getWindowDimensions() {
     return width;
 }
 
-export default function CarouselNews({lang}: { lang: Langs }) {
+export default function CarouselNews({lang}: { lang: Lang }) {
     const [swiper, setSwiper] = useState<Swiper | null>(null);
     const [news, setNews] = useState<NewsDomain[]>([]);
 
@@ -72,7 +72,7 @@ export default function CarouselNews({lang}: { lang: Langs }) {
                                         minute: 'numeric'
                                     })
                                 }
-                                title={news.title}
+                                title={tPick(news.title, lang)}
                                 link={`/${lang.toLowerCase()}/news?id=${news.id}`}
                             />
                         </SwiperSlide>
@@ -94,7 +94,7 @@ export default function CarouselNews({lang}: { lang: Langs }) {
                                     minute: 'numeric'
                                 })
                             }
-                            title={news.title}
+                            title={tPick(news.title, lang)}
                             link={`/${lang.toLowerCase()}/news?id=${news.id}`}
                             key={index}
                         />
