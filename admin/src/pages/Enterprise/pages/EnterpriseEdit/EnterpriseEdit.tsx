@@ -4,20 +4,26 @@ import {useActions} from "../../../../shared/hooks/useActions.ts";
 import {Button, Card, Divider, Form, Input} from "antd";
 import {translate} from "../../../../shared/translate/translate.ts";
 import {useEffect, useMemo} from "react";
-import {getRegion} from "../../../../shared/utils/regions.ts";
+import {Upload} from "../../../../shared/ui/Upload/Upload.tsx";
+import {useWatch} from "antd/es/form/Form";
 
 export default function EnterpriseEdit() {
     const {id} = useParams();
     const navigate = useNavigate();
     const {lang} = useTypedSelector(state => state.system);
     const {isLoading, enterprise} = useTypedSelector(state => state.enterprise);
+    const uploadState = useTypedSelector(state => state.upload);
     const {
         getOneEnterpriseById,
         updateEnterprise,
         deleteEnterprise,
+        uploadDocument,
     } = useActions();
 
     const [form] = Form.useForm();
+
+    // @ts-ignore
+    const values = useWatch([], form);
 
     const data: {[key: string]: {label: string, value: any}} = useMemo(() => {
         if (!enterprise) return {} as {[key: string]: {label: string, value: any}};
@@ -26,17 +32,17 @@ export default function EnterpriseEdit() {
                 label: translate("name", lang),
                 value: enterprise?.name || "-"
             },
+            implementationForm: {
+                label: translate("implementation_form", lang),
+                value: enterprise?.implementationForm || "-"
+            },
+            salesRecommendations: {
+                label: translate("sales_recommendations", lang),
+                value: enterprise?.salesRecommendations || "-"
+            },
             location: {
                 label: translate("location", lang),
-                value: getRegion(enterprise?.location, lang) || "-"
-            },
-            industry: {
-                label: translate("industry", lang),
-                value: enterprise?.industry || "-"
-            },
-            governmentShare: {
-                label: translate("government_share", lang),
-                value: enterprise?.governmentShare || "-"
+                value: enterprise?.location || "-"
             },
             createdAt: {
                 label: translate("created_at", lang),
@@ -58,8 +64,20 @@ export default function EnterpriseEdit() {
             location: formValues.location || "",
             industry: formValues.industry || "",
             governmentShare: formValues.governmentShare || 0,
+            salesRecommendations: formValues.salesRecommendations || "",
+            implementationForm: formValues.implementationForm || "",
+            documentUrl: formValues.documentUrl || "",
         };
         updateEnterprise(request, id, {navigate});
+    }
+
+    const upload = async (file: File) => {
+        const formData = new FormData();
+        formData.append("file", file);
+        const filename: any = await uploadDocument(formData);
+        if (filename) {
+            form.setFieldValue("documentUrl", filename);
+        }
     }
 
     const onFinishDelete = () => {
@@ -79,6 +97,9 @@ export default function EnterpriseEdit() {
             location: enterprise.location,
             industry: enterprise.industry,
             governmentShare: Number(enterprise.governmentShare),
+            implementationForm: enterprise.implementationForm,
+            salesRecommendations: enterprise.salesRecommendations,
+            documentUrl: enterprise.documentUrl,
             createdAt: enterprise.createdAt,
             updatedAt: enterprise.updatedAt,
         });
@@ -129,7 +150,6 @@ export default function EnterpriseEdit() {
 
             <Divider/>
 
-            <h3 style={{marginBottom: "10px"}}>{translate("password", lang)}</h3>
             <Form
                 form={form}
                 layout={"vertical"}
@@ -152,14 +172,12 @@ export default function EnterpriseEdit() {
                 <Form.Item
                     label={translate("industry", lang)}
                     name={"industry"}
-                    rules={[{required: true, message: translate("please_enter_industry", lang)}]}
                 >
                     <Input placeholder={translate("enter_industry", lang)}/>
                 </Form.Item>
                 <Form.Item
                     label={translate("government_share", lang)}
                     name={"governmentShare"}
-                    rules={[{required: true, message: translate("please_enter_government_share", lang)}]}
                 >
                     <Input
                         placeholder={translate("enter_government_share", lang)}
@@ -169,6 +187,34 @@ export default function EnterpriseEdit() {
                             if (isNaN(Number(e.target.value))) return;
                             form.setFieldsValue({governmentShare: Number(e.target.value)});
                         }}
+                    />
+                </Form.Item>
+                <Form.Item
+                    label={translate("implementation_form", lang)}
+                    name={"implementationForm"}
+                >
+                    <Input placeholder={translate("enter_implementation_form", lang)}/>
+                </Form.Item>
+                <Form.Item
+                    label={translate("sales_recommendations", lang)}
+                    name={"salesRecommendations"}
+                >
+                    <Input placeholder={translate("enter_sales_recommendations", lang)}/>
+                </Form.Item>
+                <Form.Item
+                    label={translate("enterprise_passport", lang)}
+                    name={"documentUrl"}
+                >
+                    {!!form.getFieldValue("documentUrl") && (
+                        <Button style={{marginBottom: "20px"}} onClick={() => form.setFieldValue("documentUrl", "")}>
+                            {translate("remove", lang)}
+                        </Button>
+                    )}
+                    <Upload
+                        imgSrc={form.getFieldValue("documentUrl") || ""}
+                        onUpload={upload}
+                        loading={uploadState.isLoading}
+                        isDocument={true}
                     />
                 </Form.Item>
                 <Form.Item style={{

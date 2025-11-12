@@ -55,6 +55,7 @@ type mongoEnterprise struct {
 	SalePurpose              string    `bson:"salePurpose"`
 	KeyTerms                 string    `bson:"keyTerms"`
 	AdditionalTerms          string    `bson:"additionalTerms"`
+	DocumentUrl              string    `bson:"documentUrl"`
 	CreatedAt                time.Time `bson:"createdAt"`
 	UpdatedAt                time.Time `bson:"updatedAt"`
 }
@@ -91,6 +92,7 @@ func newFromEnterprise(e *enterprise.Enterprise) *mongoEnterprise {
 		SalePurpose:              e.GetSalePurpose(),
 		KeyTerms:                 e.GetKeyTerms(),
 		AdditionalTerms:          e.GetAdditionalTerms(),
+		DocumentUrl:              e.GetDocumentUrl(),
 		CreatedAt:                e.GetCreatedAt(),
 		UpdatedAt:                e.GetUpdatedAt(),
 	}
@@ -106,7 +108,7 @@ func (m *mongoEnterprise) ToAggregate() *enterprise.Enterprise {
 		m.NumberOfEmployees, m.NumberOfEmployeesComment,
 		m.TotalLiabilities, m.TotalLiabilitiesComment,
 		m.PropertyComplex, m.AdditionalInfo, m.SalesRecommendations,
-		m.ImplementationForm, m.SalePurpose, m.KeyTerms, m.AdditionalTerms,
+		m.ImplementationForm, m.SalePurpose, m.KeyTerms, m.AdditionalTerms, m.DocumentUrl,
 		m.CreatedAt, m.UpdatedAt,
 	)
 }

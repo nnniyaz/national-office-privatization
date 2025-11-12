@@ -34,6 +34,7 @@ export interface Enterprise {
     salePurpose: string
     keyTerms: string
     additionalTerms: string
+    documentUrl: string
     createdAt: string
     updatedAt: string
 }

@@ -21,4 +21,8 @@ export class Upload {
     static async uploadEventImage(formData: FormData): Promise<AxiosResponse<SuccessResponse<ImageUploadResponse> | ErrorResponse>> {
         return $apiFormData.post(ApiRoutes.UPLOAD_EVENT_IMAGE, formData);
     }
+
+    static async uploadEnterprisePassport(formData: FormData): Promise<AxiosResponse<SuccessResponse<ImageUploadResponse> | ErrorResponse>> {
+        return $apiFormData.post(ApiRoutes.UPLOAD_ENTERPRISE_PASSPORT, formData);
+    }
 }

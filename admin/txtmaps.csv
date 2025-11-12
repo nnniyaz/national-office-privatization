@@ -288,3 +288,8 @@
 "take_into_account_that_file_can_not_exceed_1_mb","Файл 1 МБ аспауы керек екенін ескеріңіз","Учтите, что файл не должен превышать 1 МБ","Take into account that file can not exceed 1 MB"
 "upload_is_started_please_wait","Жүктеу басталды, күте тұрыңыз","Загрузка началась, пожалуйста, подождите","Upload is started, please wait"
 "please_upload_image","Суретті жүктеңіз","Загрузите изображение","Please upload image"
+"implementation_form","Іске асыру формасы","Способ реализации","Implementation form"
+"enter_implementation_form","Іске асыру формасын енгізіңіз","Введите способ реализации","Enter implementation form"
+"sales_recommendations","Іске асыру мерзімі (жыл)","Срок реализации (год)","Implementation period (year)"
+"enter_sales_recommendations","Іске асыру мерзімін енгізіңіз (жыл)","Введите срок реализации (год)","Enter implementation period (year)"
+"enterprise_passport","Кәсіпорын паспорты","Паспорт предприятия","Enterprise passport"

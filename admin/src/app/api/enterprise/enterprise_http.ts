@@ -32,6 +32,7 @@ export interface EnterpriseCreateReq {
     "salePurpose"?: string
     "keyTerms"?: string
     "additionalTerms"?: string
+    "documentUrl"?: string
 }
 
 export interface EnterpriseUpdateReq {
@@ -65,6 +66,7 @@ export interface EnterpriseUpdateReq {
     "salePurpose"?: string
     "keyTerms"?: string
     "additionalTerms"?: string
+    "documentUrl"?: string
 }
 
 export interface Pagination {

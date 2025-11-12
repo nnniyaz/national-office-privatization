@@ -52,6 +52,7 @@ type Enterprise struct {
 	SalePurpose              string  `json:"salePurpose"`
 	KeyTerms                 string  `json:"keyTerms"`
 	AdditionalTerms          string  `json:"additionalTerms"`
+	DocumentUrl              string  `json:"documentUrl"`
 	CreatedAt                string  `json:"createdAt"`
 	UpdatedAt                string  `json:"updatedAt"`
 }
@@ -88,6 +89,7 @@ func NewEnterprise(e *enterprise.Enterprise) *Enterprise {
 		SalePurpose:              e.GetSalePurpose(),
 		KeyTerms:                 e.GetKeyTerms(),
 		AdditionalTerms:          e.GetAdditionalTerms(),
+		DocumentUrl:              e.GetDocumentUrl(),
 		CreatedAt:                e.GetCreatedAt().Format(time.RFC3339),
 		UpdatedAt:                e.GetUpdatedAt().Format(time.RFC3339),
 	}
@@ -198,6 +200,7 @@ type CreateEnterpriseIn struct {
 	SalePurpose              string  `json:"salePurpose"`
 	KeyTerms                 string  `json:"keyTerms"`
 	AdditionalTerms          string  `json:"additionalTerms"`
+	DocumentUrl              string  `json:"documentUrl"`
 }
 
 // CreateEnterprise godoc
@@ -219,7 +222,7 @@ func (hd *HttpDelivery) CreateEnterprise(w http.ResponseWriter, r *http.Request)
 		response.NewError(hd.logger, w, r, err)
 		return
 	}
-	if err := hd.service.Create(r.Context(), in.Name, in.Location, in.Industry, in.GovernmentShare, in.JuridicalForm, in.Year, in.Owner, in.MainActivity, in.AuthorizedCapital, in.AuthorizedCapitalComment, in.Assets, in.AssetsComment, in.Equity, in.EquityComment, in.Income, in.IncomeComment, in.NetProfit, in.NetProfitComment, in.NumberOfEmployees, in.NumberOfEmployeesComment, in.TotalLiabilities, in.TotalLiabilitiesComment, in.PropertyComplex, in.AdditionalInfo, in.SalesRecommendations, in.ImplementationForm, in.SalePurpose, in.KeyTerms, in.AdditionalTerms); err != nil {
+	if err := hd.service.Create(r.Context(), in.Name, in.Location, in.Industry, in.GovernmentShare, in.JuridicalForm, in.Year, in.Owner, in.MainActivity, in.AuthorizedCapital, in.AuthorizedCapitalComment, in.Assets, in.AssetsComment, in.Equity, in.EquityComment, in.Income, in.IncomeComment, in.NetProfit, in.NetProfitComment, in.NumberOfEmployees, in.NumberOfEmployeesComment, in.TotalLiabilities, in.TotalLiabilitiesComment, in.PropertyComplex, in.AdditionalInfo, in.SalesRecommendations, in.ImplementationForm, in.SalePurpose, in.KeyTerms, in.AdditionalTerms, in.DocumentUrl); err != nil {
 		response.NewError(hd.logger, w, r, err)
 		return
 	}
@@ -257,6 +260,7 @@ type UpdateEnterpriseIn struct {
 	SalePurpose              string  `json:"salePurpose"`
 	KeyTerms                 string  `json:"keyTerms"`
 	AdditionalTerms          string  `json:"additionalTerms"`
+	DocumentUrl              string  `json:"documentUrl"`
 }
 
 // UpdateEnterprise godoc
@@ -279,7 +283,7 @@ func (hd *HttpDelivery) UpdateEnterprise(w http.ResponseWriter, r *http.Request)
 		response.NewError(hd.logger, w, r, err)
 		return
 	}
-	if err := hd.service.Update(r.Context(), in.Id, in.Name, in.Location, in.Industry, in.GovernmentShare, in.JuridicalForm, in.Year, in.Owner, in.MainActivity, in.AuthorizedCapital, in.AuthorizedCapitalComment, in.Assets, in.AssetsComment, in.Equity, in.EquityComment, in.Income, in.IncomeComment, in.NetProfit, in.NetProfitComment, in.NumberOfEmployees, in.NumberOfEmployeesComment, in.TotalLiabilities, in.TotalLiabilitiesComment, in.PropertyComplex, in.AdditionalInfo, in.SalesRecommendations, in.ImplementationForm, in.SalePurpose, in.KeyTerms, in.AdditionalTerms); err != nil {
+	if err := hd.service.Update(r.Context(), in.Id, in.Name, in.Location, in.Industry, in.GovernmentShare, in.JuridicalForm, in.Year, in.Owner, in.MainActivity, in.AuthorizedCapital, in.AuthorizedCapitalComment, in.Assets, in.AssetsComment, in.Equity, in.EquityComment, in.Income, in.IncomeComment, in.NetProfit, in.NetProfitComment, in.NumberOfEmployees, in.NumberOfEmployeesComment, in.TotalLiabilities, in.TotalLiabilitiesComment, in.PropertyComplex, in.AdditionalInfo, in.SalesRecommendations, in.ImplementationForm, in.SalePurpose, in.KeyTerms, in.AdditionalTerms, in.DocumentUrl); err != nil {
 		response.NewError(hd.logger, w, r, err)
 		return
 	}

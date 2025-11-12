@@ -335,8 +335,8 @@ export default function Catalog({lang}: { lang: Lang }) {
                                                     <EnterpriseItem
                                                         id={item.id}
                                                         title={item.name}
-                                                        field={item.industry}
-                                                        desc={item.location}
+                                                        implementationForm={item.implementationForm}
+                                                        salesRecommendations={item.salesRecommendations}
                                                         active={selectedItem === item.id}
                                                         lang={lang}
                                                     />
@@ -412,24 +412,24 @@ function DetailRow({label, value}: {label: string, value: string | undefined}) {
     );
 }
 
-function EnterpriseItem({id, title, field, desc, active, lang}: {
+function EnterpriseItem({id, title, implementationForm, salesRecommendations, active, lang}: {
     id: string,
     title: string,
-    field: string,
-    desc: string,
+    implementationForm: string,
+    salesRecommendations: string,
     active: boolean,
     lang: Lang
 }) {
     return (
         <div className={active ? classes.enterprise_item__active : classes.enterprise_item} id={id}>
             <h5 className={classes.enterprise_item__title}>{title}</h5>
-            {!!field && <p className={classes.enterprise_item__desc}>{`${translate("industry", lang)}: ${field}`}</p>}
-            {!!desc && (
+            {!!implementationForm && <p className={classes.enterprise_item__desc}>{`${translate("implementation_form", lang)}: ${implementationForm}`}</p>}
+            {!!salesRecommendations && (
                 <p className={classes.enterprise_item__desc}>
-                    {`${translate("location", lang)}: ${translate(desc.toLowerCase(), lang)}`}
+                    {`${translate("sales_recommendations", lang)}: ${salesRecommendations}`}
                 </p>
             )}
-            {(!!field || !!desc) && <p className={classes.enterprise_item__link}>
+            {(!!implementationForm || !!salesRecommendations) && <p className={classes.enterprise_item__link}>
                 {translate("details", lang)}
             </p>}
         </div>
@@ -487,37 +487,25 @@ function EnterpriseDetail({item, lang}: { item: Enterprise | undefined, lang: La
             </div>
 
             <div className={classes.row}>
-                <div className={classes.row__label}>{translate("location", lang)}:</div>
-                <div className={classes.row__value}>{translate(item.location.toLowerCase(), lang)}</div>
+                <div className={classes.row__label}>{translate("implementation_form", lang)}:</div>
+                <div className={classes.row__value}>{item.implementationForm || '-'}</div>
             </div>
 
             <div className={classes.row}>
-                <div className={classes.row__label}>{translate("industry", lang)}:</div>
-                <div className={classes.row__value}>{item.industry}</div>
+                <div className={classes.row__label}>{translate("sales_recommendations", lang)}:</div>
+                <div className={classes.row__value}>{item.salesRecommendations || '-'}</div>
             </div>
 
-            <div className={classes.row}>
-                <div className={classes.row__label}>{`${translate("gov_participation", lang)} (%)`}:</div>
-                <div className={classes.row__value}>{item.governmentShare}%</div>
-            </div>
-
-            <div className={classes.row}>
-                <div className={classes.row__label}>{translate("juridical_form", lang)}:</div>
-                <div className={classes.row__value}>{item.juridicalForm || '-'}</div>
-            </div>
-
-            <div className={classes.row}>
-                <div className={classes.row__label}>{translate("year", lang)}:</div>
-                <div className={classes.row__value}>{item.year || '-'}</div>
-            </div>
-
-            <AntdButton
-                type="link"
-                onClick={() => setShowAllDetails(true)}
-                style={{padding: 0, marginBottom: "10px", fontSize: "14px"}}
-            >
-                {translate("view_full_info", lang)} →
-            </AntdButton>
+            {item.documentUrl && (
+                <AntdButton
+                    type="link"
+                    href={`${process.env.NEXT_PUBLIC_API_URL}/uploads/${item.documentUrl}`}
+                    target="_blank"
+                    style={{padding: 0, marginBottom: "10px", fontSize: "14px"}}
+                >
+                    {translate("download_document", lang)} ↓
+                </AntdButton>
+            )}
 
             <Button
                 label={translate("submit_application", lang)}

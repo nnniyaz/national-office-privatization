@@ -3,14 +3,20 @@ import {useTypedSelector} from "../../../../shared/hooks/useTypedSelector.ts";
 import {useActions} from "../../../../shared/hooks/useActions.ts";
 import {useNavigate} from "react-router-dom";
 import {translate} from "../../../../shared/translate/translate.ts";
+import {Upload} from "../../../../shared/ui/Upload/Upload.tsx";
+import {useWatch} from "antd/es/form/Form";
 
 export default function EnterpriseCreate() {
     const navigate = useNavigate();
     const {lang} = useTypedSelector(state => state.system);
     const {isLoading} = useTypedSelector(state => state.enterprise);
-    const {createEnterprise} = useActions();
+    const uploadState = useTypedSelector(state => state.upload);
+    const {createEnterprise, uploadDocument} = useActions();
 
     const [form] = Form.useForm();
+
+    // @ts-ignore
+    const values = useWatch([], form);
 
     const onFinish = () => {
         const formValues = form.getFieldsValue();
@@ -19,8 +25,20 @@ export default function EnterpriseCreate() {
             location: formValues.location || "",
             industry: formValues.industry || "",
             governmentShare: formValues.governmentShare || 0,
+            salesRecommendations: formValues.salesRecommendations || "",
+            implementationForm: formValues.implementationForm || "",
+            documentUrl: formValues.documentUrl || "",
         };
         createEnterprise(request, {navigate});
+    }
+
+    const upload = async (file: File) => {
+        const formData = new FormData();
+        formData.append("file", file);
+        const filename: any = await uploadDocument(formData);
+        if (filename) {
+            form.setFieldValue("documentUrl", filename);
+        }
     }
 
     return (
@@ -40,6 +58,7 @@ export default function EnterpriseCreate() {
                 <Form.Item
                     label={translate("location", lang)}
                     name={"location"}
+                    rules={[{required: true, message: translate("please_enter_location", lang)}]}
                 >
                     <Input placeholder={translate("enter_location", lang)}/>
                 </Form.Item>
@@ -61,6 +80,34 @@ export default function EnterpriseCreate() {
                             if (isNaN(Number(e.target.value))) return;
                             form.setFieldsValue({governmentShare: Number(e.target.value)});
                         }}
+                    />
+                </Form.Item>
+                <Form.Item
+                    label={translate("implementation_form", lang)}
+                    name={"implementationForm"}
+                >
+                    <Input placeholder={translate("enter_implementation_form", lang)}/>
+                </Form.Item>
+                <Form.Item
+                    label={translate("sales_recommendations", lang)}
+                    name={"salesRecommendations"}
+                >
+                    <Input placeholder={translate("enter_sales_recommendations", lang)}/>
+                </Form.Item>
+                <Form.Item
+                    label={translate("enterprise_passport", lang)}
+                    name={"documentUrl"}
+                >
+                    {!!form.getFieldValue("documentUrl") && (
+                        <Button style={{marginBottom: "20px"}} onClick={() => form.setFieldValue("documentUrl", "")}>
+                            {translate("remove", lang)}
+                        </Button>
+                    )}
+                    <Upload
+                        imgSrc={form.getFieldValue("documentUrl") || ""}
+                        onUpload={upload}
+                        loading={uploadState.isLoading}
+                        isDocument={true}
                     />
                 </Form.Item>
                 <Form.Item style={{

@@ -9,7 +9,6 @@ import {Link, useNavigate} from "react-router-dom";
 import {RouteNames} from "../index.tsx";
 import {translate} from "../../shared/translate/translate.ts";
 import Input from "antd/es/input/Input";
-import {getRegion} from "../../shared/utils/regions.ts";
 
 export default function Enterprise() {
     const navigate = useNavigate();
@@ -44,33 +43,19 @@ export default function Enterprise() {
             dataIndex: "name",
         },
         {
+            key: "implementationForm",
+            title: translate("implementation_form", lang),
+            dataIndex: "implementationForm",
+        },
+        {
+            key: "salesRecommendations",
+            title: translate("sales_recommendations", lang),
+            dataIndex: "salesRecommendations",
+        },
+        {
             key: "location",
             title: translate("location", lang),
             dataIndex: "location",
-            render: (location: string) => getRegion(location, lang),
-        },
-        {
-            key: "industry",
-            title: translate("industry", lang),
-            dataIndex: "industry",
-        },
-        {
-            key: "governmentShare",
-            title: translate("government_share", lang),
-            dataIndex: "governmentShare",
-            render: (governmentShare: number) => governmentShare + "%",
-        },
-        {
-            key: "createdAt",
-            title: translate("created_at", lang),
-            dataIndex: "createdAt",
-            render: (createdAt: string) => new Date(createdAt).toLocaleString(),
-        },
-        {
-            key: "updatedAt",
-            title: translate("updated_at", lang),
-            dataIndex: "updatedAt",
-            render: (createdAt: string) => new Date(createdAt).toLocaleString(),
         },
     ];
 
@@ -78,12 +63,9 @@ export default function Enterprise() {
         return {
             id: enterprise.id,
             name: enterprise.name,
-            location: enterprise.location,
-            industry: enterprise.industry,
-            governmentShare: enterprise.governmentShare,
-            createdAt: enterprise.createdAt,
-            updatedAt: enterprise.updatedAt,
-        };
+            implementationForm: enterprise.implementationForm,
+            salesRecommendations: enterprise.salesRecommendations,
+        } as any;
     });
 
     useEffect(() => {

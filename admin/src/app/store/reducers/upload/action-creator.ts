@@ -180,5 +180,43 @@ export const UploadActionCreator = {
         } finally {
             dispatch(UploadActionCreator.setIsLoadingAction(false));
         }
-    }
+    },
+
+    uploadEnterprisePassport: (formData: FormData) => async (dispatch: AppDispatch, getState: () => RootState) => {
+        const {lang, notificationApi} = getState().system;
+        try {
+            dispatch(UploadActionCreator.setIsLoadingAction(true));
+            Notify.Success({
+                title: translate("enterprise_module", lang),
+                message: translate("upload_is_started_please_wait", lang),
+                notificationApi: notificationApi!
+            });
+            const res = await Upload.uploadEnterprisePassport(formData);
+            if (res.data.success) {
+                Notify.Success({
+                    title: translate("enterprise_module", lang),
+                    message: translate("document_successfully_uploaded_description", lang),
+                    notificationApi: notificationApi!
+                });
+                return res.data.data.filename as string;
+            } else {
+                FailedResponseHandler({
+                    title: translate("enterprise_module", lang),
+                    message: translate("failed_to_upload_document", lang) + ". " + translate("take_into_account_that_file_can_not_exceed_1_mb", lang),
+                    httpStatus: res.status,
+                    notificationApi: notificationApi!
+                });
+            }
+        } catch (e: any) {
+            httpHandler({
+                notificationApi: notificationApi!,
+                error: e,
+                httpStatus: e?.response?.status,
+                dispatch: dispatch,
+                currentLang: lang,
+            });
+        } finally {
+            dispatch(UploadActionCreator.setIsLoadingAction(false));
+        }
+    },
 }

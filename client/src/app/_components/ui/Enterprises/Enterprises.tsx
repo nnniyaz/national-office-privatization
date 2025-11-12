@@ -254,8 +254,8 @@ export default function Enterprises({lang}: { lang: Langs }) {
                                         <EnterpriseItem
                                             id={item.id}
                                             title={item.name}
-                                            field={item.industry}
-                                            region={item.location}
+                                            implementationForm={item.implementationForm}
+                                            salesRecommendations={item.salesRecommendations}
                                             lang={lang}
                                         />
                                     </li>
@@ -265,8 +265,8 @@ export default function Enterprises({lang}: { lang: Langs }) {
                                     <EnterpriseItem
                                         id={""}
                                         title={translate("no_objects", lang)}
-                                        field={""}
-                                        region={""}
+                                        implementationForm={""}
+                                        salesRecommendations={""}
                                         lang={lang}
                                     />
                                 </li>
@@ -279,19 +279,19 @@ export default function Enterprises({lang}: { lang: Langs }) {
     )
 }
 
-function EnterpriseItem({id, title, field, region, lang}: {
+function EnterpriseItem({id, title, implementationForm, salesRecommendations, lang}: {
     id: string,
     title: string,
-    field: string,
-    region: string,
+    implementationForm: string,
+    salesRecommendations: string,
     lang: Langs
 }) {
     return (
         <div className={classes.enterprise_item}>
             <h5 className={classes.enterprise_item__title}>{title}</h5>
-            {!!field && <p className={classes.enterprise_item__desc}>{`${translate("industry", lang)}: ${field}`}</p>}
-            {!!region && <p className={classes.enterprise_item__desc}>{translate(region.toLowerCase(), lang)}</p>}
-            {(!!field || !!region) && (
+            {!!implementationForm && <p className={classes.enterprise_item__desc}>{`${translate("implementation_form", lang)}: ${implementationForm}`}</p>}
+            {!!salesRecommendations && <p className={classes.enterprise_item__desc}>{`${translate("sales_recommendations", lang)}: ${salesRecommendations}`}</p>}
+            {(!!implementationForm || !!salesRecommendations) && (
                 <a
                     className={classes.enterprise_item__link}
                     href={`/${lang.toLowerCase()}/catalog#${id}`}

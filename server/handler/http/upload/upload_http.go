@@ -141,3 +141,34 @@ func (hd *HttpDelivery) UploadEventImage(w http.ResponseWriter, r *http.Request)
 		FileName: fileName,
 	})
 }
+
+// UploadEnterprisePassport godoc
+//
+//	@Summary		Uploads an enterprise passport
+//	@Description	This can only be done by the logged-in user.
+//	@Tags			Upload
+//	@Accept			multipart/form-data
+//	@Produce		json
+//	@Param			data	formData	file	true	"file to upload"
+//	@Success		200		{object}	response.Success
+//	@Failure		default	{object}	response.Error
+//	@Router			/upload/enterprise-passport [post]
+func (hd *HttpDelivery) UploadEnterprisePassport(w http.ResponseWriter, r *http.Request) {
+	r.ParseMultipartForm(5 << 20)
+	file, header, err := r.FormFile("file")
+	if err != nil {
+		response.NewError(hd.logger, w, r, err)
+		return
+	}
+	defer file.Close()
+	fileName, err := hd.service.UploadImage(hd.s3Bucket, "enterprise-passport", file, header)
+	if err != nil {
+		response.NewError(hd.logger, w, r, err)
+		return
+	}
+	response.NewSuccess(hd.logger, w, r, struct {
+		FileName string `json:"filename"`
+	}{
+		FileName: fileName,
+	})
+}

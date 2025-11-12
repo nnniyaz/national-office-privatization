@@ -213,6 +213,7 @@ func (h *Handler) InitRoutes(isDevMode bool) *chi.Mux {
 			r.Post("/npa", h.Upload.UploadNpa)
 			r.Post("/news-image", h.Upload.UploadNewsImage)
 			r.Post("/event-image", h.Upload.UploadEventImage)
+			r.Post("/enterprise-passport", h.Upload.UploadEnterprisePassport)
 		})
 	})
 

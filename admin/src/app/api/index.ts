@@ -126,4 +126,5 @@ export enum ApiRoutes {
     UPLOAD_NPA = "/upload/npa",
     UPLOAD_NEWS_IMAGE = "/upload/news-image",
     UPLOAD_EVENT_IMAGE = "/upload/event-image",
+    UPLOAD_ENTERPRISE_PASSPORT = "/upload/enterprise-passport",
 }

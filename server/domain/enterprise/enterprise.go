@@ -38,6 +38,7 @@ type Enterprise struct {
 	salePurpose              string
 	keyTerms                 string
 	additionalTerms          string
+	documentUrl              string
 	createdAt                time.Time
 	updatedAt                time.Time
 }
@@ -62,7 +63,7 @@ func NewEnterprise(
 	numberOfEmployeesComment string,
 	totalLiabilities float64,
 	totalLiabilitiesComment string,
-	propertyComplex, additionalInfo, salesRecommendations, implementationForm, salePurpose, keyTerms, additionalTerms string,
+	propertyComplex, additionalInfo, salesRecommendations, implementationForm, salePurpose, keyTerms, additionalTerms, documentUrl string,
 ) (*Enterprise, error) {
 	if name == "" {
 		return nil, exceptions.ErrInvalidEnterpriseName
@@ -98,6 +99,7 @@ func NewEnterprise(
 		salePurpose:              salePurpose,
 		keyTerms:                 keyTerms,
 		additionalTerms:          additionalTerms,
+		documentUrl:              documentUrl,
 		createdAt:                time.Now(),
 		updatedAt:                time.Now(),
 	}, nil
@@ -223,6 +225,10 @@ func (e *Enterprise) GetAdditionalTerms() string {
 	return e.additionalTerms
 }
 
+func (e *Enterprise) GetDocumentUrl() string {
+	return e.documentUrl
+}
+
 func (e *Enterprise) GetCreatedAt() time.Time {
 	return e.createdAt
 }
@@ -251,7 +257,7 @@ func (e *Enterprise) Update(
 	numberOfEmployeesComment string,
 	totalLiabilities float64,
 	totalLiabilitiesComment string,
-	propertyComplex, additionalInfo, salesRecommendations, implementationForm, salePurpose, keyTerms, additionalTerms string,
+	propertyComplex, additionalInfo, salesRecommendations, implementationForm, salePurpose, keyTerms, additionalTerms, documentUrl string,
 ) error {
 	if name == "" {
 		return exceptions.ErrInvalidEnterpriseName
@@ -294,6 +300,7 @@ func (e *Enterprise) Update(
 	e.salePurpose = salePurpose
 	e.keyTerms = keyTerms
 	e.additionalTerms = additionalTerms
+	e.documentUrl = documentUrl
 	e.updatedAt = time.Now()
 	return nil
 }
@@ -319,7 +326,7 @@ func UnmarshalEnterpriseFromDatabase(
 	numberOfEmployeesComment string,
 	totalLiabilities float64,
 	totalLiabilitiesComment string,
-	propertyComplex, additionalInfo, salesRecommendations, implementationForm, salePurpose, keyTerms, additionalTerms string,
+	propertyComplex, additionalInfo, salesRecommendations, implementationForm, salePurpose, keyTerms, additionalTerms, documentUrl string,
 	createdAt, updatedAt time.Time,
 ) *Enterprise {
 	return &Enterprise{
@@ -353,6 +360,7 @@ func UnmarshalEnterpriseFromDatabase(
 		salePurpose:              salePurpose,
 		keyTerms:                 keyTerms,
 		additionalTerms:          additionalTerms,
+		documentUrl:              documentUrl,
 		createdAt:                createdAt,
 		updatedAt:                updatedAt,
 	}
