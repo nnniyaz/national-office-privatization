@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prod-nop-admin-deployment
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: prod-nop-admin-pod
+  template:
+    metadata:
+      labels:
+        app: prod-nop-admin-pod
+    spec:
+      containers:
+        - name: prod-nop-admin-container
+          image: <IMAGE>
+          env:
+            - name: VITE_API_URL
+              value: "https://api.nop.kz"
+            - name: VITE_SPACE_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: prod-nop-secret
+                  key: SPACE_HOST
+          ports:
+            - containerPort: 8080
+      dnsPolicy: ClusterFirstWithHostNet
+
