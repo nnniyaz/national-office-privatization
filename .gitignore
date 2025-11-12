@@ -7,3 +7,7 @@ server/.env
 # Go test cache
 server/.cache/
 server/.gopath/
+
+draft.txt
+draft-temp.txt
+run-all.sh
