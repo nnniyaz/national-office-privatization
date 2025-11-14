@@ -8,6 +8,7 @@ server/.env
 server/.cache/
 server/.gopath/
 
+cookies.txt
 draft.txt
 draft-temp.txt
 run-all.sh
