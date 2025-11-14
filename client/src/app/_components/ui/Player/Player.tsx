@@ -43,7 +43,7 @@ export default function Player() {
                         borderRadius: "10px",
                         objectFit: "cover"
                     }}
-                    src={"https://ardodev.fra1.cdn.digitaloceanspaces.com/%D0%A0%D0%BE%D0%BB%D0%B8%D0%BA.mp4"}
+                    src={`${process.env.NEXT_PUBLIC_SPACE_HOST}/video/promo.mp4`}
                 />
                 {/*<div className={classes.welcome_block__statement__group__player__btn__container}>*/}
                 {/*    <PlaySVG className={classes.welcome_block__statement__group__player__btn}/>*/}
@@ -66,7 +66,7 @@ export default function Player() {
                         margin: "30px 0",
                         borderRadius: "10px"
                     }}
-                    src={"https://ardodev.fra1.cdn.digitaloceanspaces.com/%D0%A0%D0%BE%D0%BB%D0%B8%D0%BA.mp4"}
+                    src={`${process.env.NEXT_PUBLIC_SPACE_HOST}/video/promo.mp4`}
                 />
             </Modal>
         </>

@@ -18,12 +18,9 @@ spec:
           image: <IMAGE>
           env:
             - name: NEXT_PUBLIC_API_URL
-              value: "https://demo-api.nop.kz"
+              value: "https://api.nop.kz"
             - name: NEXT_PUBLIC_SPACE_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: prod-nop-secret
-                  key: SPACE_HOST
+              value: "https://salam-dev.fra1.digitaloceanspaces.com/nop"
           ports:
             - containerPort: 8080
       dnsPolicy: ClusterFirstWithHostNet

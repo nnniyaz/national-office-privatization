@@ -12,6 +12,7 @@
   "dependencies": {
     "@2gis/mapgl": "^1.49.0",
     "@ant-design/icons": "^5.4.0",
+    "@next/bundle-analyzer": "^16.0.3",
     "@svgr/webpack": "^8.1.0",
     "antd": "^5.20.1",
     "csv-parse": "^5.5.6",
