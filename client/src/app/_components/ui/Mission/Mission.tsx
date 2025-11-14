@@ -22,8 +22,6 @@ export default function MissionBlock() {
         fetchMission();
     }, []);
 
-    console.log(missionText);
-
     return (
         <p
             className={classes.mission__group__text}

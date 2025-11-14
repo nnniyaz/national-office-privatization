@@ -8,6 +8,8 @@ import "./layout.scss";
 import {Contacts} from "@domain/contacts/contacts";
 import {ErrorResponse, SuccessResponse} from "@domain/base/response/response";
 import React from "react";
+import '@react-pdf-viewer/core/lib/styles/index.css';
+import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 
 const montserrat = Montserrat({subsets: ["latin"]});
 

@@ -52,20 +52,20 @@ export default function Enterprises({lang}: { lang: Langs }) {
                 <div className={classes.enterprises__group}>
                     <div className={classes.big_city}>
                         <div
-                        onClick={() => onRegionClick("Astana_city")}
+                            onClick={() => onRegionClick("Astana_city")}
                             className={selectedRegion === "Astana_city" ? classes.big_city__item__active : classes.big_city__item}
                         >
                             {translate("Astana_city", lang)}
                         </div>
                         <div
-                        onClick={() => onRegionClick("Almaty_city")}
+                            onClick={() => onRegionClick("Almaty_city")}
                             className={selectedRegion === "Almaty_city" ? classes.big_city__item__active : classes.big_city__item}
                         >
                             {translate("Almaty_city", lang)}
                         </div>
                         <div
-                        onClick={() => onRegionClick("Shymkent_city")}
-                        className={selectedRegion === "Shymkent_city" ? classes.big_city__item__active : classes.big_city__item}
+                            onClick={() => onRegionClick("Shymkent_city")}
+                            className={selectedRegion === "Shymkent_city" ? classes.big_city__item__active : classes.big_city__item}
                         >
                             {translate("Shymkent_city", lang)}
                         </div>
@@ -289,16 +289,16 @@ function EnterpriseItem({id, title, implementationForm, salesRecommendations, la
     return (
         <div className={classes.enterprise_item}>
             <h5 className={classes.enterprise_item__title}>{title}</h5>
-            {!!implementationForm && <p className={classes.enterprise_item__desc}>{`${translate("implementation_form", lang)}: ${implementationForm}`}</p>}
-            {!!salesRecommendations && <p className={classes.enterprise_item__desc}>{`${translate("sales_recommendations", lang)}: ${salesRecommendations}`}</p>}
-            {(!!implementationForm || !!salesRecommendations) && (
-                <a
-                    className={classes.enterprise_item__link}
-                    href={`/${lang.toLowerCase()}/catalog#${id}`}
-                >
-                    {translate("details", lang)}
-                </a>
-            )}
+            {!!implementationForm &&
+                <p className={classes.enterprise_item__desc}>{`${translate("implementation_form", lang)}: ${implementationForm}`}</p>}
+            {!!salesRecommendations &&
+                <p className={classes.enterprise_item__desc}>{`${translate("sales_recommendations", lang)}: ${salesRecommendations}`}</p>}
+            <a
+                className={classes.enterprise_item__link}
+                href={`/${lang.toLowerCase()}/catalog#${id}`}
+            >
+                {translate("details", lang)}
+            </a>
         </div>
     )
 }

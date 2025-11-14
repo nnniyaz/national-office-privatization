@@ -18,7 +18,7 @@ spec:
           image: <IMAGE>
           env:
             - name: VITE_API_URL
-              value: "https://api.nop.kz"
+              value: "https://api.nop.kz/api"
             - name: VITE_SPACE_HOST
               value: "https://salam-dev.fra1.digitaloceanspaces.com/nop"
           ports:

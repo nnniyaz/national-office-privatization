@@ -14,6 +14,8 @@ import {LoadingOutlined} from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
 import {useParams} from "next/navigation";
 
+import {Viewer, Worker} from '@react-pdf-viewer/core';
+
 function getWindowDimensions() {
     const {innerWidth: width, innerHeight: height} = window;
     return width;
@@ -26,8 +28,6 @@ export default function Catalog({lang}: { lang: Lang }) {
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
     const [mounted, setMounted] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-
-    console.log(params);
 
     const [enterprisesCount, setEnterprisesCount] = useState(0);
     const [searchQuery, setSearchQuery] = useState("");
@@ -386,7 +386,7 @@ export default function Catalog({lang}: { lang: Lang }) {
                         onCancel={() => setSelectedItem("")}
                         footer={[
                             <AntdButton key={"close"} onClick={() => setSelectedItem("")}>
-                                Закрыть
+                                {translate("close", lang)}
                             </AntdButton>,
                         ]}
                     >
@@ -402,7 +402,7 @@ export default function Catalog({lang}: { lang: Lang }) {
 }
 
 // Helper component for displaying enterprise details
-function DetailRow({label, value}: {label: string, value: string | undefined}) {
+function DetailRow({label, value}: { label: string, value: string | undefined }) {
     if (!value || value === '-') return null;
     return (
         <div style={{display: "flex", marginBottom: "8px", fontSize: "14px"}}>
@@ -423,15 +423,16 @@ function EnterpriseItem({id, title, implementationForm, salesRecommendations, ac
     return (
         <div className={active ? classes.enterprise_item__active : classes.enterprise_item} id={id}>
             <h5 className={classes.enterprise_item__title}>{title}</h5>
-            {!!implementationForm && <p className={classes.enterprise_item__desc}>{`${translate("implementation_form", lang)}: ${implementationForm}`}</p>}
+            {!!implementationForm &&
+                <p className={classes.enterprise_item__desc}>{`${translate("implementation_form", lang)}: ${implementationForm}`}</p>}
             {!!salesRecommendations && (
                 <p className={classes.enterprise_item__desc}>
                     {`${translate("sales_recommendations", lang)}: ${salesRecommendations}`}
                 </p>
             )}
-            {(!!implementationForm || !!salesRecommendations) && <p className={classes.enterprise_item__link}>
+            <p className={classes.enterprise_item__link}>
                 {translate("details", lang)}
-            </p>}
+            </p>
         </div>
     )
 }
@@ -441,6 +442,7 @@ function EnterpriseDetail({item, lang}: { item: Enterprise | undefined, lang: La
     const [form] = useForm();
     const [api, contextHolder] = notification.useNotification();
     const [isLoading, setIsLoading] = useState(false);
+    const [showPassport, setShowPassport] = useState(false);
 
     const handleFinish = async () => {
         const values = form.getFieldsValue();
@@ -468,7 +470,7 @@ function EnterpriseDetail({item, lang}: { item: Enterprise | undefined, lang: La
     const [showAllDetails, setShowAllDetails] = useState(false);
 
     if (!item) return null
-    
+
     const formatNumber = (num: number) => num ? num.toLocaleString('ru-RU') : '-';
     const formatCurrency = (num: number, comment?: string) => {
         if (!num && !comment) return '-';
@@ -496,21 +498,40 @@ function EnterpriseDetail({item, lang}: { item: Enterprise | undefined, lang: La
                 <div className={classes.row__value}>{item.salesRecommendations || '-'}</div>
             </div>
 
+            {/*<AntdButton*/}
+            {/*    type="link"*/}
+            {/*    href={`${process.env.NEXT_PUBLIC_API_URL}/enterprise-passport/${item.documentUrl}`}*/}
+            {/*    target="_blank"*/}
+            {/*    style={{padding: 0, marginBottom: "10px", fontSize: "14px"}}*/}
+            {/*>*/}
+            {/*    {translate("see_object_passport", lang)} ↓*/}
+            {/*</AntdButton>*/}
+
             {item.documentUrl && (
-                <AntdButton
-                    type="link"
-                    href={`${process.env.NEXT_PUBLIC_API_URL}/uploads/${item.documentUrl}`}
-                    target="_blank"
-                    style={{padding: 0, marginBottom: "10px", fontSize: "14px"}}
-                >
-                    {translate("download_document", lang)} ↓
-                </AntdButton>
+                <Button
+                    label={translate("see_object_passport", lang)}
+                    onClick={() => setShowPassport(true)}
+                />
             )}
 
             <Button
                 label={translate("submit_application", lang)}
                 onClick={() => setIsOpen(true)}
             />
+
+            <Modal
+                open={showPassport}
+                onCancel={() => setShowPassport(false)}
+                footer={[
+                    <AntdButton key="close" onClick={() => setShowPassport(false)}>
+                        {translate("close", lang)}
+                    </AntdButton>
+                ]}
+                width={800}
+                title={item.name}
+            >
+                <PDFViewer lang={lang} fileUrl={item.documentUrl}/>
+            </Modal>
 
             {/* Модалка с полной информацией */}
             <Modal
@@ -525,55 +546,88 @@ function EnterpriseDetail({item, lang}: { item: Enterprise | undefined, lang: La
                 title={item.name}
             >
                 <div style={{maxHeight: "70vh", overflowY: "auto", padding: "10px 0"}}>
-                    <h4 style={{marginTop: "20px", marginBottom: "10px", borderBottom: "1px solid #eee", paddingBottom: "5px"}}>
+                    <h4 style={{
+                        marginTop: "20px",
+                        marginBottom: "10px",
+                        borderBottom: "1px solid #eee",
+                        paddingBottom: "5px"
+                    }}>
                         {translate("general_info", lang)}
                     </h4>
-                    
-                    <DetailRow label={translate("name", lang)} value={item.name} />
-                    <DetailRow label={translate("location", lang)} value={translate(item.location.toLowerCase(), lang)} />
-                    <DetailRow label={translate("industry", lang)} value={item.industry} />
-                    <DetailRow label={translate("juridical_form", lang)} value={item.juridicalForm} />
-                    <DetailRow label={translate("year", lang)} value={item.year?.toString()} />
-                    <DetailRow label={translate("owner", lang)} value={item.owner} />
-                    <DetailRow label={translate("main_activity", lang)} value={item.mainActivity} />
-                    <DetailRow label={`${translate("gov_participation", lang)} (%)`} value={`${item.governmentShare}%`} />
 
-                    <h4 style={{marginTop: "20px", marginBottom: "10px", borderBottom: "1px solid #eee", paddingBottom: "5px"}}>
+                    <DetailRow label={translate("name", lang)} value={item.name}/>
+                    <DetailRow label={translate("location", lang)}
+                               value={translate(item.location.toLowerCase(), lang)}/>
+                    <DetailRow label={translate("industry", lang)} value={item.industry}/>
+                    <DetailRow label={translate("juridical_form", lang)} value={item.juridicalForm}/>
+                    <DetailRow label={translate("year", lang)} value={item.year?.toString()}/>
+                    <DetailRow label={translate("owner", lang)} value={item.owner}/>
+                    <DetailRow label={translate("main_activity", lang)} value={item.mainActivity}/>
+                    <DetailRow label={`${translate("gov_participation", lang)} (%)`}
+                               value={`${item.governmentShare}%`}/>
+
+                    <h4 style={{
+                        marginTop: "20px",
+                        marginBottom: "10px",
+                        borderBottom: "1px solid #eee",
+                        paddingBottom: "5px"
+                    }}>
                         {translate("financial_info", lang)}
                     </h4>
-                    
-                    <DetailRow label={translate("authorized_capital", lang)} value={formatCurrency(item.authorizedCapital, item.authorizedCapitalComment)} />
-                    <DetailRow label={translate("assets", lang)} value={formatCurrency(item.assets, item.assetsComment)} />
-                    <DetailRow label={translate("equity", lang)} value={formatCurrency(item.equity, item.equityComment)} />
-                    <DetailRow label={translate("income", lang)} value={formatCurrency(item.income, item.incomeComment)} />
-                    <DetailRow label={translate("net_profit", lang)} value={formatCurrency(item.netProfit, item.netProfitComment)} />
-                    <DetailRow label={translate("total_liabilities", lang)} value={formatCurrency(item.totalLiabilities, item.totalLiabilitiesComment)} />
 
-                    <h4 style={{marginTop: "20px", marginBottom: "10px", borderBottom: "1px solid #eee", paddingBottom: "5px"}}>
+                    <DetailRow label={translate("authorized_capital", lang)}
+                               value={formatCurrency(item.authorizedCapital, item.authorizedCapitalComment)}/>
+                    <DetailRow label={translate("assets", lang)}
+                               value={formatCurrency(item.assets, item.assetsComment)}/>
+                    <DetailRow label={translate("equity", lang)}
+                               value={formatCurrency(item.equity, item.equityComment)}/>
+                    <DetailRow label={translate("income", lang)}
+                               value={formatCurrency(item.income, item.incomeComment)}/>
+                    <DetailRow label={translate("net_profit", lang)}
+                               value={formatCurrency(item.netProfit, item.netProfitComment)}/>
+                    <DetailRow label={translate("total_liabilities", lang)}
+                               value={formatCurrency(item.totalLiabilities, item.totalLiabilitiesComment)}/>
+
+                    <h4 style={{
+                        marginTop: "20px",
+                        marginBottom: "10px",
+                        borderBottom: "1px solid #eee",
+                        paddingBottom: "5px"
+                    }}>
                         {translate("hr_info", lang)}
                     </h4>
-                    
-                    <DetailRow 
-                        label={translate("number_of_employees", lang)} 
-                        value={item.numberOfEmployees ? `${item.numberOfEmployees}${item.numberOfEmployeesComment ? ` (${item.numberOfEmployeesComment})` : ''}` : '-'} 
+
+                    <DetailRow
+                        label={translate("number_of_employees", lang)}
+                        value={item.numberOfEmployees ? `${item.numberOfEmployees}${item.numberOfEmployeesComment ? ` (${item.numberOfEmployeesComment})` : ''}` : '-'}
                     />
 
-                    <h4 style={{marginTop: "20px", marginBottom: "10px", borderBottom: "1px solid #eee", paddingBottom: "5px"}}>
+                    <h4 style={{
+                        marginTop: "20px",
+                        marginBottom: "10px",
+                        borderBottom: "1px solid #eee",
+                        paddingBottom: "5px"
+                    }}>
                         {translate("additional_info", lang)}
                     </h4>
-                    
-                    <DetailRow label={translate("property_complex", lang)} value={item.propertyComplex} />
-                    <DetailRow label={translate("additional_info", lang)} value={item.additionalInfo} />
 
-                    <h4 style={{marginTop: "20px", marginBottom: "10px", borderBottom: "1px solid #eee", paddingBottom: "5px"}}>
+                    <DetailRow label={translate("property_complex", lang)} value={item.propertyComplex}/>
+                    <DetailRow label={translate("additional_info", lang)} value={item.additionalInfo}/>
+
+                    <h4 style={{
+                        marginTop: "20px",
+                        marginBottom: "10px",
+                        borderBottom: "1px solid #eee",
+                        paddingBottom: "5px"
+                    }}>
                         {translate("sale_info", lang)}
                     </h4>
-                    
-                    <DetailRow label={translate("sales_recommendations", lang)} value={item.salesRecommendations} />
-                    <DetailRow label={translate("implementation_form", lang)} value={item.implementationForm} />
-                    <DetailRow label={translate("sale_purpose", lang)} value={item.salePurpose} />
-                    <DetailRow label={translate("key_terms", lang)} value={item.keyTerms} />
-                    <DetailRow label={translate("additional_terms", lang)} value={item.additionalTerms} />
+
+                    <DetailRow label={translate("sales_recommendations", lang)} value={item.salesRecommendations}/>
+                    <DetailRow label={translate("implementation_form", lang)} value={item.implementationForm}/>
+                    <DetailRow label={translate("sale_purpose", lang)} value={item.salePurpose}/>
+                    <DetailRow label={translate("key_terms", lang)} value={item.keyTerms}/>
+                    <DetailRow label={translate("additional_terms", lang)} value={item.additionalTerms}/>
                 </div>
             </Modal>
 
@@ -666,4 +720,16 @@ function EnterpriseDetail({item, lang}: { item: Enterprise | undefined, lang: La
             </Modal>
         </div>
     )
+}
+
+function PDFViewer({lang, fileUrl}: { lang: Lang, fileUrl: string }) {
+    return (
+        <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.16.105/build/pdf.worker.js">
+            <div style={{height: '750px'}}>
+                <Viewer
+                    fileUrl={`${process.env.NEXT_PUBLIC_SPACE_HOST}/enterprise-passport/${fileUrl}`}
+                />
+            </div>
+        </Worker>
+    );
 }

@@ -11,7 +11,7 @@ export default function EnterpriseCreate() {
     const {lang} = useTypedSelector(state => state.system);
     const {isLoading} = useTypedSelector(state => state.enterprise);
     const uploadState = useTypedSelector(state => state.upload);
-    const {createEnterprise, uploadDocument} = useActions();
+    const {createEnterprise, uploadEnterprisePassport} = useActions();
 
     const [form] = Form.useForm();
 
@@ -23,11 +23,34 @@ export default function EnterpriseCreate() {
         const request = {
             name: formValues.name || "",
             location: formValues.location || "",
-            industry: formValues.industry || "",
-            governmentShare: formValues.governmentShare || 0,
             salesRecommendations: formValues.salesRecommendations || "",
             implementationForm: formValues.implementationForm || "",
+            industry: formValues.industry || "",
+            governmentShare: formValues.governmentShare || 0,
             documentUrl: formValues.documentUrl || "",
+            juridicalForm: "",
+            year: 0,
+            owner: "",
+            mainActivity: "",
+            authorizedCapital: 0.0,
+            authorizedCapitalComment: "",
+            assets: 0.0,
+            assetsComment: "",
+            equity: 0.0,
+            equityComment: "",
+            income: 0.0,
+            incomeComment: "",
+            netProfit: 0.0,
+            netProfitComment: "",
+            numberOfEmployees: 0,
+            numberOfEmployeesComment: "",
+            totalLiabilities: 0.0,
+            totalLiabilitiesComment: "",
+            propertyComplex: "",
+            additionalInfo: "",
+            salePurpose: "",
+            keyTerms: "",
+            additionalTerms: "",
         };
         createEnterprise(request, {navigate});
     }
@@ -35,7 +58,7 @@ export default function EnterpriseCreate() {
     const upload = async (file: File) => {
         const formData = new FormData();
         formData.append("file", file);
-        const filename: any = await uploadDocument(formData);
+        const filename: any = await uploadEnterprisePassport(formData);
         if (filename) {
             form.setFieldValue("documentUrl", filename);
         }

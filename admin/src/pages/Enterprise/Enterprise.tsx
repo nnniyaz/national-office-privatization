@@ -38,6 +38,18 @@ export default function Enterprise() {
             ),
         },
         {
+            key: "documentUrl",
+            title: translate("enterprise_passport", lang),
+            dataIndex: "documentUrl",
+            render: (_, record) => (
+                <div>
+                    <a href={`${import.meta.env.VITE_SPACE_HOST}/enterprise-passport/${record.documentUrl}`} target={"_blank"} rel="noreferrer">
+                        {txts.link[lang]}
+                    </a>
+                </div>
+            ),
+        },
+        {
             key: "name",
             title: translate("name", lang),
             dataIndex: "name",
@@ -65,6 +77,8 @@ export default function Enterprise() {
             name: enterprise.name,
             implementationForm: enterprise.implementationForm,
             salesRecommendations: enterprise.salesRecommendations,
+            location: enterprise.location,
+            documentUrl: enterprise.documentUrl,
         } as any;
     });
 

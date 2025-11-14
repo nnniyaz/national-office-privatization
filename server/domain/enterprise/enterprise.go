@@ -265,12 +265,6 @@ func (e *Enterprise) Update(
 	if location == "" {
 		return exceptions.ErrInvalidEnterpriseLocation
 	}
-	if industry == "" {
-		return exceptions.ErrInvalidEnterpriseIndustry
-	}
-	if governmentShare < 0 {
-		return exceptions.ErrInvalidEnterpriseGovShare
-	}
 	e.name = name
 	e.location = location
 	e.industry = industry
@@ -371,6 +365,8 @@ func UnmarshalEnterpriseFromDatabase(
 Enterprise struct:
 {
 	name                     "Некоммерческое акционерное общество «Университет КИМЭП»"
+	salesRecommendations     "2030 год"
+    implementationForm       "тендер"
 	location                 ""
 	industry                 ""
 	governmentShare          0.0
@@ -394,8 +390,6 @@ Enterprise struct:
 	totalLiabilitiesComment  ""
 	propertyComplex          ""
 	additionalInfo           ""
-	salesRecommendations     "2030 год"
-	implementationForm       "тендер"
 	salePurpose              ""
 	keyTerms                 ""
 	additionalTerms          ""

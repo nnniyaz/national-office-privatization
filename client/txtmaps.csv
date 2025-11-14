@@ -123,3 +123,7 @@
 "phone_must_be_10_digits","Телефон нөмірі 10 символдан тұруы керек","Телефонный номер должен состоять из 10 цифр","Phone number must be 10 digits"
 "planned_at","Жоспарланған уақыт","Запланированное время","Planned at"
 "no_enterprises_found","Объекттер табылмады","Объекты не найдены","No enterprises found"
+"implementation_form","Іске асыру формасы","Способ реализации","Implementation form"
+"sales_recommendations","Іске асыру мерзімі (жыл)","Срок реализации (год)","Implementation period (year)"
+"see_object_passport","Объект паспортына өту","Перейти к паспорту объекта","Go to object passport"
+"close","Жабу","Закрыть","Close"

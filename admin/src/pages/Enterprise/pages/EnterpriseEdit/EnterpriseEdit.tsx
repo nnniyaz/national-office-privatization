@@ -17,7 +17,7 @@ export default function EnterpriseEdit() {
         getOneEnterpriseById,
         updateEnterprise,
         deleteEnterprise,
-        uploadDocument,
+        uploadEnterprisePassport,
     } = useActions();
 
     const [form] = Form.useForm();
@@ -62,11 +62,34 @@ export default function EnterpriseEdit() {
             id: id,
             name: formValues.name || "",
             location: formValues.location || "",
-            industry: formValues.industry || "",
-            governmentShare: formValues.governmentShare || 0,
             salesRecommendations: formValues.salesRecommendations || "",
             implementationForm: formValues.implementationForm || "",
+            industry: formValues.industry || "",
+            governmentShare: formValues.governmentShare || 0,
             documentUrl: formValues.documentUrl || "",
+            juridicalForm: "",
+            year: 0,
+            owner: "",
+            mainActivity: "",
+            authorizedCapital: 0.0,
+            authorizedCapitalComment: "",
+            assets: 0.0,
+            assetsComment: "",
+            equity: 0.0,
+            equityComment: "",
+            income: 0.0,
+            incomeComment: "",
+            netProfit: 0.0,
+            netProfitComment: "",
+            numberOfEmployees: 0,
+            numberOfEmployeesComment: "",
+            totalLiabilities: 0.0,
+            totalLiabilitiesComment: "",
+            propertyComplex: "",
+            additionalInfo: "",
+            salePurpose: "",
+            keyTerms: "",
+            additionalTerms: "",
         };
         updateEnterprise(request, id, {navigate});
     }
@@ -74,7 +97,7 @@ export default function EnterpriseEdit() {
     const upload = async (file: File) => {
         const formData = new FormData();
         formData.append("file", file);
-        const filename: any = await uploadDocument(formData);
+        const filename: any = await uploadEnterprisePassport(formData);
         if (filename) {
             form.setFieldValue("documentUrl", filename);
         }
