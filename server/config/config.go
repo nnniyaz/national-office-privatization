@@ -9,11 +9,9 @@ type Config struct {
 	spaceSecret   string
 	spaceEndPoint string
 	spaceRegion   string
-	spaceName     string
-	spaceHost     string
 }
 
-func New(isDevMode bool, smtpPort int, smtpUser, smtpPass, smtpHost, mongoUri, spaceBucket, spaceKey, spaceSecret, spaceEndPoint, spaceRegion, spaceName, spaceHost string) *Config {
+func New(isDevMode bool, smtpPort int, smtpUser, smtpPass, smtpHost, mongoUri, spaceBucket, spaceKey, spaceSecret, spaceEndPoint, spaceRegion string) *Config {
 	return &Config{
 		mongoUri:      mongoUri,
 		isDevMode:     isDevMode,
@@ -23,8 +21,6 @@ func New(isDevMode bool, smtpPort int, smtpUser, smtpPass, smtpHost, mongoUri, s
 		spaceSecret:   spaceSecret,
 		spaceEndPoint: spaceEndPoint,
 		spaceRegion:   spaceRegion,
-		spaceName:     spaceName,
-		spaceHost:     spaceHost,
 	}
 }
 
@@ -58,14 +54,6 @@ func (c *Config) GetSpaceEndPoint() string {
 
 func (c *Config) GetSpaceRegion() string {
 	return c.spaceRegion
-}
-
-func (c *Config) GetSpaceName() string {
-	return c.spaceName
-}
-
-func (c *Config) GetSpaceHost() string {
-	return c.spaceHost
 }
 
 type CfgEmail struct {

@@ -70,16 +70,6 @@ spec:
                 secretKeyRef:
                   name: prod-nop-secret
                   key: SPACE_REGION
-            - name: SPACE_NAME
-              valueFrom:
-                secretKeyRef:
-                  name: prod-nop-secret
-                  key: SPACE_NAME
-            - name: SPACE_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: prod-nop-secret
-                  key: SPACE_HOST
           ports:
             - containerPort: 8080
       dnsPolicy: ClusterFirstWithHostNet

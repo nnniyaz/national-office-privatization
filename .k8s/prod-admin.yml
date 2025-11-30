@@ -21,7 +21,7 @@ spec:
             - name: VITE_API_URL
               value: "https://api.nop.kz/api"
             - name: VITE_SPACE_HOST
-              value: "https://salam-dev.fra1.digitaloceanspaces.com/nop"
+              value: "https://files.nop.kz/nop"
           ports:
             - containerPort: 8080
       dnsPolicy: ClusterFirstWithHostNet

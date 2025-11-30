@@ -39,7 +39,7 @@ func (s *uploadService) UploadImage(s3Bucket, folderName string, file multipart.
 	fileName := uuid.NewUUID().String() + "_" + fileHeader.Filename
 	_, err := s.s3Client.PutObject(&s3.PutObjectInput{
 		Bucket:       aws.String(s3Bucket),
-		Key:          aws.String("/nop/" + folderName + "/" + fileName),
+		Key:          aws.String(folderName + "/" + fileName),
 		Body:         bytes.NewReader(buf.Bytes()),
 		ACL:          aws.String("public-read"),
 		CacheControl: aws.String("max-age=21600000"),
