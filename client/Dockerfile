@@ -26,8 +26,8 @@ ARG build_id
 ARG commit_hash
 ENV BUILD_ID=$build_id
 ENV COMMIT_HASH=$commit_hash
-ENV NODE_ENV production
-ENV PORT 8080
+ENV NODE_ENV=production
+ENV PORT=8080
 
 # Command to run the server
 CMD ["npm", "start"]
