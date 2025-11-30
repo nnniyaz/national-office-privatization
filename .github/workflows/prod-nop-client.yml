@@ -13,51 +13,20 @@ env:
   DEPLOYMENT_NAME: "prod-nop-client-deployment"
 
 jobs:
-  # The "build" workflow
-  build:
-    runs-on: ubuntu-latest
+  test-kubectl:
+    runs-on: self-hosted
     steps:
-      - name: Checkout the repo
-        uses: actions/checkout@v3
-
-      - name: Log in to private registry
+      - name: Show runner info
         run: |
-          echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login $REGISTRY \
-            -u "${{ secrets.REGISTRY_USERNAME }}" --password-stdin
+          echo "Runner hostname:"
+          hostname
+          echo "Runner user:"
+          whoami
 
-      - name: Build container image
+      - name: Test kubectl against k3s
         run: |
-          docker build \
-            -f "$DOCKERFILE_PATH" \
-            -t "$REGISTRY/$IMAGE_NAME:${GITHUB_RUN_ID}" .
-
-      - name: Push image to private registry
-        run: docker push "$REGISTRY/$IMAGE_NAME:${GITHUB_RUN_ID}"
-
-  # The "deploy" workflow
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build # Run when "build" workflow succeeds
-    env:
-      KUBECONFIG: ${{ github.workspace }}/kubeconfig
-    steps:
-      - name: Checkout the repo
-        uses: actions/checkout@v3
-
-      - name: Write kubeconfig for k3s
-        run: echo "${{ secrets.K3S_KUBECONFIG }}" > kubeconfig
-
-      - name: Install kubectl
-        uses: azure/setup-kubectl@v4
-        with:
-          version: "v1.33.0"
-
-      - name: Update deployment file
-        run: TAG=$(echo $GITHUB_RUN_ID) && sed -i 's|<IMAGE>|'$(echo $REGISTRY)'/'$(echo $IMAGE_NAME)':'${TAG}'|' $(echo $DEPLOYMENT_FILE_PATH)
-
-      - name: Deploy to k3s
-        run: kubectl apply -f "$DEPLOYMENT_FILE_PATH"
-
-      - name: Verify deployment
-        run: kubectl rollout status deployment/"$DEPLOYMENT_NAME"
+          export KUBECONFIG=$HOME/.kube/config
+          echo "KUBECONFIG = $KUBECONFIG"
+          kubectl get nodes
+          kubectl get pods -A || echo "No pods yet, that's fine"
 
