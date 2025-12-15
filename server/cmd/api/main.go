@@ -89,9 +89,10 @@ func main() {
 	// --- init s3 client
 
 	s3Config := &aws.Config{
-		Credentials: credentials.NewStaticCredentials(cfg.GetSpaceKey(), cfg.GetSpaceSecret(), ""),
-		Endpoint:    aws.String(cfg.GetSpaceEndPoint()),
-		Region:      aws.String(cfg.GetSpaceRegion()),
+		Credentials: 		credentials.NewStaticCredentials(cfg.GetSpaceKey(), cfg.GetSpaceSecret(), ""),
+		Endpoint:    		aws.String(cfg.GetSpaceEndPoint()),
+		Region:      		aws.String(cfg.GetSpaceRegion()),
+		S3ForcePathStyle: 	aws.Bool(true),
 	}
 
 	newSession, err := session.NewSession(s3Config)
