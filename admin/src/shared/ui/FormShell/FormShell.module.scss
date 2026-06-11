@@ -1,0 +1,110 @@
+.shell {
+  max-width: 920px;
+  padding-bottom: 8px;
+}
+
+// ── Шапка документа ─────────────────────────────────────────────
+.header {
+  margin-bottom: 28px;
+}
+
+.overline {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 10px;
+
+  &__label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--state-blue);
+    white-space: nowrap;
+  }
+
+  &__rule {
+    flex: 1;
+    height: 1px;
+    background: var(--hairline);
+  }
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 1.2;
+  color: var(--ink);
+  text-wrap: balance;
+  margin: 0;
+}
+
+.metaRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+  margin-top: 14px;
+}
+
+.idChip {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-soft);
+  background: var(--paper-inset);
+  border: 1px solid var(--hairline);
+  border-radius: 3px;
+  padding: 3px 8px;
+  user-select: all;
+}
+
+.metaItem {
+  font-size: 13px;
+  color: var(--ink);
+
+  &__label {
+    color: var(--ink-faint);
+    margin-right: 6px;
+
+    &::after {
+      content: ":";
+    }
+  }
+}
+
+// ── Тело ────────────────────────────────────────────────────────
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  // секции внутри antd-формы
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+// ── Sticky-панель действий ──────────────────────────────────────
+.actions {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 24px;
+  padding: 14px 4px;
+  border-top: 1px solid var(--hairline-strong);
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(8px);
+
+  &__left,
+  &__right {
+    display: flex;
+    gap: 10px;
+  }
+}

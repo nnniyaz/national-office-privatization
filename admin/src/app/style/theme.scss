@@ -1,0 +1,27 @@
+// Тема «Государственный реестр»: тёплая бумага, чернила, глубокий синий, золото печати
+:root {
+  // Поверхности
+  --paper: #F6F5F0;          // фон рабочей области
+  --paper-raised: #FFFFFF;   // карточки/секции
+  --paper-inset: #EFEDE6;    // вдавленные зоны (метаданные, dropzone)
+
+  // Чернила
+  --ink: #1E1E1A;
+  --ink-soft: rgba(30, 30, 26, 0.62);
+  --ink-faint: rgba(30, 30, 26, 0.4);
+  --hairline: rgba(30, 30, 26, 0.14);
+  --hairline-strong: rgba(30, 30, 26, 0.28);
+
+  // Акценты
+  --state-blue: #0E5E78;        // глубокий синий (действия, ссылки)
+  --state-blue-deep: #0A4D63;   // hover
+  --state-blue-wash: #E8F0F3;   // подложки активных элементов
+  --seal-gold: #C9A227;         // золото печати — заполненные языки
+  --seal-gold-soft: #E9DDB6;
+  --ink-red: #B4232A;           // опасные действия
+
+  // Шрифты
+  --font-ui: 'Golos Text', 'Segoe UI', sans-serif;
+  --font-display: 'PT Serif', Georgia, serif;
+  --font-mono: 'PT Mono', 'SF Mono', monospace;
+}

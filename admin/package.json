@@ -11,6 +11,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource/golos-text": "^5.2.8",
+    "@fontsource/pt-mono": "^5.2.8",
+    "@fontsource/pt-serif": "^5.2.8",
     "@redux-devtools/extension": "^3.3.0",
     "antd": "^5.20.3",
     "axios": "^1.7.5",

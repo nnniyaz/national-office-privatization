@@ -1,0 +1,41 @@
+.section {
+  background: var(--paper-raised);
+  border: 1px solid var(--hairline);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--hairline);
+  background:
+    linear-gradient(to right, var(--seal-gold) 0 3px, transparent 3px),
+    var(--paper-raised);
+
+  &__index {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--seal-gold);
+  }
+
+  &__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  &__hint {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--ink-faint);
+  }
+}
+
+.content {
+  padding: 22px 24px 6px;
+}

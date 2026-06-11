@@ -1,13 +1,18 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {useTypedSelector} from "../../../../shared/hooks/useTypedSelector.ts";
 import {useActions} from "../../../../shared/hooks/useActions.ts";
-import {Button, Card, Divider, Form} from "antd";
+import {Button, Form} from "antd";
 import {translate} from "../../../../shared/translate/translate.ts";
 import {useEffect} from "react";
 import {Upload} from "../../../../shared/ui/Upload/Upload.tsx";
 import {useWatch} from "antd/es/form/Form";
 import MlStringInput from "../../../../shared/ui/MlStringInput/MlStringInput.tsx";
-import type {MlString} from "../../../../shared/i18n/types.ts";
+import FormShell from "../../../../shared/ui/FormShell/FormShell.tsx";
+import FormSection from "../../../../shared/ui/FormShell/FormSection.tsx";
+import {txts} from "../../../../shared/core/i18ngen.ts";
+import {tPick, type MlString} from "../../../../shared/i18n/types.ts";
+
+const FORM_ID = "document-edit-form";
 
 export default function DocumentEdit() {
     const {id} = useParams();
@@ -63,86 +68,74 @@ export default function DocumentEdit() {
     }, [document]);
 
     return (
-        <Card bodyStyle={{padding: "10px"}} style={{maxWidth: "500px"}} loading={isLoading}>
-            <h2>{document?.id}</h2>
-            <p>{`${translate("title", lang)}: `}<i>{document?.title?.kz || document?.title?.ru || document?.title?.en || '-'}</i></p>
-            <p>{`${translate("created_at", lang)}: `}<i>{new Date(document?.createdAt || "").toLocaleString()}</i></p>
-            <p>{`${translate("updated_at", lang)}: `}<i>{new Date(document?.updatedAt || "").toLocaleString()}</i></p>
-
-            <Divider/>
-
+        <FormShell
+            entityLabel={txts.document_module[lang]}
+            title={tPick(document?.title, lang) || txts.editing[lang]}
+            id={document?.id}
+            meta={[
+                ...(document?.createdAt ? [{
+                    label: txts.created_at[lang],
+                    value: new Date(document.createdAt).toLocaleString(),
+                }] : []),
+                ...(document?.updatedAt ? [{
+                    label: txts.updated_at[lang],
+                    value: new Date(document.updatedAt).toLocaleString(),
+                }] : []),
+            ]}
+            formId={FORM_ID}
+            saving={isLoading}
+            onDelete={onFinishDelete}
+        >
             <Form
+                id={FORM_ID}
                 form={form}
                 layout={"vertical"}
                 onFinish={onFinish}
             >
-                <Form.Item
-                    label=""
-                    name={"title"}
-                    rules={[{
-                        required: true,
-                        validator: (_, value: MlString) => {
-                            if (!value || (!value.kz && !value.ru && !value.en)) {
-                                return Promise.reject(translate("please_enter_title", lang));
+                <FormSection index={1} title={txts.content_section[lang]}>
+                    <Form.Item
+                        label=""
+                        name={"title"}
+                        rules={[{
+                            required: true,
+                            validator: (_, value: MlString) => {
+                                if (!value || (!value.kz && !value.ru && !value.en)) {
+                                    return Promise.reject(translate("please_enter_title", lang));
+                                }
+                                return Promise.resolve();
                             }
-                            return Promise.resolve();
-                        }
-                    }]}
-                >
-                    <MlStringInput
-                        label={translate("title", lang)}
-                        value={form.getFieldValue("title") || {}}
-                        onChange={(v) => form.setFieldValue("title", v)}
-                        required
-                        rows={2}
-                    />
-                </Form.Item>
-                <Form.Item
-                    label={translate("file", lang)}
-                    name={"filename"}
-                    rules={[{required: true, message: translate("please_upload_document", lang)}]}
-                >
-                    {!!form.getFieldValue("filename") && (
-                        <Button style={{marginBottom: "20px"}} onClick={() => form.setFieldValue("filename", "")}>
-                            {translate("remove", lang)}
-                        </Button>
-                    )}
-                    <Upload
-                        imgSrc={form.getFieldValue("filename") || ""}
-                        onUpload={upload}
-                        loading={uploadState.isLoading}
-                        isDocument={true}
-                    />
-                </Form.Item>
-                <Form.Item style={{
-                    marginBottom: "0",
-                    display: "flex",
-                    justifyContent: "flex-end"
-                }}>
-                    <div style={{
-                        display: "flex",
-                        gap: "10px"
-                    }}>
-                        <Button
-                            onClick={onFinishDelete}
-                            danger={true}
-                            type={"primary"}
-                            loading={isLoading}
-                            disabled={isLoading}
-                        >
-                            {translate("delete", lang)}
-                        </Button>
-                        <Button
-                            htmlType={"submit"}
-                            type={"primary"}
-                            loading={isLoading}
-                            disabled={isLoading}
-                        >
-                            {translate("save", lang)}
-                        </Button>
-                    </div>
-                </Form.Item>
+                        }]}
+                    >
+                        <MlStringInput
+                            label={translate("title", lang)}
+                            value={form.getFieldValue("title") || {}}
+                            onChange={(v) => form.setFieldValue("title", v)}
+                            required
+                            rows={2}
+                        />
+                    </Form.Item>
+                </FormSection>
+
+                <FormSection index={2} title={txts.file_upload[lang]}>
+                    <Form.Item
+                        label={translate("file", lang)}
+                        name={"filename"}
+                        rules={[{required: true, message: translate("please_upload_document", lang)}]}
+                    >
+                        {!!form.getFieldValue("filename") && (
+                            <Button style={{marginBottom: "20px"}} onClick={() => form.setFieldValue("filename", "")}>
+                                {translate("remove", lang)}
+                            </Button>
+                        )}
+                        <Upload
+                            imgSrc={form.getFieldValue("filename") || ""}
+                            onUpload={upload}
+                            loading={uploadState.isLoading}
+                            isDocument={true}
+                        />
+                    </Form.Item>
+                </FormSection>
             </Form>
-        </Card>
+        </FormShell>
     )
 }

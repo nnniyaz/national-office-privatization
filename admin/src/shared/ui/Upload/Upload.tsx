@@ -1,8 +1,11 @@
 import {useRef} from "react";
-import {LoadingOutlined, PlusOutlined} from "@ant-design/icons";
+import {LoadingOutlined, PlusOutlined, FileTextOutlined} from "@ant-design/icons";
 import {useTypedSelector} from "../../hooks/useTypedSelector.ts";
 import {txts} from "../../core/i18ngen.ts";
+import {Notify} from "../../notification/notification.ts";
 import classes from "./Upload.module.scss";
+
+const MAX_SIZE_MB = 5;
 
 interface UploadProps {
     onUpload?: (file: File) => void;
@@ -12,7 +15,7 @@ interface UploadProps {
 }
 
 export const Upload = ({onUpload, loading, imgSrc, isDocument}: UploadProps) => {
-    const {lang} = useTypedSelector(state => state.system);
+    const {lang, notificationApi} = useTypedSelector(state => state.system);
     const ref = useRef<HTMLInputElement>(null);
 
     const handleClick = () => {
@@ -21,8 +24,18 @@ export const Upload = ({onUpload, loading, imgSrc, isDocument}: UploadProps) => 
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if (file && onUpload) {
-            onUpload(file);
+        if (file) {
+            if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+                if (notificationApi) {
+                    Notify.Warning({
+                        title: txts.file_upload[lang],
+                        message: txts.file_too_large_5mb[lang],
+                        notificationApi,
+                    });
+                }
+            } else if (onUpload) {
+                onUpload(file);
+            }
         }
         e.target.value = "";
     }
@@ -30,6 +43,7 @@ export const Upload = ({onUpload, loading, imgSrc, isDocument}: UploadProps) => 
     if (isDocument && !!imgSrc) {
         return (
             <p className={classes.upload__filename}>
+                <FileTextOutlined/>
                 {imgSrc.length > 50 ? imgSrc.slice(0, 50) + "..." : imgSrc}
             </p>
         )
@@ -46,6 +60,7 @@ export const Upload = ({onUpload, loading, imgSrc, isDocument}: UploadProps) => 
                         <p>
                             {isDocument ? txts.upload_document[lang] : txts.upload_image[lang]}
                         </p>
+                        <span className={classes.upload__limit}>{`≤ ${MAX_SIZE_MB} MB`}</span>
                     </>
                 )
             )}

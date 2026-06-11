@@ -1,13 +1,18 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {useTypedSelector} from "../../../../shared/hooks/useTypedSelector.ts";
 import {useActions} from "../../../../shared/hooks/useActions.ts";
-import {Button, Card, Divider, Form, Input} from "antd";
+import {Button, Form, Input} from "antd";
 import {translate} from "../../../../shared/translate/translate.ts";
 import {useEffect} from "react";
 import {Upload} from "../../../../shared/ui/Upload/Upload.tsx";
 import {useWatch} from "antd/es/form/Form";
 import MlStringInput from "../../../../shared/ui/MlStringInput/MlStringInput.tsx";
-import type {MlString} from "../../../../shared/i18n/types.ts";
+import FormShell from "../../../../shared/ui/FormShell/FormShell.tsx";
+import FormSection from "../../../../shared/ui/FormShell/FormSection.tsx";
+import {txts} from "../../../../shared/core/i18ngen.ts";
+import {tPick, type MlString} from "../../../../shared/i18n/types.ts";
+
+const FORM_ID = "event-edit-form";
 
 export default function EventEdit() {
     const {id} = useParams();
@@ -65,121 +70,105 @@ export default function EventEdit() {
     }, [event]);
 
     return (
-        <Card bodyStyle={{padding: "10px"}} style={{maxWidth: "500px"}} loading={isLoading}>
-            <h2>{event?.id}</h2>
-            <p style={{marginBottom: "5px"}}><b>{`${translate("name", lang)}: `}</b><i>{event?.name?.[lang] || event?.name?.kz || event?.name?.ru || event?.name?.en || '-'}</i></p>
-            <p style={{marginBottom: "5px"}}><b>{`${translate("planned_at", lang)}: `}</b><i>{new Date(event?.plannedAt || "").toLocaleString()}</i></p>
-            <p style={{marginBottom: "5px"}}><b>{`${translate("created_at", lang)}: `}</b><i>{new Date(event?.createdAt || "").toLocaleString()}</i></p>
-            <p style={{marginBottom: "5px"}}><b>{`${translate("updated_at", lang)}: `}</b><i>{new Date(event?.updatedAt || "").toLocaleString()}</i></p>
-            <p style={{marginBottom: "5px"}}><b>{`${translate("desc", lang)}: `}</b></p>
-            <p><i>{event?.desc?.[lang] || event?.desc?.kz || event?.desc?.ru || event?.desc?.en || '-'}</i></p>
-
-            <Divider/>
-
-            <h3 style={{marginBottom: "10px"}}>{translate("general_information", lang)}</h3>
+        <FormShell
+            entityLabel={txts.event_module[lang]}
+            title={tPick(event?.name, lang) || txts.editing[lang]}
+            id={event?.id}
+            meta={[
+                ...(event?.createdAt ? [{
+                    label: txts.created_at[lang],
+                    value: new Date(event.createdAt).toLocaleString(),
+                }] : []),
+                ...(event?.updatedAt ? [{
+                    label: txts.updated_at[lang],
+                    value: new Date(event.updatedAt).toLocaleString(),
+                }] : []),
+            ]}
+            formId={FORM_ID}
+            saving={isLoading}
+            onDelete={onFinishDelete}
+        >
             <Form
+                id={FORM_ID}
                 form={form}
                 layout={"vertical"}
                 onFinish={onFinish}
             >
-                <Form.Item
-                    label=""
-                    name={"name"}
-                    rules={[{
-                        required: true,
-                        validator: (_, value: MlString) => {
-                            if (!value || (!value.kz && !value.ru && !value.en)) {
-                                return Promise.reject(translate("please_enter_name", lang));
+                <FormSection index={1} title={txts.content_section[lang]}>
+                    <Form.Item
+                        label=""
+                        name={"name"}
+                        rules={[{
+                            required: true,
+                            validator: (_, value: MlString) => {
+                                if (!value || (!value.kz && !value.ru && !value.en)) {
+                                    return Promise.reject(translate("please_enter_name", lang));
+                                }
+                                return Promise.resolve();
                             }
-                            return Promise.resolve();
-                        }
-                    }]}
-                >
-                    <MlStringInput
-                        label={translate("name", lang)}
-                        value={form.getFieldValue("name") || {}}
-                        onChange={(v) => form.setFieldValue("name", v)}
-                        required
-                        rows={2}
-                    />
-                </Form.Item>
-                <Form.Item
-                    label=""
-                    name={"desc"}
-                    rules={[{
-                        required: true,
-                        validator: (_, value: MlString) => {
-                            if (!value || (!value.kz && !value.ru && !value.en)) {
-                                return Promise.reject(translate("please_enter_desc", lang));
+                        }]}
+                    >
+                        <MlStringInput
+                            label={translate("name", lang)}
+                            value={form.getFieldValue("name") || {}}
+                            onChange={(v) => form.setFieldValue("name", v)}
+                            required
+                            rows={2}
+                        />
+                    </Form.Item>
+                    <Form.Item
+                        label=""
+                        name={"desc"}
+                        rules={[{
+                            required: true,
+                            validator: (_, value: MlString) => {
+                                if (!value || (!value.kz && !value.ru && !value.en)) {
+                                    return Promise.reject(translate("please_enter_desc", lang));
+                                }
+                                return Promise.resolve();
                             }
-                            return Promise.resolve();
-                        }
-                    }]}
-                >
-                    <MlStringInput
-                        label={translate("desc", lang)}
-                        value={form.getFieldValue("desc") || {}}
-                        onChange={(v) => form.setFieldValue("desc", v)}
-                        required
-                        rows={5}
-                    />
-                </Form.Item>
-                <Form.Item
-                    label={translate("file", lang)}
-                    name={"imgUrl"}
-                    rules={[{required: true, message: translate("please_upload_image", lang)}]}
-                >
-                    {!!form.getFieldValue("imgUrl") && (
-                        <Button style={{marginBottom: "20px"}} onClick={() => form.setFieldValue("imgUrl", "")}>
-                            {translate("remove", lang)}
-                        </Button>
-                    )}
-                    <Upload
-                        imgSrc={
-                            form.getFieldValue("imgUrl") ?
-                                `${import.meta.env.VITE_SPACE_HOST}/event/${form.getFieldValue("imgUrl")}`
-                                : ""
-                        }
-                        onUpload={upload}
-                        loading={uploadState.isLoading}
-                    />
-                </Form.Item>
-                <Form.Item
-                    label={translate("planned_at", lang)}
-                    name={"plannedAt"}
-                    rules={[{required: true, message: translate("please_enter_planned_at", lang)}]}
-                >
-                    <Input placeholder={translate("enter_planned_at", lang)}/>
-                </Form.Item>
-                <Form.Item style={{
-                    marginBottom: "0",
-                    display: "flex",
-                    justifyContent: "flex-end"
-                }}>
-                    <div style={{
-                        display: "flex",
-                        gap: "10px"
-                    }}>
-                        <Button
-                            onClick={onFinishDelete}
-                            danger={true}
-                            type={"primary"}
-                            loading={isLoading}
-                            disabled={isLoading}
-                        >
-                            {translate("delete", lang)}
-                        </Button>
-                        <Button
-                            htmlType={"submit"}
-                            type={"primary"}
-                            loading={isLoading}
-                            disabled={isLoading}
-                        >
-                            {translate("save", lang)}
-                        </Button>
-                    </div>
-                </Form.Item>
+                        }]}
+                    >
+                        <MlStringInput
+                            label={translate("desc", lang)}
+                            value={form.getFieldValue("desc") || {}}
+                            onChange={(v) => form.setFieldValue("desc", v)}
+                            required
+                            rows={5}
+                        />
+                    </Form.Item>
+                    <Form.Item
+                        label={translate("planned_at", lang)}
+                        name={"plannedAt"}
+                        rules={[{required: true, message: translate("please_enter_planned_at", lang)}]}
+                    >
+                        <Input placeholder={translate("enter_planned_at", lang)}/>
+                    </Form.Item>
+                </FormSection>
+
+                <FormSection index={2} title={txts.file_upload[lang]}>
+                    <Form.Item
+                        label={translate("file", lang)}
+                        name={"imgUrl"}
+                        rules={[{required: true, message: translate("please_upload_image", lang)}]}
+                    >
+                        {!!form.getFieldValue("imgUrl") && (
+                            <Button style={{marginBottom: "20px"}} onClick={() => form.setFieldValue("imgUrl", "")}>
+                                {translate("remove", lang)}
+                            </Button>
+                        )}
+                        <Upload
+                            imgSrc={
+                                form.getFieldValue("imgUrl") ?
+                                    `${import.meta.env.VITE_SPACE_HOST}/event/${form.getFieldValue("imgUrl")}`
+                                    : ""
+                            }
+                            onUpload={upload}
+                            loading={uploadState.isLoading}
+                        />
+                    </Form.Item>
+                </FormSection>
             </Form>
-        </Card>
+        </FormShell>
     )
 }

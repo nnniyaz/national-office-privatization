@@ -1,9 +1,14 @@
-import {Button, Card, Form} from "antd";
+import {Col, Form, Row} from "antd";
 import {useTypedSelector} from "../../../../shared/hooks/useTypedSelector.ts";
 import {useActions} from "../../../../shared/hooks/useActions.ts";
 import {useNavigate} from "react-router-dom";
 import {translate} from "../../../../shared/translate/translate.ts";
 import Input from "antd/es/input/Input";
+import FormShell from "../../../../shared/ui/FormShell/FormShell.tsx";
+import FormSection from "../../../../shared/ui/FormShell/FormSection.tsx";
+import {txts} from "../../../../shared/core/i18ngen.ts";
+
+const FORM_ID = "contacts-create-form";
 
 export default function ContactsCreate() {
     const navigate = useNavigate();
@@ -18,67 +23,68 @@ export default function ContactsCreate() {
     }
 
     return (
-        <Card bodyStyle={{padding: "10px"}} style={{maxWidth: "500px"}} loading={isLoading}>
+        <FormShell
+            entityLabel={txts.contacts_module[lang]}
+            title={txts.new_record[lang]}
+            formId={FORM_ID}
+            saving={isLoading}
+        >
             <Form
+                id={FORM_ID}
                 form={form}
                 layout={"vertical"}
                 onFinish={onFinish}
             >
-                <Form.Item
-                    label={translate("primary_contact_person", lang)}
-                    name={"primaryContactPerson"}
-                    rules={[{required: true, message: translate("please_enter_primary_contact_person", lang)}]}
-                >
-                    <Input placeholder={translate("enter_primary_contact_person", lang)}
-                    />
-                </Form.Item>
-                <Form.Item
-                    label={translate("primary_contact", lang)}
-                    name={"primaryContact"}
-                    rules={[{required: true, message: translate("please_enter_primary_contact", lang)}]}
-                >
-                    <Input placeholder={translate("enter_primary_contact", lang)}
-                    />
-                </Form.Item>
-                <Form.Item
-                    label={translate("secondary_contact_person", lang)}
-                    name={"secondaryContactPerson"}
-                    rules={[{required: true, message: translate("please_enter_secondary_contact_person", lang)}]}
-                >
-                    <Input placeholder={translate("enter_secondary_contact_person", lang)}
-                    />
-                </Form.Item>
-                <Form.Item
-                    label={translate("secondary_contact", lang)}
-                    name={"secondaryContact"}
-                    rules={[{required: true, message: translate("please_enter_secondary_contact", lang)}]}
-                >
-                    <Input placeholder={translate("enter_secondary_contact", lang)}
-                    />
-                </Form.Item>
-                <Form.Item
-                    label={translate("email", lang)}
-                    name={"email"}
-                    rules={[{required: true, message: translate("please_enter_email", lang)}]}
-                >
-                    <Input placeholder={translate("enter_email", lang)}
-                    />
-                </Form.Item>
-                <Form.Item style={{
-                    marginBottom: "0",
-                    display: "flex",
-                    justifyContent: "flex-end",
-                }}>
-                    <Button
-                        htmlType={"submit"}
-                        type={"primary"}
-                        loading={isLoading}
-                        disabled={isLoading}
+                <FormSection index={1} title={txts.general_information[lang]}>
+                    <Row gutter={16}>
+                        <Col xs={24} md={12}>
+                            <Form.Item
+                                label={translate("primary_contact_person", lang)}
+                                name={"primaryContactPerson"}
+                                rules={[{required: true, message: translate("please_enter_primary_contact_person", lang)}]}
+                            >
+                                <Input placeholder={translate("enter_primary_contact_person", lang)}/>
+                            </Form.Item>
+                        </Col>
+                        <Col xs={24} md={12}>
+                            <Form.Item
+                                label={translate("primary_contact", lang)}
+                                name={"primaryContact"}
+                                rules={[{required: true, message: translate("please_enter_primary_contact", lang)}]}
+                            >
+                                <Input placeholder={translate("enter_primary_contact", lang)}/>
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row gutter={16}>
+                        <Col xs={24} md={12}>
+                            <Form.Item
+                                label={translate("secondary_contact_person", lang)}
+                                name={"secondaryContactPerson"}
+                                rules={[{required: true, message: translate("please_enter_secondary_contact_person", lang)}]}
+                            >
+                                <Input placeholder={translate("enter_secondary_contact_person", lang)}/>
+                            </Form.Item>
+                        </Col>
+                        <Col xs={24} md={12}>
+                            <Form.Item
+                                label={translate("secondary_contact", lang)}
+                                name={"secondaryContact"}
+                                rules={[{required: true, message: translate("please_enter_secondary_contact", lang)}]}
+                            >
+                                <Input placeholder={translate("enter_secondary_contact", lang)}/>
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Form.Item
+                        label={translate("email", lang)}
+                        name={"email"}
+                        rules={[{required: true, message: translate("please_enter_email", lang)}]}
                     >
-                        {translate("add", lang)}
-                    </Button>
-                </Form.Item>
+                        <Input placeholder={translate("enter_email", lang)}/>
+                    </Form.Item>
+                </FormSection>
             </Form>
-        </Card>
+        </FormShell>
     )
 }

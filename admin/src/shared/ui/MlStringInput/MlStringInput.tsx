@@ -37,16 +37,20 @@ export default function MlStringInput({
           {required && <span className={styles.required}> *</span>}
         </label>
         <div className={styles.tabs}>
-          {langs.map((lang) => (
-            <button
-              key={lang}
-              type="button"
-              onClick={() => setActiveLang(lang)}
-              className={`${styles.tab} ${activeLang === lang ? styles.active : ''}`}
-            >
-              {LANG_LABELS[lang]}
-            </button>
-          ))}
+          {langs.map((lang) => {
+            const filled = !!value?.[lang]?.trim();
+            return (
+              <button
+                key={lang}
+                type="button"
+                onClick={() => setActiveLang(lang)}
+                className={`${styles.tab} ${activeLang === lang ? styles.active : ''}`}
+              >
+                <span className={`${styles.dot} ${filled ? styles.dotFilled : ''}`}/>
+                {LANG_LABELS[lang]}
+              </button>
+            );
+          })}
         </div>
       </div>
       <textarea
@@ -62,4 +66,3 @@ export default function MlStringInput({
     </div>
   );
 }
-

@@ -1,11 +1,16 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {useTypedSelector} from "../../../../shared/hooks/useTypedSelector.ts";
 import {useActions} from "../../../../shared/hooks/useActions.ts";
-import {Button, Card, Divider, Form, Input} from "antd";
+import {Form, Input} from "antd";
 import {translate} from "../../../../shared/translate/translate.ts";
 import {useEffect} from "react";
 import MlStringInput from "../../../../shared/ui/MlStringInput/MlStringInput.tsx";
-import type {MlString} from "../../../../shared/i18n/types.ts";
+import FormShell from "../../../../shared/ui/FormShell/FormShell.tsx";
+import FormSection from "../../../../shared/ui/FormShell/FormSection.tsx";
+import {txts} from "../../../../shared/core/i18ngen.ts";
+import {tPick, type MlString} from "../../../../shared/i18n/types.ts";
+
+const FORM_ID = "partner-edit-form";
 
 export default function PartnerEdit() {
     const {id} = useParams();
@@ -47,75 +52,51 @@ export default function PartnerEdit() {
     }, [partner]);
 
     return (
-        <Card bodyStyle={{padding: "10px"}} style={{maxWidth: "500px"}} loading={isLoading}>
-            <h2>{partner?.id}</h2>
-            <p>{`${translate("name", lang)}: `}<i>{partner?.name?.[lang] || partner?.name?.kz || partner?.name?.ru || partner?.name?.en || '-'}</i></p>
-            <p>{`${translate("link", lang)}: `}<i>{partner?.link}</i></p>
-
-            <Divider/>
-
+        <FormShell
+            entityLabel={txts.partner_module[lang]}
+            title={tPick(partner?.name, lang) || txts.editing[lang]}
+            id={partner?.id}
+            formId={FORM_ID}
+            saving={isLoading}
+            onDelete={onFinishDelete}
+        >
             <Form
+                id={FORM_ID}
                 form={formGeneral}
                 layout={"vertical"}
                 onFinish={onFinish}
             >
-                <Form.Item
-                    label=""
-                    name={"name"}
-                    rules={[{
-                        required: true,
-                        validator: (_, value: MlString) => {
-                            if (!value || (!value.kz && !value.ru && !value.en)) {
-                                return Promise.reject(translate("please_enter_name", lang));
+                <FormSection index={1} title={txts.general_information[lang]}>
+                    <Form.Item
+                        label=""
+                        name={"name"}
+                        rules={[{
+                            required: true,
+                            validator: (_, value: MlString) => {
+                                if (!value || (!value.kz && !value.ru && !value.en)) {
+                                    return Promise.reject(translate("please_enter_name", lang));
+                                }
+                                return Promise.resolve();
                             }
-                            return Promise.resolve();
-                        }
-                    }]}
-                >
-                    <MlStringInput
-                        label={translate("name", lang)}
-                        value={formGeneral.getFieldValue("name") || {}}
-                        onChange={(v) => formGeneral.setFieldValue("name", v)}
-                        required
-                        rows={2}
-                    />
-                </Form.Item>
-                <Form.Item
-                    label={translate("link", lang)}
-                    name={"link"}
-                    rules={[{required: true, message: translate("please_enter_link", lang)}]}
-                >
-                    <Input placeholder={translate("enter_link", lang)}/>
-                </Form.Item>
-                <Form.Item style={{
-                    marginBottom: "0",
-                    display: "flex",
-                    justifyContent: "flex-end"
-                }}>
-                    <div style={{
-                        display: "flex",
-                        gap: "10px"
-                    }}>
-                        <Button
-                            onClick={onFinishDelete}
-                            danger={true}
-                            type={"primary"}
-                            loading={isLoading}
-                            disabled={isLoading}
-                        >
-                            {translate("delete", lang)}
-                        </Button>
-                        <Button
-                            htmlType={"submit"}
-                            type={"primary"}
-                            loading={isLoading}
-                            disabled={isLoading}
-                        >
-                            {translate("save", lang)}
-                        </Button>
-                    </div>
-                </Form.Item>
+                        }]}
+                    >
+                        <MlStringInput
+                            label={translate("name", lang)}
+                            value={formGeneral.getFieldValue("name") || {}}
+                            onChange={(v) => formGeneral.setFieldValue("name", v)}
+                            required
+                            rows={2}
+                        />
+                    </Form.Item>
+                    <Form.Item
+                        label={translate("link", lang)}
+                        name={"link"}
+                        rules={[{required: true, message: translate("please_enter_link", lang)}]}
+                    >
+                        <Input placeholder={translate("enter_link", lang)}/>
+                    </Form.Item>
+                </FormSection>
             </Form>
-        </Card>
+        </FormShell>
     )
 }

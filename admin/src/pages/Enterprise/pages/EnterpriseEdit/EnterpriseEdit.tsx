@@ -1,11 +1,16 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {useTypedSelector} from "../../../../shared/hooks/useTypedSelector.ts";
 import {useActions} from "../../../../shared/hooks/useActions.ts";
-import {Button, Card, Divider, Form, Input} from "antd";
+import {Button, Col, Form, Input, Row} from "antd";
 import {translate} from "../../../../shared/translate/translate.ts";
-import {useEffect, useMemo} from "react";
+import {useEffect} from "react";
 import {Upload} from "../../../../shared/ui/Upload/Upload.tsx";
 import {useWatch} from "antd/es/form/Form";
+import FormShell from "../../../../shared/ui/FormShell/FormShell.tsx";
+import FormSection from "../../../../shared/ui/FormShell/FormSection.tsx";
+import {txts} from "../../../../shared/core/i18ngen.ts";
+
+const FORM_ID = "enterprise-edit-form";
 
 export default function EnterpriseEdit() {
     const {id} = useParams();
@@ -24,36 +29,6 @@ export default function EnterpriseEdit() {
 
     // @ts-ignore
     const values = useWatch([], form);
-
-    const data: {[key: string]: {label: string, value: any}} = useMemo(() => {
-        if (!enterprise) return {} as {[key: string]: {label: string, value: any}};
-        return {
-            name: {
-                label: translate("name", lang),
-                value: enterprise?.name || "-"
-            },
-            implementationForm: {
-                label: translate("implementation_form", lang),
-                value: enterprise?.implementationForm || "-"
-            },
-            salesRecommendations: {
-                label: translate("sales_recommendations", lang),
-                value: enterprise?.salesRecommendations || "-"
-            },
-            location: {
-                label: translate("location", lang),
-                value: enterprise?.location || "-"
-            },
-            createdAt: {
-                label: translate("created_at", lang),
-                value: new Date(enterprise?.createdAt).toLocaleString() || "-"
-            },
-            updatedAt: {
-                label: translate("updated_at", lang),
-                value: new Date(enterprise?.updatedAt).toLocaleString() || "-"
-            },
-        }
-    }, [enterprise]);
 
     const onFinish = () => {
         if (!id) return;
@@ -129,146 +104,113 @@ export default function EnterpriseEdit() {
     }, [enterprise]);
 
     return (
-        <Card bodyStyle={{padding: "10px"}} style={{maxWidth: "500px"}} loading={isLoading}>
-            <h2>{`${translate("enterprise_id", lang)}:`}</h2>
-            <h2 style={{marginBottom: "20px"}}>{enterprise?.id}</h2>
-
-            <div
-                style={{
-                    border: "1px solid rgb(240, 240, 240)",
-                    borderRadius: "5px",
-                    marginBottom: "20px"
-                }}
-            >
-                {
-                    Object.keys(data).map((key, index) => (
-                        <div
-                            key={index}
-                            style={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                                borderBottom: Object.keys(data).length - 1 === index ? "" : "1px solid rgb(240, 240, 240)",
-                            }}
-                        >
-                            <div style={{
-                                width: "30%",
-                                padding: "10px",
-                                borderRight: "1px solid rgb(240, 240, 240)",
-                                backgroundColor: "#fafafa",
-                                borderTopLeftRadius: index === 0 ? "4px" : "",
-                                borderBottomLeftRadius: Object.keys(data).length - 1 === index ? "4px" : "",
-                            }}>
-                                {data[key].label}
-                            </div>
-                            <div style={{
-                                width: "70%",
-                                padding: "10px",
-                            }}>
-                                {data[key].value}
-                            </div>
-                        </div>
-                    ))
-                }
-            </div>
-
-            <Divider/>
-
+        <FormShell
+            entityLabel={txts.enterprise_module[lang]}
+            title={enterprise?.name || txts.editing[lang]}
+            id={enterprise?.id}
+            meta={[
+                ...(enterprise?.createdAt ? [{
+                    label: txts.created_at[lang],
+                    value: new Date(enterprise.createdAt).toLocaleString(),
+                }] : []),
+                ...(enterprise?.updatedAt ? [{
+                    label: txts.updated_at[lang],
+                    value: new Date(enterprise.updatedAt).toLocaleString(),
+                }] : []),
+            ]}
+            formId={FORM_ID}
+            saving={isLoading}
+            onDelete={onFinishDelete}
+        >
             <Form
+                id={FORM_ID}
                 form={form}
                 layout={"vertical"}
                 onFinish={onFinish}
             >
-                <Form.Item
-                    label={translate("name", lang)}
-                    name={"name"}
-                    rules={[{required: true, message: translate("please_enter_name", lang)}]}
-                >
-                    <Input placeholder={translate("enter_name", lang)}/>
-                </Form.Item>
-                <Form.Item
-                    label={translate("location", lang)}
-                    name={"location"}
-                    rules={[{required: true, message: translate("please_enter_location", lang)}]}
-                >
-                    <Input placeholder={translate("enter_location", lang)}/>
-                </Form.Item>
-                <Form.Item
-                    label={translate("industry", lang)}
-                    name={"industry"}
-                >
-                    <Input placeholder={translate("enter_industry", lang)}/>
-                </Form.Item>
-                <Form.Item
-                    label={translate("government_share", lang)}
-                    name={"governmentShare"}
-                >
-                    <Input
-                        placeholder={translate("enter_government_share", lang)}
-                        type={"number"}
-                        value={form.getFieldValue("governmentShare")}
-                        onChange={(e) => {
-                            if (isNaN(Number(e.target.value))) return;
-                            form.setFieldsValue({governmentShare: Number(e.target.value)});
-                        }}
-                    />
-                </Form.Item>
-                <Form.Item
-                    label={translate("implementation_form", lang)}
-                    name={"implementationForm"}
-                >
-                    <Input placeholder={translate("enter_implementation_form", lang)}/>
-                </Form.Item>
-                <Form.Item
-                    label={translate("sales_recommendations", lang)}
-                    name={"salesRecommendations"}
-                >
-                    <Input placeholder={translate("enter_sales_recommendations", lang)}/>
-                </Form.Item>
-                <Form.Item
-                    label={translate("enterprise_passport", lang)}
-                    name={"documentUrl"}
-                >
-                    {!!form.getFieldValue("documentUrl") && (
-                        <Button style={{marginBottom: "20px"}} onClick={() => form.setFieldValue("documentUrl", "")}>
-                            {translate("remove", lang)}
-                        </Button>
-                    )}
-                    <Upload
-                        imgSrc={form.getFieldValue("documentUrl") || ""}
-                        onUpload={upload}
-                        loading={uploadState.isLoading}
-                        isDocument={true}
-                    />
-                </Form.Item>
-                <Form.Item style={{
-                    marginBottom: "0",
-                    display: "flex",
-                    justifyContent: "flex-end",
-                }}>
-                    <div style={{
-                        display: "flex",
-                        gap: "10px"
-                    }}>
-                        <Button
-                            onClick={onFinishDelete}
-                            danger={true}
-                            type={"primary"}
-                            loading={isLoading}
-                            disabled={isLoading}
-                        >
-                            {translate("delete", lang)}
-                        </Button>
-                        <Button
-                            htmlType={"submit"}
-                            type={"primary"}
-                            loading={isLoading}
-                            disabled={isLoading}
-                        >
-                            {translate("save", lang)}
-                        </Button>
-                    </div>
-                </Form.Item>
+                <FormSection index={1} title={txts.general_information[lang]}>
+                    <Form.Item
+                        label={translate("name", lang)}
+                        name={"name"}
+                        rules={[{required: true, message: translate("please_enter_name", lang)}]}
+                    >
+                        <Input placeholder={translate("enter_name", lang)}/>
+                    </Form.Item>
+                    <Row gutter={16}>
+                        <Col xs={24} md={12}>
+                            <Form.Item
+                                label={translate("location", lang)}
+                                name={"location"}
+                                rules={[{required: true, message: translate("please_enter_location", lang)}]}
+                            >
+                                <Input placeholder={translate("enter_location", lang)}/>
+                            </Form.Item>
+                        </Col>
+                        <Col xs={24} md={12}>
+                            <Form.Item
+                                label={translate("industry", lang)}
+                                name={"industry"}
+                            >
+                                <Input placeholder={translate("enter_industry", lang)}/>
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Form.Item
+                        label={translate("government_share", lang)}
+                        name={"governmentShare"}
+                    >
+                        <Input
+                            placeholder={translate("enter_government_share", lang)}
+                            type={"number"}
+                            value={form.getFieldValue("governmentShare")}
+                            onChange={(e) => {
+                                if (isNaN(Number(e.target.value))) return;
+                                form.setFieldsValue({governmentShare: Number(e.target.value)});
+                            }}
+                        />
+                    </Form.Item>
+                </FormSection>
+
+                <FormSection index={2} title={txts.sale_details[lang]}>
+                    <Row gutter={16}>
+                        <Col xs={24} md={12}>
+                            <Form.Item
+                                label={translate("implementation_form", lang)}
+                                name={"implementationForm"}
+                            >
+                                <Input placeholder={translate("enter_implementation_form", lang)}/>
+                            </Form.Item>
+                        </Col>
+                        <Col xs={24} md={12}>
+                            <Form.Item
+                                label={translate("sales_recommendations", lang)}
+                                name={"salesRecommendations"}
+                            >
+                                <Input placeholder={translate("enter_sales_recommendations", lang)}/>
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                </FormSection>
+
+                <FormSection index={3} title={translate("enterprise_passport", lang)}>
+                    <Form.Item
+                        label=""
+                        name={"documentUrl"}
+                    >
+                        {!!form.getFieldValue("documentUrl") && (
+                            <Button style={{marginBottom: "20px"}} onClick={() => form.setFieldValue("documentUrl", "")}>
+                                {translate("remove", lang)}
+                            </Button>
+                        )}
+                        <Upload
+                            imgSrc={form.getFieldValue("documentUrl") || ""}
+                            onUpload={upload}
+                            loading={uploadState.isLoading}
+                            isDocument={true}
+                        />
+                    </Form.Item>
+                </FormSection>
             </Form>
-        </Card>
+        </FormShell>
     )
 }
