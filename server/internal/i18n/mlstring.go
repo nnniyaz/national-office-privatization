@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"strings"
+
+	"github.com/nnniyaz/nop/server/pkg/core"
 )
 
 type MlString struct {
@@ -40,8 +42,7 @@ func (m MlString) Get(lang string) string {
 func (m *MlString) UnmarshalJSON(b []byte) error {
 	var s string
 	if err := json.Unmarshal(b, &s); err == nil {
-		m.EN = s
-		return nil
+		return core.NewI18NError(core.EINVALID, core.TXT_WRONG_MLSTRING_FORMAT)
 	}
 
 	type alias MlString

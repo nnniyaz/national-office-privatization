@@ -31,13 +31,6 @@ func TestMlString_JSONSerialization(t *testing.T) {
 				EN: "English",
 			},
 		},
-		{
-			name:  "simple string (backward compatibility)",
-			input: `"Simple text"`,
-			expected: i18n.MlString{
-				EN: "Simple text",
-			},
-		},
 	}
 
 	for _, tt := range tests {
@@ -48,6 +41,12 @@ func TestMlString_JSONSerialization(t *testing.T) {
 			assert.Equal(t, tt.expected, result)
 		})
 	}
+}
+
+func TestMlString_JSONSerialization_PlainStringRejected(t *testing.T) {
+	var result i18n.MlString
+	err := json.Unmarshal([]byte(`"Simple text"`), &result)
+	assert.Error(t, err)
 }
 
 func TestMlString_Get(t *testing.T) {
@@ -205,4 +204,3 @@ func TestMlString_RoundTrip(t *testing.T) {
 
 	assert.Equal(t, original, result)
 }
-

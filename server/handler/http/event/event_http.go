@@ -134,7 +134,7 @@ type CreateEventIn struct {
 func (hd *HttpDelivery) CreateEvent(w http.ResponseWriter, r *http.Request) {
 	var in CreateEventIn
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
-		response.NewError(hd.logger, w, r, err)
+		response.NewBad(hd.logger, w, r, err)
 		return
 	}
 
@@ -170,7 +170,7 @@ type UpdateEventIn struct {
 func (hd *HttpDelivery) UpdateEvent(w http.ResponseWriter, r *http.Request) {
 	var in UpdateEventIn
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
-		response.NewError(hd.logger, w, r, err)
+		response.NewBad(hd.logger, w, r, err)
 		return
 	}
 

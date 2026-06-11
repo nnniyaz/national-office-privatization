@@ -89,7 +89,7 @@ func (hd *HttpDelivery) Login(w http.ResponseWriter, r *http.Request) {
 
 	in := LoginIn{}
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
-		response.NewError(hd.logger, w, r, err)
+		response.NewBad(hd.logger, w, r, err)
 		return
 	}
 

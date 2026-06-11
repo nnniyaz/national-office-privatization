@@ -123,7 +123,7 @@ type CreateEmployeeIn struct {
 func (hd *HttpDelivery) CreateEmployee(w http.ResponseWriter, r *http.Request) {
 	in := CreateEmployeeIn{}
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
-		response.NewError(hd.logger, w, r, err)
+		response.NewBad(hd.logger, w, r, err)
 		return
 	}
 	if err := hd.service.Create(r.Context(), in.Name, in.Group); err != nil {
@@ -156,7 +156,7 @@ type UpdateEmployeeIn struct {
 func (hd *HttpDelivery) UpdateEmployee(w http.ResponseWriter, r *http.Request) {
 	in := UpdateEmployeeIn{}
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
-		response.NewError(hd.logger, w, r, err)
+		response.NewBad(hd.logger, w, r, err)
 		return
 	}
 	if err := hd.service.Update(r.Context(), in.Id, in.Name, in.Group); err != nil {

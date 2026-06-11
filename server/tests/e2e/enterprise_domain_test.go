@@ -39,6 +39,7 @@ func TestEnterprise_NewEnterprise_Success(t *testing.T) {
 		"Цель продажи",
 		"Ключевые условия",
 		"Дополнительные условия",
+		"https://files.example.com/passport.pdf",
 	)
 
 	require.NoError(t, err)
@@ -111,7 +112,7 @@ func TestEnterprise_NewEnterprise_ValidationErrors(t *testing.T) {
 				tt.location,
 				tt.industry,
 				tt.governmentShare,
-				"", 0, "", "", 0, "", 0, "", 0, "", 0, "", 0, "", 0, "", 0, "", "", "", "", "", "", "", "",
+				"", 0, "", "", 0, "", 0, "", 0, "", 0, "", 0, "", 0, "", 0, "", "", "", "", "", "", "", "", "",
 			)
 
 			if tt.wantErr {
@@ -133,7 +134,7 @@ func TestEnterprise_Update_Success(t *testing.T) {
 		50.0,
 		"АО", 2010, "Старый владелец", "Старая деятельность",
 		500000, "", 1000000, "", 500000, "", 2000000, "", 100000, "", 25, "", 500000, "",
-		"", "", "", "", "", "", "",
+		"", "", "", "", "", "", "", "",
 	)
 	require.NoError(t, err)
 
@@ -167,6 +168,7 @@ func TestEnterprise_Update_Success(t *testing.T) {
 		"Новая цель",
 		"Новые условия",
 		"Новые доп условия",
+		"https://files.example.com/new-passport.pdf",
 	)
 
 	assert.NoError(t, err)
@@ -212,6 +214,7 @@ func TestEnterprise_AllGetters(t *testing.T) {
 		"Цель",
 		"Условия",
 		"Доп условия",
+		"https://files.example.com/passport.pdf",
 	)
 	require.NoError(t, err)
 
@@ -248,4 +251,3 @@ func TestEnterprise_AllGetters(t *testing.T) {
 	assert.NotZero(t, e.GetCreatedAt())
 	assert.NotZero(t, e.GetUpdatedAt())
 }
-

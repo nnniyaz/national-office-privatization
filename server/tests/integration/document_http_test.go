@@ -92,8 +92,8 @@ func TestCreateDocument_HTTP(t *testing.T) {
 	require.Equal(t, http.StatusOK, rr.Code, rr.Body.String())
 
 	var resp struct {
-		TraceId string `json:"traceId"`
-		Success bool   `json:"success"`
+		TraceId string      `json:"traceId"`
+		Success bool        `json:"success"`
 		Data    interface{} `json:"data"`
 	}
 	require.NoError(t, json.Unmarshal(rr.Body.Bytes(), &resp))
@@ -101,12 +101,12 @@ func TestCreateDocument_HTTP(t *testing.T) {
 	assert.Nil(t, resp.Data)
 }
 
-func TestCreateDocument_HTTP_WithString_BackwardCompatibility(t *testing.T) {
+func TestCreateDocument_HTTP_WithString_Rejected(t *testing.T) {
 	t.Parallel()
 
 	h := newTestDocumentHandler(t)
 
-	// Old format: simple string instead of MlString object
+	// Old format: simple string instead of MlString object — must be rejected
 	body := map[string]interface{}{
 		"title":    "Simple Document",
 		"filename": "simple.pdf",
@@ -121,13 +121,13 @@ func TestCreateDocument_HTTP_WithString_BackwardCompatibility(t *testing.T) {
 
 	h.ServeHTTP(rr, req)
 
-	require.Equal(t, http.StatusOK, rr.Code, rr.Body.String())
+	require.Equal(t, http.StatusBadRequest, rr.Code, rr.Body.String())
 
 	var resp struct {
 		Success bool `json:"success"`
 	}
 	require.NoError(t, json.Unmarshal(rr.Body.Bytes(), &resp))
-	assert.True(t, resp.Success)
+	assert.False(t, resp.Success)
 }
 
 func TestCreateDocument_HTTP_InvalidTitle_ShouldFail(t *testing.T) {
@@ -206,7 +206,7 @@ func TestCreateDocument_HTTP_MalformedJSON_ShouldFail(t *testing.T) {
 
 	h.ServeHTTP(rr, req)
 
-	assert.Equal(t, http.StatusInternalServerError, rr.Code)
+	assert.Equal(t, http.StatusBadRequest, rr.Code)
 }
 
 func TestGetDocuments_HTTP(t *testing.T) {
@@ -491,4 +491,3 @@ func TestDeleteDocument_HTTP(t *testing.T) {
 	// This is expected behavior for deleted documents
 	assert.Equal(t, http.StatusInternalServerError, getRr.Code)
 }
-

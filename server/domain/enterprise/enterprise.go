@@ -68,6 +68,15 @@ func NewEnterprise(
 	if name == "" {
 		return nil, exceptions.ErrInvalidEnterpriseName
 	}
+	if location == "" {
+		return nil, exceptions.ErrInvalidEnterpriseLocation
+	}
+	if industry == "" {
+		return nil, exceptions.ErrInvalidEnterpriseIndustry
+	}
+	if governmentShare < 0 {
+		return nil, exceptions.ErrInvalidEnterpriseGovShare
+	}
 	return &Enterprise{
 		id:                       uuid.NewUUID(),
 		name:                     name,
@@ -264,6 +273,12 @@ func (e *Enterprise) Update(
 	}
 	if location == "" {
 		return exceptions.ErrInvalidEnterpriseLocation
+	}
+	if industry == "" {
+		return exceptions.ErrInvalidEnterpriseIndustry
+	}
+	if governmentShare < 0 {
+		return exceptions.ErrInvalidEnterpriseGovShare
 	}
 	e.name = name
 	e.location = location

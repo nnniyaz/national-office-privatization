@@ -136,7 +136,7 @@ type CreateUserIn struct {
 func (hd *HttpDelivery) CreateUser(w http.ResponseWriter, r *http.Request) {
 	in := CreateUserIn{}
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
-		response.NewError(hd.logger, w, r, err)
+		response.NewBad(hd.logger, w, r, err)
 		return
 	}
 	if err := hd.service.Create(r.Context(), in.FirstName, in.LastName, in.Login, in.Password, in.Role); err != nil {
@@ -170,7 +170,7 @@ type UpdateUserIn struct {
 func (hd *HttpDelivery) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	in := UpdateUserIn{}
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
-		response.NewError(hd.logger, w, r, err)
+		response.NewBad(hd.logger, w, r, err)
 		return
 	}
 	if err := hd.service.UpdateCredentials(r.Context(), in.Id, in.FirstName, in.LastName, in.Role); err != nil {
@@ -202,7 +202,7 @@ type UpdateUserPasswordIn struct {
 func (hd *HttpDelivery) UpdateUserPassword(w http.ResponseWriter, r *http.Request) {
 	in := UpdateUserPasswordIn{}
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
-		response.NewError(hd.logger, w, r, err)
+		response.NewBad(hd.logger, w, r, err)
 		return
 	}
 	if err := hd.service.UpdatePassword(r.Context(), in.Id, in.Password); err != nil {

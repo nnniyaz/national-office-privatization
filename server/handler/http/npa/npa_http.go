@@ -126,7 +126,7 @@ type CreateNpaIn struct {
 func (hd *HttpDelivery) CreateNpa(w http.ResponseWriter, r *http.Request) {
 	var in CreateNpaIn
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
-		response.NewError(hd.logger, w, r, err)
+		response.NewBad(hd.logger, w, r, err)
 		return
 	}
 	if err := hd.service.Create(r.Context(), in.Title, in.Filename); err != nil {
@@ -159,7 +159,7 @@ type UpdateNpaIn struct {
 func (hd *HttpDelivery) UpdateNpa(w http.ResponseWriter, r *http.Request) {
 	var in UpdateNpaIn
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
-		response.NewError(hd.logger, w, r, err)
+		response.NewBad(hd.logger, w, r, err)
 		return
 	}
 	if err := hd.service.Update(r.Context(), in.Id, in.Title, in.Filename); err != nil {

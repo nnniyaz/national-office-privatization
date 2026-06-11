@@ -85,7 +85,7 @@ type CreateContactIn struct {
 func (hd *HttpDelivery) CreateContact(w http.ResponseWriter, r *http.Request) {
 	in := CreateContactIn{}
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
-		response.NewError(hd.logger, w, r, err)
+		response.NewBad(hd.logger, w, r, err)
 		return
 	}
 	if err := hd.service.Create(r.Context(), in.PrimaryContact, in.PrimaryContactPerson, in.SecondaryContact, in.SecondaryContactPerson, in.Email); err != nil {
@@ -120,7 +120,7 @@ type UpdateContactIn struct {
 func (hd *HttpDelivery) UpdateContact(w http.ResponseWriter, r *http.Request) {
 	in := UpdateContactIn{}
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
-		response.NewError(hd.logger, w, r, err)
+		response.NewBad(hd.logger, w, r, err)
 		return
 	}
 	if err := hd.service.Update(r.Context(), in.PrimaryContact, in.PrimaryContactPerson, in.SecondaryContact, in.SecondaryContactPerson, in.Email); err != nil {

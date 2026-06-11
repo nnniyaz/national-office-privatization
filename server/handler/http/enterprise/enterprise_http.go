@@ -219,7 +219,7 @@ type CreateEnterpriseIn struct {
 func (hd *HttpDelivery) CreateEnterprise(w http.ResponseWriter, r *http.Request) {
 	in := CreateEnterpriseIn{}
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
-		response.NewError(hd.logger, w, r, err)
+		response.NewBad(hd.logger, w, r, err)
 		return
 	}
 	if err := hd.service.Create(r.Context(), in.Name, in.Location, in.Industry, in.GovernmentShare, in.JuridicalForm, in.Year, in.Owner, in.MainActivity, in.AuthorizedCapital, in.AuthorizedCapitalComment, in.Assets, in.AssetsComment, in.Equity, in.EquityComment, in.Income, in.IncomeComment, in.NetProfit, in.NetProfitComment, in.NumberOfEmployees, in.NumberOfEmployeesComment, in.TotalLiabilities, in.TotalLiabilitiesComment, in.PropertyComplex, in.AdditionalInfo, in.SalesRecommendations, in.ImplementationForm, in.SalePurpose, in.KeyTerms, in.AdditionalTerms, in.DocumentUrl); err != nil {
@@ -280,7 +280,7 @@ type UpdateEnterpriseIn struct {
 func (hd *HttpDelivery) UpdateEnterprise(w http.ResponseWriter, r *http.Request) {
 	in := UpdateEnterpriseIn{}
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
-		response.NewError(hd.logger, w, r, err)
+		response.NewBad(hd.logger, w, r, err)
 		return
 	}
 	if err := hd.service.Update(r.Context(), in.Id, in.Name, in.Location, in.Industry, in.GovernmentShare, in.JuridicalForm, in.Year, in.Owner, in.MainActivity, in.AuthorizedCapital, in.AuthorizedCapitalComment, in.Assets, in.AssetsComment, in.Equity, in.EquityComment, in.Income, in.IncomeComment, in.NetProfit, in.NetProfitComment, in.NumberOfEmployees, in.NumberOfEmployeesComment, in.TotalLiabilities, in.TotalLiabilitiesComment, in.PropertyComplex, in.AdditionalInfo, in.SalesRecommendations, in.ImplementationForm, in.SalePurpose, in.KeyTerms, in.AdditionalTerms, in.DocumentUrl); err != nil {

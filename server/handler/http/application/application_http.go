@@ -138,7 +138,7 @@ type CreateApplicationIn struct {
 func (hd *HttpDelivery) CreateApplication(w http.ResponseWriter, r *http.Request) {
 	var in CreateApplicationIn
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
-		response.NewError(hd.logger, w, r, err)
+		response.NewBad(hd.logger, w, r, err)
 		return
 	}
 	if err := hd.service.Create(r.Context(), in.EnterpriseId, in.Fio, in.Bin, in.Phone, in.Email, in.Message); err != nil {
@@ -175,7 +175,7 @@ type UpdateApplicationIn struct {
 func (hd *HttpDelivery) UpdateApplication(w http.ResponseWriter, r *http.Request) {
 	var in UpdateApplicationIn
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
-		response.NewError(hd.logger, w, r, err)
+		response.NewBad(hd.logger, w, r, err)
 		return
 	}
 	if err := hd.service.Update(r.Context(), in.Id, in.EnterpriseId, in.Fio, in.Bin, in.Phone, in.Email, in.Message); err != nil {
