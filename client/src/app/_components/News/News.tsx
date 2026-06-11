@@ -2,33 +2,52 @@
 
 import classes from "./News.module.scss";
 import React, {useEffect} from "react";
-import {useSearchParams, useParams} from "next/navigation";
+import {useSearchParams, useParams, usePathname, useRouter} from "next/navigation";
 import {News as NewsDomain} from "@domain/news/news";
 import {tPick, type Lang, MlString} from "@/domain/base/mlString/mlString";
 import {translate} from "@/pkg/translate/translate";
 
 export default function News() {
+    const router = useRouter();
     const routeParams = useParams();
-    const lang = (routeParams.lang || 'en') as Lang;
+    const pathname = usePathname();
+    // языковые маршруты статические (/ru/news), useParams().lang здесь пуст
+    const pathLang = pathname?.split("/")[1];
+    const lang = ((routeParams.lang || (["kz", "ru", "en"].includes(pathLang) ? pathLang : "")) || 'en') as Lang;
     const searchParams = useSearchParams();
     const id = searchParams.get("id");
     const [news, setNews] = React.useState<NewsDomain | null>(null);
     const [loading, setLoading] = React.useState<boolean>(true);
 
     useEffect(() => {
+        // страница новости без id не имеет смысла — уводим к списку новостей
+        if (!id) {
+            router.replace(`/${lang}/media`);
+            return;
+        }
         const fetchNews = async () => {
             setLoading(true);
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/news/${id}`);
-            const data = await res.json();
-            if (data.success) {
-                setNews(data.data);
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/news/${id}`);
+                const data = await res.json();
+                if (data.success) {
+                    setNews(data.data);
+                }
+            } catch {
+                // новость не загрузилась — ниже уйдём на список
             }
             setLoading(false);
         }
         fetchNews();
-    }, []);
+    }, [id]);
 
-    if (loading) {
+    useEffect(() => {
+        if (!loading && !news) {
+            router.replace(`/${lang}/media`);
+        }
+    }, [loading, news]);
+
+    if (loading || !news) {
         return (
             <div className={"loader_wrapper"}>
                 <div className={"loader"}></div>

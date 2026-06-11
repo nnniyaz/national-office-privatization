@@ -17,15 +17,16 @@ import {useParams} from "next/navigation";
 import {Viewer, Worker} from '@react-pdf-viewer/core';
 
 function getWindowDimensions() {
-    const {innerWidth: width, innerHeight: height} = window;
-    return width;
+    // при SSR window отсутствует — реальная ширина выставится после маунта
+    if (typeof window === 'undefined') return 0;
+    return window.innerWidth;
 }
 
 export default function Catalog({lang}: { lang: Lang }) {
     const params = useParams();
     const [objects, setObjects] = useState<Enterprise[]>([]);
     const [selectedItem, setSelectedItem] = useState<string>("");
-    const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+    const [windowDimensions, setWindowDimensions] = useState(0);
     const [mounted, setMounted] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -44,6 +45,7 @@ export default function Catalog({lang}: { lang: Lang }) {
             setWindowDimensions(getWindowDimensions());
         }
 
+        handleResize();
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
@@ -296,7 +298,7 @@ export default function Catalog({lang}: { lang: Lang }) {
                     options={regions}
                     placeholder={translate("select_region", lang)}
                     className={classes.tab}
-                    clearIcon={<CrossSVG/>}
+                    allowClear={{clearIcon: <CrossSVG/>}}
                 />
                 <Select
                     value={pagination.field}
@@ -304,7 +306,7 @@ export default function Catalog({lang}: { lang: Lang }) {
                     options={fields}
                     placeholder={translate("select_field", lang)}
                     className={classes.tab}
-                    clearIcon={<CrossSVG/>}
+                    allowClear={{clearIcon: <CrossSVG/>}}
                 />
             </div>
 

@@ -12,8 +12,8 @@ const nextConfig = {
         domains: ['salam-dev.fra1.digitaloceanspaces.com'],
     },
     env: {
-        NEXT_PUBLIC_API_URL: "https://api.nop.kz/api",
-        NEXT_PUBLIC_SPACE_HOST: "https://files.nop.kz/nop"
+        NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || "https://api.nop.kz/api",
+        NEXT_PUBLIC_SPACE_HOST: process.env.NEXT_PUBLIC_SPACE_HOST || "https://files.nop.kz/nop"
     },
     rewrites: async () => {
         return {
