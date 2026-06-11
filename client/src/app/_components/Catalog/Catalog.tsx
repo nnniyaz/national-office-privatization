@@ -16,17 +16,10 @@ import {useParams} from "next/navigation";
 
 import {Viewer, Worker} from '@react-pdf-viewer/core';
 
-function getWindowDimensions() {
-    // при SSR window отсутствует — реальная ширина выставится после маунта
-    if (typeof window === 'undefined') return 0;
-    return window.innerWidth;
-}
-
 export default function Catalog({lang}: { lang: Lang }) {
     const params = useParams();
     const [objects, setObjects] = useState<Enterprise[]>([]);
     const [selectedItem, setSelectedItem] = useState<string>("");
-    const [windowDimensions, setWindowDimensions] = useState(0);
     const [mounted, setMounted] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -39,16 +32,6 @@ export default function Catalog({lang}: { lang: Lang }) {
         region: "",
         field: "",
     });
-
-    useEffect(() => {
-        function handleResize() {
-            setWindowDimensions(getWindowDimensions());
-        }
-
-        handleResize();
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
 
     const regions = [
         {value: "", label: translate("select_region".toLowerCase(), lang)},
@@ -220,8 +203,6 @@ export default function Catalog({lang}: { lang: Lang }) {
         {value: "Лесоводство и лесозаготовки", label: "Лесоводство и лесозаготовки"},
     ];
 
-    const [positionY, setPositionY] = useState(0);
-
     useEffect(() => {
         const fetchObjects = async () => {
             setIsLoading(true);
@@ -246,16 +227,9 @@ export default function Catalog({lang}: { lang: Lang }) {
     }, [pagination]);
 
     useEffect(() => {
-        window.addEventListener('scroll', () => {
-            setPositionY(window.scrollY);
-        })
-    }, []);
-
-    useEffect(() => {
         if (mounted) {
             const hash = window.location.hash.replace("#", "");
             if (!!hash) {
-                document.getElementById(hash)?.scrollTo()
                 setSelectedItem(hash)
             }
         } else {
@@ -263,142 +237,146 @@ export default function Catalog({lang}: { lang: Lang }) {
         }
     }, [mounted]);
 
+    // объект из deep-link (#id) может отсутствовать на текущей странице списка — дотягиваем его по id
+    const [hashItem, setHashItem] = useState<Enterprise | null>(null);
+
+    useEffect(() => {
+        if (!selectedItem) {
+            setHashItem(null);
+            return;
+        }
+        if (objects.find(o => o.id === selectedItem)) return;
+        let cancelled = false;
+        (async () => {
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/enterprise/${selectedItem}`);
+                const data = await res.json();
+                if (!cancelled && data.success) {
+                    setHashItem(data.data);
+                }
+            } catch {
+                // объект не нашли — модалка просто не откроется с контентом
+            }
+        })();
+        return () => { cancelled = true; };
+    }, [selectedItem, objects]);
+
+    const hasActiveFilters = !!pagination.search || !!pagination.region || !!pagination.field;
+
+    const resetFilters = () => {
+        setSearchQuery("");
+        setPagination({currentPage: 1, limit: pagination.limit, search: "", region: "", field: ""});
+    };
+
     return (
         <div className={classes.main}>
-            <h2 className={classes.title}>
-                Каталог объектов
-            </h2>
-            <div
-                className={classes.tab__bar}
-                style={{
-                    borderBottom: "none",
-                    paddingBottom: 0,
-                    height: "40px",
-                }}
-            >
-                <div style={{width: "100%", display: "flex", gap: "10px"}}>
+            <div className={classes.heading}>
+                <h2 className={classes.title}>
+                    {translate("catalog_of_enterprises", lang)}
+                </h2>
+                {!isLoading && (
+                    <p className={classes.counter}>
+                        {`${translate("catalog_total", lang)}: ${enterprisesCount} ${translate("objects_word", lang)}`}
+                    </p>
+                )}
+            </div>
+
+            <div className={classes.toolbar}>
+                <div className={classes.toolbar__search}>
                     <Input
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         prefix={<SearchSVG/>}
                         placeholder={translate("search", lang)}
-                        onKeyPress={(e) => setPagination({...pagination, currentPage: 1, search: searchQuery})}
-                        className={classes.tab}
+                        onPressEnter={() => setPagination({...pagination, currentPage: 1, search: searchQuery})}
+                        className={classes.toolbar__input}
                     />
                     <Button
                         label={translate("search", lang)}
                         onClick={() => setPagination({...pagination, currentPage: 1, search: searchQuery})}
                     />
                 </div>
-            </div>
-            <div className={classes.tab__bar}>
-                <Select
-                    value={pagination.region}
-                    onChange={(value) => setPagination({...pagination, currentPage: 1, region: value})}
-                    options={regions}
-                    placeholder={translate("select_region", lang)}
-                    className={classes.tab}
-                    allowClear={{clearIcon: <CrossSVG/>}}
-                />
-                <Select
-                    value={pagination.field}
-                    onChange={(value) => setPagination({...pagination, currentPage: 1, field: value})}
-                    options={fields}
-                    placeholder={translate("select_field", lang)}
-                    className={classes.tab}
-                    allowClear={{clearIcon: <CrossSVG/>}}
-                />
-            </div>
-
-            <div style={{
-                width: "100%",
-                display: "flex",
-                flexDirection: "column",
-            }}>
-                {
-                    isLoading ? (
-                        <div style={{
-                            width: "100%",
-                            height: "300px",
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                        }}>
-                            <LoadingOutlined style={{fontSize: "50px", color: "#005FF9"}}/>
-                        </div>
-                    ) : (
-                        objects.length > 0 ? (
-                            <div className={classes.container}>
-                                <div className={classes.group}>
-                                    <ul className={classes.enterprises__group__list}>
-                                        {
-                                            objects.map(item => (
-                                                <li key={item.id} onClick={() => setSelectedItem(item.id)}>
-                                                    <EnterpriseItem
-                                                        id={item.id}
-                                                        title={item.name}
-                                                        implementationForm={item.implementationForm}
-                                                        salesRecommendations={item.salesRecommendations}
-                                                        active={selectedItem === item.id}
-                                                        lang={lang}
-                                                    />
-                                                </li>
-                                            ))
-                                        }
-                                    </ul>
-                                </div>
-                                <div className={classes.group}>
-                                    <EnterpriseDetail
-                                        item={objects.find(item => item.id === selectedItem)}
-                                        lang={lang}
-                                    />
-                                </div>
-                            </div>
-                        ) : (
-                            <div style={{
-                                width: "100%",
-                                height: "300px",
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                            }}>
-                                <h3 style={{margin: "100px 0"}}>
-                                    {translate("no_enterprises_found", lang)}
-                                </h3>
-                            </div>
-                        )
-                    )
-                }
-
-                <Pagination
-                    total={enterprisesCount}
-                    current={pagination.currentPage}
-                    onChange={(page) => setPagination({...pagination, currentPage: page})}
-                    pageSize={pagination.limit}
-                    style={{marginTop: "20px"}}
-                    pageSizeOptions={[]}
-                    align={"center"}
-                />
+                <div className={classes.toolbar__filters}>
+                    <Select
+                        value={pagination.region || undefined}
+                        onChange={(value) => setPagination({...pagination, currentPage: 1, region: value || ""})}
+                        options={regions.filter(r => r.value !== "")}
+                        placeholder={translate("select_region", lang)}
+                        className={classes.toolbar__select}
+                        allowClear={{clearIcon: <CrossSVG/>}}
+                    />
+                    <Select
+                        value={pagination.field || undefined}
+                        onChange={(value) => setPagination({...pagination, currentPage: 1, field: value || ""})}
+                        options={fields.filter(f => f.value !== "")}
+                        placeholder={translate("select_field", lang)}
+                        className={classes.toolbar__select}
+                        allowClear={{clearIcon: <CrossSVG/>}}
+                    />
+                    {hasActiveFilters && (
+                        <button className={classes.toolbar__reset} onClick={resetFilters}>
+                            <CrossSVG/>
+                            {translate("reset_filters", lang)}
+                        </button>
+                    )}
+                </div>
             </div>
 
             {
-                windowDimensions < 1200 && (
-                    <Modal
-                        open={!!selectedItem}
-                        onCancel={() => setSelectedItem("")}
-                        footer={[
-                            <AntdButton key={"close"} onClick={() => setSelectedItem("")}>
-                                {translate("close", lang)}
-                            </AntdButton>,
-                        ]}
-                    >
-                        <EnterpriseDetail
-                            item={objects.find(item => item.id === selectedItem)}
-                            lang={lang}
-                        />
-                    </Modal>
+                isLoading ? (
+                    <div className={classes.state__block}>
+                        <LoadingOutlined style={{fontSize: "50px", color: "#005FF9"}}/>
+                    </div>
+                ) : (
+                    objects.length > 0 ? (
+                        <ul className={classes.grid}>
+                            {
+                                objects.map(item => (
+                                    <li key={item.id}>
+                                        <EnterpriseCard
+                                            item={item}
+                                            lang={lang}
+                                            onOpen={() => setSelectedItem(item.id)}
+                                        />
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                    ) : (
+                        <div className={classes.state__block}>
+                            <h3>
+                                {translate("no_enterprises_found", lang)}
+                            </h3>
+                        </div>
+                    )
                 )
             }
+
+            <Pagination
+                total={enterprisesCount}
+                current={pagination.currentPage}
+                onChange={(page) => setPagination({...pagination, currentPage: page})}
+                pageSize={pagination.limit}
+                style={{marginTop: "10px"}}
+                showSizeChanger={false}
+                align={"center"}
+            />
+
+            <Modal
+                open={!!selectedItem}
+                onCancel={() => setSelectedItem("")}
+                width={720}
+                footer={[
+                    <AntdButton key={"close"} onClick={() => setSelectedItem("")}>
+                        {translate("close", lang)}
+                    </AntdButton>,
+                ]}
+            >
+                <EnterpriseDetail
+                    item={objects.find(item => item.id === selectedItem) || hashItem || undefined}
+                    lang={lang}
+                />
+            </Modal>
         </div>
     )
 }
@@ -414,28 +392,42 @@ function DetailRow({label, value}: { label: string, value: string | undefined })
     );
 }
 
-function EnterpriseItem({id, title, implementationForm, salesRecommendations, active, lang}: {
-    id: string,
-    title: string,
-    implementationForm: string,
-    salesRecommendations: string,
-    active: boolean,
-    lang: Lang
+function EnterpriseCard({item, lang, onOpen}: {
+    item: Enterprise,
+    lang: Lang,
+    onOpen: () => void,
 }) {
+    const region = item.location ? translate(item.location.toLowerCase(), lang) : "";
     return (
-        <div className={active ? classes.enterprise_item__active : classes.enterprise_item} id={id}>
-            <h5 className={classes.enterprise_item__title}>{title}</h5>
-            {!!implementationForm &&
-                <p className={classes.enterprise_item__desc}>{`${translate("implementation_form", lang)}: ${implementationForm}`}</p>}
-            {!!salesRecommendations && (
-                <p className={classes.enterprise_item__desc}>
-                    {`${translate("sales_recommendations", lang)}: ${salesRecommendations}`}
-                </p>
+        <article className={classes.card} id={item.id} onClick={onOpen}>
+            <h5 className={classes.card__title}>{item.name}</h5>
+
+            {(!!region || !!item.industry) && (
+                <div className={classes.card__chips}>
+                    {!!region && <span className={classes.card__chip}>{region}</span>}
+                    {!!item.industry && <span className={classes.card__chip}>{item.industry}</span>}
+                </div>
             )}
-            <p className={classes.enterprise_item__link}>
+
+            <div className={classes.card__rows}>
+                {!!item.implementationForm && (
+                    <p className={classes.card__row}>
+                        <span>{translate("implementation_form", lang)}</span>
+                        {item.implementationForm}
+                    </p>
+                )}
+                {!!item.salesRecommendations && (
+                    <p className={classes.card__row}>
+                        <span>{translate("sales_recommendations", lang)}</span>
+                        {item.salesRecommendations}
+                    </p>
+                )}
+            </div>
+
+            <p className={classes.card__link}>
                 {translate("details", lang)}
             </p>
-        </div>
+        </article>
     )
 }
 
@@ -483,12 +475,6 @@ function EnterpriseDetail({item, lang}: { item: Enterprise | undefined, lang: La
         <div className={classes.details}>
             {contextHolder}
             <h3 style={{fontSize: "20px", lineHeight: "normal", marginBottom: "20px"}}>{item.name}</h3>
-
-            {/* Основная информация */}
-            <div className={classes.row}>
-                <div className={classes.row__label}>{translate("name", lang)}:</div>
-                <div className={classes.row__value}>{item.name}</div>
-            </div>
 
             <div className={classes.row}>
                 <div className={classes.row__label}>{translate("implementation_form", lang)}:</div>
@@ -659,7 +645,6 @@ function EnterpriseDetail({item, lang}: { item: Enterprise | undefined, lang: La
                     >
                         <Input
                             placeholder={translate("please_enter_fio", lang)}
-                            className={classes.tab}
                         />
                     </Form.Item>
                     <Form.Item
@@ -673,7 +658,6 @@ function EnterpriseDetail({item, lang}: { item: Enterprise | undefined, lang: La
                     >
                         <Input
                             placeholder={translate("please_enter_bin", lang)}
-                            className={classes.tab}
                         />
                     </Form.Item>
                     <Form.Item
@@ -688,7 +672,6 @@ function EnterpriseDetail({item, lang}: { item: Enterprise | undefined, lang: La
                         <Input
                             prefix={"+7"}
                             placeholder={"7071234567"}
-                            className={classes.tab}
                         />
                     </Form.Item>
                     <Form.Item
@@ -702,7 +685,6 @@ function EnterpriseDetail({item, lang}: { item: Enterprise | undefined, lang: La
                     >
                         <Input
                             placeholder={"example@mail.com"}
-                            className={classes.tab}
                         />
                     </Form.Item>
                     <Form.Item
@@ -715,7 +697,6 @@ function EnterpriseDetail({item, lang}: { item: Enterprise | undefined, lang: La
                     >
                         <TextArea
                             placeholder={translate("please_enter_message", lang)}
-                            className={classes.tab}
                         />
                     </Form.Item>
                 </Form>
