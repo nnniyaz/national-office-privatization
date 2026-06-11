@@ -1,14 +1,13 @@
 'use client';
 
 import {useEffect, useState} from "react";
-import {useParams} from "next/navigation";
 import classes from "../../Home/Home.module.scss";
-import {tPick, type Lang, type MlString} from "@/domain/base/mlString/mlString";
+import {type MlString} from "@/domain/base/mlString/mlString";
 import {translate} from "@/pkg/translate/translate";
+import {useLang} from "@/pkg/lang/useLang";
 
 export default function MissionBlock() {
-    const params = useParams();
-    const lang = (params.lang || 'en') as Lang;
+    const lang = useLang();
     const [missionText, setMissionText] = useState<MlString | null>(null);
 
     useEffect(() => {

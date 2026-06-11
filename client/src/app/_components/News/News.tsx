@@ -2,18 +2,15 @@
 
 import classes from "./News.module.scss";
 import React, {useEffect} from "react";
-import {useSearchParams, useParams, usePathname, useRouter} from "next/navigation";
+import {useSearchParams, useRouter} from "next/navigation";
 import {News as NewsDomain} from "@domain/news/news";
 import {tPick, type Lang, MlString} from "@/domain/base/mlString/mlString";
 import {translate} from "@/pkg/translate/translate";
+import {useLang} from "@/pkg/lang/useLang";
 
 export default function News() {
     const router = useRouter();
-    const routeParams = useParams();
-    const pathname = usePathname();
-    // языковые маршруты статические (/ru/news), useParams().lang здесь пуст
-    const pathLang = pathname?.split("/")[1];
-    const lang = ((routeParams.lang || (["kz", "ru", "en"].includes(pathLang) ? pathLang : "")) || 'en') as Lang;
+    const lang = useLang();
     const searchParams = useSearchParams();
     const id = searchParams.get("id");
     const [news, setNews] = React.useState<NewsDomain | null>(null);

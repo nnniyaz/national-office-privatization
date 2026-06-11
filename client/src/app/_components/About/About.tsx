@@ -243,7 +243,7 @@ export default function About({lang}: { lang: Langs }) {
 
                                             <div>
                                                 <strong>{`${translate("address", lang)}:`}</strong>
-                                                <p>Проспект Мангилик Ел, 8, Есиль район, г.Астана</p>
+                                                <p>{translate("office_address", lang)}</p>
                                             </div>
                                         </div>
                                         <Map/>

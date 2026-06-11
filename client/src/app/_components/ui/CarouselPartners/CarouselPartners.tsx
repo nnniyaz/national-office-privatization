@@ -1,7 +1,6 @@
 'use client'
 
 import {useEffect, useState} from "react";
-import {useParams} from "next/navigation";
 import {Swiper} from "swiper";
 import {Swiper as SwiperComponent, SwiperSlide} from 'swiper/react';
 import GerbSVG from "@assets/gerb.svg";
@@ -12,6 +11,7 @@ import {ErrorResponse, SuccessResponse} from "@domain/base/response/response";
 import {PartnerData, Partner} from "@domain/partner/partner";
 import {tPick, type Lang, MlString} from "@/domain/base/mlString/mlString";
 import {translate} from "@/pkg/translate/translate";
+import {useLang} from "@/pkg/lang/useLang";
 
 function getWindowDimensions() {
     const {innerWidth: width} = window;
@@ -19,8 +19,7 @@ function getWindowDimensions() {
 }
 
 export default function CarouselPartners() {
-    const params = useParams();
-    const lang = (params.lang || 'en') as Lang;
+    const lang = useLang();
     const [swiper, setSwiper] = useState<Swiper | null>(null);
     const [partners, setPartners] = useState<Partner[]>([])
 
