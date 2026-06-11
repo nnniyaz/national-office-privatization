@@ -1,10 +1,10 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {useTypedSelector} from "../../../../shared/hooks/useTypedSelector.ts";
 import {useActions} from "../../../../shared/hooks/useActions.ts";
-import {Button, Form} from "antd";
+import {Form} from "antd";
 import {translate} from "../../../../shared/translate/translate.ts";
 import {useEffect} from "react";
-import {Upload} from "../../../../shared/ui/Upload/Upload.tsx";
+import UploadField from "../../../../shared/ui/Upload/UploadField.tsx";
 import {useWatch} from "antd/es/form/Form";
 import MlStringInput from "../../../../shared/ui/MlStringInput/MlStringInput.tsx";
 import FormShell from "../../../../shared/ui/FormShell/FormShell.tsx";
@@ -122,15 +122,9 @@ export default function NpaEdit() {
                         name={"filename"}
                         rules={[{required: true, message: translate("please_upload_document", lang)}]}
                     >
-                        {!!form.getFieldValue("filename") && (
-                            <Button style={{marginBottom: "20px"}} onClick={() => form.setFieldValue("filename", "")}>
-                                {translate("remove", lang)}
-                            </Button>
-                        )}
-                        <Upload
-                            imgSrc={form.getFieldValue("filename") || ""}
+                        <UploadField
                             onUpload={upload}
-                            loading={uploadState.isLoading}
+                            uploading={uploadState.isLoading}
                             isDocument={true}
                         />
                     </Form.Item>

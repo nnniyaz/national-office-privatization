@@ -72,9 +72,10 @@ export default function Application() {
     }, []);
 
     return (
-        <Card bodyStyle={{padding: "10px"}}>
+        <Card styles={{body: {padding: "10px"}}}>
             <Table
                 locale={{emptyText: <Empty description={txts.no_data[lang]}/>}}
+                rowKey={"id"}
                 dataSource={data}
                 columns={columns}
                 bordered={true}

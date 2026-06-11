@@ -43,7 +43,7 @@ export default function Contacts() {
     }, [])
 
     return (
-        <Card bodyStyle={{padding: "10px"}} style={{maxWidth: "500px"}} loading={isLoading}>
+        <Card styles={{body: {padding: "10px"}}} style={{maxWidth: "500px"}} loading={isLoading}>
             <Row justify={"end"}>
                 {
                     !!contacts

@@ -115,11 +115,11 @@ export default function UserEdit() {
                     <Form.Item
                         label={translate("role", lang)}
                         name={"role"}
+                        initialValue={"user"}
                         rules={[{required: true, message: translate("please_enter_role", lang)}]}
                     >
                         <Select
                             placeholder={translate("enter_role", lang)}
-                            defaultValue={"user"}
                             options={[
                                 {label: "Admin", value: "admin"},
                                 {label: "User", value: "user"}

@@ -93,7 +93,7 @@ export default function User() {
     }, []);
 
     return (
-        <Card bodyStyle={{padding: "10px"}}>
+        <Card styles={{body: {padding: "10px"}}}>
             <Row justify={"end"}>
                 <Button
                     type={"primary"}
@@ -105,6 +105,7 @@ export default function User() {
             </Row>
             <Table
                 locale={{emptyText: <Empty description={txts.no_data[lang]}/>}}
+                rowKey={"id"}
                 dataSource={data}
                 columns={columns}
                 bordered={true}

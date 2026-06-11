@@ -1,10 +1,10 @@
-import {Button, Form} from "antd";
+import {Form} from "antd";
 import {useTypedSelector} from "../../../../shared/hooks/useTypedSelector.ts";
 import {useActions} from "../../../../shared/hooks/useActions.ts";
 import {useNavigate} from "react-router-dom";
 import {translate} from "../../../../shared/translate/translate.ts";
 import {useWatch} from "antd/es/form/Form";
-import {Upload} from "../../../../shared/ui/Upload/Upload.tsx";
+import UploadField from "../../../../shared/ui/Upload/UploadField.tsx";
 import MlStringInput from "../../../../shared/ui/MlStringInput/MlStringInput.tsx";
 import FormShell from "../../../../shared/ui/FormShell/FormShell.tsx";
 import FormSection from "../../../../shared/ui/FormShell/FormSection.tsx";
@@ -102,19 +102,10 @@ export default function NewsCreate() {
                         name={"imgUrl"}
                         rules={[{required: true, message: translate("please_upload_image", lang)}]}
                     >
-                        {!!form.getFieldValue("imgUrl") && (
-                            <Button style={{marginBottom: "20px"}} onClick={() => form.setFieldValue("imgUrl", "")}>
-                                {translate("remove", lang)}
-                            </Button>
-                        )}
-                        <Upload
-                            imgSrc={
-                                form.getFieldValue("imgUrl") ?
-                                    `${import.meta.env.VITE_SPACE_HOST}/news/${form.getFieldValue("imgUrl")}`
-                                    : ""
-                            }
+                        <UploadField
                             onUpload={upload}
-                            loading={uploadState.isLoading}
+                            uploading={uploadState.isLoading}
+                            preview={(f) => `${import.meta.env.VITE_SPACE_HOST}/news/${f}`}
                         />
                     </Form.Item>
                 </FormSection>

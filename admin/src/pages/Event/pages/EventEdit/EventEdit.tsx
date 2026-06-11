@@ -1,10 +1,10 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {useTypedSelector} from "../../../../shared/hooks/useTypedSelector.ts";
 import {useActions} from "../../../../shared/hooks/useActions.ts";
-import {Button, Form, Input} from "antd";
+import {Form, Input} from "antd";
 import {translate} from "../../../../shared/translate/translate.ts";
 import {useEffect} from "react";
-import {Upload} from "../../../../shared/ui/Upload/Upload.tsx";
+import UploadField from "../../../../shared/ui/Upload/UploadField.tsx";
 import {useWatch} from "antd/es/form/Form";
 import MlStringInput from "../../../../shared/ui/MlStringInput/MlStringInput.tsx";
 import FormShell from "../../../../shared/ui/FormShell/FormShell.tsx";
@@ -152,19 +152,10 @@ export default function EventEdit() {
                         name={"imgUrl"}
                         rules={[{required: true, message: translate("please_upload_image", lang)}]}
                     >
-                        {!!form.getFieldValue("imgUrl") && (
-                            <Button style={{marginBottom: "20px"}} onClick={() => form.setFieldValue("imgUrl", "")}>
-                                {translate("remove", lang)}
-                            </Button>
-                        )}
-                        <Upload
-                            imgSrc={
-                                form.getFieldValue("imgUrl") ?
-                                    `${import.meta.env.VITE_SPACE_HOST}/event/${form.getFieldValue("imgUrl")}`
-                                    : ""
-                            }
+                        <UploadField
                             onUpload={upload}
-                            loading={uploadState.isLoading}
+                            uploading={uploadState.isLoading}
+                            preview={(f) => `${import.meta.env.VITE_SPACE_HOST}/event/${f}`}
                         />
                     </Form.Item>
                 </FormSection>

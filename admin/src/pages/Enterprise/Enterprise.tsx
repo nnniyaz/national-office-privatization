@@ -103,7 +103,7 @@ export default function Enterprise() {
     }, [count]);
 
     return (
-        <Card bodyStyle={{padding: "10px"}}>
+        <Card styles={{body: {padding: "10px"}}}>
             <div style={{width: "100%", display: "flex", justifyContent: "space-between", gap: "10px"}}>
                 <Input
                     placeholder={translate("search", lang)}
@@ -136,6 +136,7 @@ export default function Enterprise() {
             <p style={{marginBottom: "20px", color: "gray"}}>{`${translate("quantity", lang)}: ${count}`}</p>
             <Table
                 locale={{emptyText: <Empty description={translate("no_data", lang)}/>}}
+                rowKey={"id"}
                 dataSource={data}
                 columns={columns}
                 bordered={true}
