@@ -1,11 +1,15 @@
 export enum Langs {
-    key = "key",
-    KZ = "KZ",
-    RU = "RU",
-    EN = "EN",
+    KZ = "kz",
+    RU = "ru",
+    EN = "en",
 }
 
-export type MlString = Record<Langs, string>
+export type MlString = {
+    key?: string;
+    kz: string;
+    ru: string;
+    en: string;
+}
 
 // Re-export from shared for compatibility
 export type { Lang, MlString as MlStringNew } from '../../shared/i18n/types';
