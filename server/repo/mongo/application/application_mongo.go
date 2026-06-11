@@ -32,6 +32,7 @@ type mongoApplication struct {
 	Email        string    `bson:"email"`
 	Message      string    `bson:"message"`
 	CreateAt     time.Time `bson:"createAt"`
+	UpdatedAt    time.Time `bson:"updatedAt,omitempty"`
 }
 
 func newFromApplication(a *application.Application) *mongoApplication {
@@ -44,11 +45,17 @@ func newFromApplication(a *application.Application) *mongoApplication {
 		Email:        a.GetEmail(),
 		Message:      a.GetMessage(),
 		CreateAt:     a.GetCreatedAt(),
+		UpdatedAt:    a.GetUpdatedAt(),
 	}
 }
 
 func (m *mongoApplication) ToAggregate() *application.Application {
-	return application.UnmarshalApplicationFromDatabase(m.Id, m.EnterpriseId, m.Fio, m.Bin, m.Phone, m.Email, m.Message, m.CreateAt)
+	// у легаси-документов updatedAt отсутствует — берём дату создания
+	updatedAt := m.UpdatedAt
+	if updatedAt.IsZero() {
+		updatedAt = m.CreateAt
+	}
+	return application.UnmarshalApplicationFromDatabase(m.Id, m.EnterpriseId, m.Fio, m.Bin, m.Phone, m.Email, m.Message, m.CreateAt, updatedAt)
 }
 
 func (r *RepoApplication) Get(ctx context.Context) ([]*application.Application, error) {

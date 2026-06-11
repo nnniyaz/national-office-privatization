@@ -117,7 +117,7 @@ func (a *Application) Update(enterpriseId, fio, bin, phone, email, message strin
 	return nil
 }
 
-func UnmarshalApplicationFromDatabase(id uuid.UUID, enterpriseId, fio, bin, phone, email, message string, createAt time.Time) *Application {
+func UnmarshalApplicationFromDatabase(id uuid.UUID, enterpriseId, fio, bin, phone, email, message string, createAt, updatedAt time.Time) *Application {
 	return &Application{
 		id:           id,
 		enterpriseId: enterpriseId,
@@ -127,6 +127,6 @@ func UnmarshalApplicationFromDatabase(id uuid.UUID, enterpriseId, fio, bin, phon
 		email:        email,
 		message:      message,
 		createdAt:    createAt,
-		updatedAt:    time.Now(),
+		updatedAt:    updatedAt,
 	}
 }
