@@ -7,7 +7,6 @@ import {txts} from "../../../../core/i18ngen.ts";
 import {useActions} from "../../../../hooks/useActions";
 import {useTypedSelector} from "../../../../hooks/useTypedSelector";
 import classes from "./Sidebar.module.scss";
-import {Divider} from "antd";
 
 const useOutsideDetecter = (ref: React.MutableRefObject<any>, setIsShown: React.Dispatch<boolean>) => {
     useEffect(() => {
@@ -30,7 +29,7 @@ const OutsideDetecter: FunctionComponent<{ children: React.ReactNode, setIsShown
 ) => {
     const wrapperRef = useRef(null);
     useOutsideDetecter(wrapperRef, setIsShown);
-    return <div style={{width: "100%"}} ref={wrapperRef}>{children}</div>;
+    return <div style={{width: "100%", display: "flex", flexDirection: "column", flex: 1, minHeight: 0}} ref={wrapperRef}>{children}</div>;
 }
 
 interface HeaderProps {
@@ -42,6 +41,29 @@ const logoutSideBarItem: IRoute = {
     title: txts.logout,
     path: "" as RouteNames,
     element: <></> as any
+}
+
+const Brand: FC = () => {
+    const {lang} = useTypedSelector(state => state.system);
+    return (
+        <div className={classes.brand}>
+            <img src="/favicon-32x32.png" alt="" className={classes.brand__emblem}/>
+            <div className={classes.brand__text}>
+                <span className={classes.brand__name}>{txts.sidebar_brand[lang]}</span>
+                <span className={classes.brand__sub}>{txts.control_panel[lang]}</span>
+            </div>
+        </div>
+    )
+}
+
+const SectionLabel: FC = () => {
+    const {lang} = useTypedSelector(state => state.system);
+    return (
+        <div className={classes.section__label}>
+            <span>{txts.sections[lang]}</span>
+            <span className={classes.section__label__rule}/>
+        </div>
+    )
 }
 
 export const Sidebar: FC<HeaderProps> = ({isShown, setIsShown}) => {
@@ -76,24 +98,28 @@ export const Sidebar: FC<HeaderProps> = ({isShown, setIsShown}) => {
         };
     }, []);
 
-    if (windowSize <= 1340) {
+    if (windowSize <= 1480) {
         return (
             <Transition in={isShown} timeout={300} mountOnEnter unmountOnExit>
                 {state => (
                     <div className={`${classes.sidebar} ${transitionClasses[state]}`}>
                         <OutsideDetecter setIsShown={setIsShown}>
                             <div className={classes.sidebar__header}>
+                                <Brand/>
                                 <MenuFoldOutlined className={classes.burger} onClick={() => setIsShown(false)}/>
                             </div>
-                            <Divider/>
-                            {upperSlice.map((item) =>
-                                <SideBarItem item={item} onClick={handleOnClick} key={item.path}/>
-                            )}
-                            <Divider/>
-                            {lowerSlice.map((item) =>
-                                <SideBarItem item={item} onClick={handleOnClick} key={item.path}/>
-                            )}
-                            <SideBarItem item={logoutSideBarItem} onClick={handleLogout}/>
+                            <SectionLabel/>
+                            <nav className={classes.nav}>
+                                {upperSlice.map((item) =>
+                                    <SideBarItem item={item} onClick={handleOnClick} key={item.path}/>
+                                )}
+                            </nav>
+                            <div className={classes.footer}>
+                                {lowerSlice.map((item) =>
+                                    <SideBarItem item={item} onClick={handleOnClick} key={item.path}/>
+                                )}
+                                <SideBarItem item={logoutSideBarItem} onClick={handleLogout} danger/>
+                            </div>
                         </OutsideDetecter>
                     </div>
                 )}
@@ -103,18 +129,20 @@ export const Sidebar: FC<HeaderProps> = ({isShown, setIsShown}) => {
 
     return (
         <div className={classes.sidebar}>
-            <div className={classes.sidebar__header}>
-                <MenuFoldOutlined className={classes.burger} onClick={() => setIsShown(false)}/>
+            <Brand/>
+            <SectionLabel/>
+            <nav className={classes.nav}>
+                {upperSlice.map((item) => <SideBarItem item={item} onClick={handleOnClick} key={item.path}/>)}
+            </nav>
+            <div className={classes.footer}>
+                {lowerSlice.map((item) => <SideBarItem item={item} onClick={handleOnClick} key={item.path}/>)}
+                <SideBarItem item={logoutSideBarItem} onClick={handleLogout} danger/>
             </div>
-            {upperSlice.map((item) => <SideBarItem item={item} onClick={handleOnClick} key={item.path}/>)}
-            <Divider/>
-            {lowerSlice.map((item) => <SideBarItem item={item} onClick={handleOnClick} key={item.path}/>)}
-            <SideBarItem item={logoutSideBarItem} onClick={handleLogout}/>
         </div>
     )
 }
 
-const SideBarItem: FC<{ item: IRoute, onClick: (...args: any[]) => void }> = ({item, onClick}) => {
+const SideBarItem: FC<{ item: IRoute, onClick: (...args: any[]) => void, danger?: boolean }> = ({item, onClick, danger}) => {
     const {lang} = useTypedSelector(state => state.system);
     const location = useLocation();
     const activeLink = (path: string) => {
@@ -125,11 +153,16 @@ const SideBarItem: FC<{ item: IRoute, onClick: (...args: any[]) => void }> = ({i
         return location.pathname.includes(path);
     }
 
+    const className = [
+        activeLink(item.path) ? classes.sidebar__item__active : classes.sidebar__item,
+        danger ? classes.sidebar__item__danger : "",
+    ].join(" ");
+
     return (
         <NavLink
             to={item.path}
             onClick={onClick}
-            className={activeLink(item.path) ? classes.sidebar__item__active : classes.sidebar__item}
+            className={className}
             style={{pointerEvents: item.disabled ? "none" : "auto", opacity: item.disabled ? .5 : 1}}
         >
             <p className={classes.sidebar__item__text}>

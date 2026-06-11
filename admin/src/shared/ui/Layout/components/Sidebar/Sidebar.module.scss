@@ -1,53 +1,162 @@
 .sidebar {
   position: fixed;
-  width: 200px;
+  width: 232px;
   height: 100dvh;
-  padding: 15px 10px;
-  background-color: #FFFFFF;
-  box-shadow: 0 6px 18px 0 rgba(36, 36, 36, .051);
+  padding: 18px 14px;
+  background-color: var(--paper-raised);
+  border-right: 1px solid var(--hairline);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 5px;
+  gap: 4px;
+  overflow-y: auto;
 
   .sidebar__header {
     display: none;
   }
 
+  // ── Фирменный блок ────────────────────────────────────────────
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 6px 16px;
+
+    .brand__emblem {
+      width: 30px;
+      height: 30px;
+      flex-shrink: 0;
+    }
+
+    .brand__text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+
+      .brand__name {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: 12px;
+        line-height: 1.25;
+        color: var(--ink);
+      }
+
+      .brand__sub {
+        font-family: var(--font-mono);
+        font-size: 9px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--state-blue);
+      }
+    }
+  }
+
+  // ── Лейбл секции ──────────────────────────────────────────────
+  .section__label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 6px;
+    margin-bottom: 6px;
+
+    span:first-child {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+
+    .section__label__rule {
+      flex: 1;
+      height: 1px;
+      background: var(--hairline);
+    }
+  }
+
+  .nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+  }
+
+  .footer {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--hairline);
+  }
+
+  // ── Пункты меню ───────────────────────────────────────────────
   .sidebar__item {
+    position: relative;
     width: 100%;
-    height: 39px;
-    padding: 10px 15px;
-    border-radius: 12px;
+    height: 36px;
+    padding: 8px 12px;
+    border-radius: 5px;
     display: flex;
     align-items: center;
     text-decoration: none;
     gap: 10px;
     background-color: inherit;
     cursor: pointer;
-    transition: .1s linear;
+    transition: .12s linear;
 
     &:hover {
-      background-color: #F5F5F5;
+      background-color: var(--paper-inset);
     }
 
     .sidebar__item__text {
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 500;
-      color: #000000;
+      color: var(--ink-soft);
+      transition: .12s linear;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &:hover .sidebar__item__text {
+      color: var(--ink);
     }
   }
 
   .sidebar__item__active {
     @extend .sidebar__item;
-    background-color: #005FF9;
+    background-color: var(--state-blue-wash);
+
+    // золотая метка активного раздела
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 7px;
+      bottom: 7px;
+      width: 3px;
+      border-radius: 0 2px 2px 0;
+      background: var(--seal-gold);
+    }
 
     &:hover {
-      background-color: #005FF9;
+      background-color: var(--state-blue-wash);
     }
 
     .sidebar__item__text {
-      color: #FFFFFF;
+      color: var(--state-blue);
+      font-weight: 600;
+    }
+  }
+
+  .sidebar__item__danger {
+    &:hover {
+      background-color: rgba(180, 35, 42, 0.08);
+    }
+
+    &:hover .sidebar__item__text {
+      color: var(--ink-red);
     }
   }
 }
@@ -57,23 +166,26 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 60%;
+    width: 280px;
+    max-width: 80%;
     height: 100vh;
-    padding: 10px;
+    padding: 14px;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+    box-shadow: 0 0 40px rgba(30, 30, 26, 0.18);
     z-index: 3;
     opacity: 0;
 
     .sidebar__header {
       width: 100%;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
       gap: 10px;
 
       .burger {
-        font-size: 30px;
+        font-size: 26px;
+        margin-top: 6px;
         opacity: .5;
       }
     }
