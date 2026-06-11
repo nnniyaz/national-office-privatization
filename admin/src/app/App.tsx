@@ -11,8 +11,18 @@ import React, {useEffect, useMemo} from "react";
 import {LoadingOutlined} from "@ant-design/icons";
 import {useTypedSelector} from "../shared/hooks/useTypedSelector.ts";
 import {ConfigProvider, notification} from "antd";
+import ruRU from "antd/locale/ru_RU";
+import kkKZ from "antd/locale/kk_KZ";
+import enUS from "antd/locale/en_US";
+import {Langs} from "../domain/base/mlString.ts";
 
 const Context = React.createContext({name: 'Default'});
+
+const antdLocales = {
+    [Langs.RU]: ruRU,
+    [Langs.KZ]: kkKZ,
+    [Langs.EN]: enUS,
+};
 
 const registryTheme = {
     token: {
@@ -45,6 +55,7 @@ const registryTheme = {
 
 function App() {
     const {isLoadingCurrentUser} = useTypedSelector(state => state.auth);
+    const {lang} = useTypedSelector(state => state.system);
     const {getCurrentUser, setNotificationApi} = useActions();
     const [api, contextHolder] = notification.useNotification();
 
@@ -70,7 +81,7 @@ function App() {
     }
 
     return (
-        <ConfigProvider theme={registryTheme}>
+        <ConfigProvider theme={registryTheme} locale={antdLocales[lang]}>
             <Context.Provider value={contextValue}>
                 {contextHolder}
                 <Router/>
