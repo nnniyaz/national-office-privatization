@@ -151,6 +151,60 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/application/export": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Exports applications to an Excel file, optionally filtered by creation period",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                ],
+                "tags": [
+                    "applications"
+                ],
+                "summary": "Export applications to Excel",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Period start (RFC3339)",
+                        "name": "from",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Period end (RFC3339)",
+                        "name": "to",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "file"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Error"
+                        }
+                    }
+                }
+            }
+        },
         "/api/application/{application_id}": {
             "get": {
                 "security": [
@@ -2648,6 +2702,44 @@ const docTemplate = `{
                 }
             }
         },
+        "/upload/enterprise-passport": {
+            "post": {
+                "description": "This can only be done by the logged-in user.",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Upload"
+                ],
+                "summary": "Uploads an enterprise passport",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "file to upload",
+                        "name": "data",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Success"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/response.Error"
+                        }
+                    }
+                }
+            }
+        },
         "/upload/product-image": {
             "post": {
                 "description": "This can only be done by the logged-in user.",
@@ -3009,6 +3101,9 @@ const docTemplate = `{
                 "authorizedCapitalComment": {
                     "type": "string"
                 },
+                "documentUrl": {
+                    "type": "string"
+                },
                 "equity": {
                     "type": "number"
                 },
@@ -3113,6 +3208,9 @@ const docTemplate = `{
                     "type": "number"
                 },
                 "authorizedCapitalComment": {
+                    "type": "string"
+                },
+                "documentUrl": {
                     "type": "string"
                 },
                 "equity": {
@@ -3351,6 +3449,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "createdAt": {
+                    "type": "string"
+                },
+                "documentUrl": {
                     "type": "string"
                 },
                 "equity": {
@@ -3817,7 +3918,7 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "https://api.nop.kz",
 	BasePath:         "",
 	Schemes:          []string{"https"},
-	Title:            "Ardo Backend API",
+	Title:            "NOP API",
 	Description:      "Detailed info about all endpoints",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,

@@ -116,6 +116,7 @@ export enum ApiRoutes {
 
     // Application
     GET_ALL_APPLICATIONS = "/application",
+    GET_EXPORT_APPLICATIONS = "/application/export",
     GET_ONE_APPLICATION_BY_ID = "/application/:application_id",
     POST_CREATE_APPLICATION = "/application",
     PUT_UPDATE_APPLICATION = "/application",

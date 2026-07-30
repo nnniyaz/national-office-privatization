@@ -60,6 +60,38 @@ export const ApplicationActionCreator = {
         }
     },
 
+    exportApplications: (from?: string, to?: string) => async (dispatch: AppDispatch, getState: () => RootState) => {
+        const {lang, notificationApi} = getState().system;
+        try {
+            const res = await ApplicationService.exportApplications(from, to);
+            if (res.status !== 200 || !(res.data instanceof Blob) || res.data.type.includes("application/json")) {
+                FailedResponseHandler({
+                    title: txts.applications[lang],
+                    message: txts.could_not_export_applications[lang],
+                    notificationApi: notificationApi!,
+                    httpStatus: res.status,
+                });
+                return;
+            }
+            const url = URL.createObjectURL(res.data);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = `applications_${new Date().toISOString().slice(0, 10)}.xlsx`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        } catch (e: any) {
+            httpHandler({
+                error: e,
+                httpStatus: e?.response?.status,
+                dispatch: dispatch,
+                currentLang: lang,
+                notificationApi: notificationApi!,
+            });
+        }
+    },
+
     getOneApplicationById: (applicationId: string, navigationCallback: NavigateCallback) => async (dispatch: AppDispatch, getState: () => RootState) => {
         const {lang, notificationApi} = getState().system;
         try {

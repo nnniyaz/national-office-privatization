@@ -28,6 +28,16 @@ export class Application {
         return $api.get(ApiRoutes.GET_ONE_APPLICATION_BY_ID.replace(":application_id", applicationId))
     }
 
+    static async exportApplications(from?: string, to?: string): Promise<AxiosResponse<Blob>> {
+        return $api.get(ApiRoutes.GET_EXPORT_APPLICATIONS, {
+            params: {
+                ...(from ? {from} : {}),
+                ...(to ? {to} : {}),
+            },
+            responseType: "blob",
+        })
+    }
+
     static async createApplication(request: ApplicationCreateReq): Promise<AxiosResponse<SuccessResponse<null> | ErrorResponse>> {
         return $api.post(ApiRoutes.POST_CREATE_APPLICATION, request)
     }

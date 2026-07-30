@@ -2,6 +2,7 @@ package repo
 
 import (
 	"context"
+	"time"
 
 	"github.com/nnniyaz/nop/server/domain/application"
 	"github.com/nnniyaz/nop/server/domain/base/uuid"
@@ -121,6 +122,7 @@ type Event interface {
 
 type Application interface {
 	Get(ctx context.Context) ([]*application.Application, error)
+	GetByPeriod(ctx context.Context, from, to *time.Time) ([]*application.Application, error)
 	GetById(ctx context.Context, applicationId uuid.UUID) (*application.Application, error)
 	Create(ctx context.Context, a *application.Application) error
 	Update(ctx context.Context, a *application.Application) error

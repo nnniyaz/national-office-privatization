@@ -158,6 +158,8 @@ definitions:
         type: number
       authorizedCapitalComment:
         type: string
+      documentUrl:
+        type: string
       equity:
         type: number
       equityComment:
@@ -227,6 +229,8 @@ definitions:
       authorizedCapital:
         type: number
       authorizedCapitalComment:
+        type: string
+      documentUrl:
         type: string
       equity:
         type: number
@@ -383,6 +387,8 @@ definitions:
       authorizedCapitalComment:
         type: string
       createdAt:
+        type: string
+      documentUrl:
         type: string
       equity:
         type: number
@@ -682,7 +688,7 @@ info:
     name: API Support
     url: https://t.me/nassyrovich
   description: Detailed info about all endpoints
-  title: Ardo Backend API
+  title: NOP API
   version: 0.0.1
 paths:
   /api/application:
@@ -829,6 +835,41 @@ paths:
       security:
       - Bearer: []
       summary: Get application by ID
+      tags:
+      - applications
+  /api/application/export:
+    get:
+      consumes:
+      - application/json
+      description: Exports applications to an Excel file, optionally filtered by creation
+        period
+      parameters:
+      - description: Period start (RFC3339)
+        in: query
+        name: from
+        type: string
+      - description: Period end (RFC3339)
+        in: query
+        name: to
+        type: string
+      produces:
+      - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: file
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Error'
+      security:
+      - Bearer: []
+      summary: Export applications to Excel
       tags:
       - applications
   /api/auth/login:
@@ -2364,6 +2405,31 @@ paths:
           schema:
             $ref: '#/definitions/response.Error'
       summary: Uploads a category image
+      tags:
+      - Upload
+  /upload/enterprise-passport:
+    post:
+      consumes:
+      - multipart/form-data
+      description: This can only be done by the logged-in user.
+      parameters:
+      - description: file to upload
+        in: formData
+        name: data
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Success'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Uploads an enterprise passport
       tags:
       - Upload
   /upload/product-image:

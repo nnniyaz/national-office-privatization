@@ -203,6 +203,7 @@ func (h *Handler) InitRoutes(isDevMode bool) *chi.Mux {
 
 		r.Route("/application", func(r chi.Router) {
 			r.With(h.Middleware.UserAuth).Get("/", h.Application.GetApplications)
+			r.With(h.Middleware.UserAuth).Get("/export", h.Application.ExportApplications)
 			r.With(h.Middleware.UserAuth).Get("/{application_id}", h.Application.GetApplicationById)
 			r.Post("/", h.Application.CreateApplication)
 			r.With(h.Middleware.UserAuth).Put("/", h.Application.UpdateApplication)

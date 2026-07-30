@@ -2,6 +2,7 @@ package application
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -10,6 +11,7 @@ import (
 	"github.com/nnniyaz/nop/server/handler/http/response"
 	"github.com/nnniyaz/nop/server/pkg/logger"
 	applicationService "github.com/nnniyaz/nop/server/service/application"
+	"go.uber.org/zap"
 )
 
 type HttpDelivery struct {
@@ -108,6 +110,59 @@ func (hd *HttpDelivery) GetApplicationById(w http.ResponseWriter, r *http.Reques
 		return
 	}
 	response.NewSuccess(hd.logger, w, r, NewApplication(application))
+}
+
+// parseTimeParam парсит опциональный query-параметр времени в формате RFC3339
+func parseTimeParam(value string) (*time.Time, error) {
+	if value == "" {
+		return nil, nil
+	}
+	t, err := time.Parse(time.RFC3339, value)
+	if err != nil {
+		return nil, err
+	}
+	return &t, nil
+}
+
+// ExportApplications godoc
+//
+//	@Summary		Export applications to Excel
+//	@Description	Exports applications to an Excel file, optionally filtered by creation period
+//	@Tags			applications
+//	@Accept			json
+//	@Produce		application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+//	@Param			from	query		string	false	"Period start (RFC3339)"
+//	@Param			to		query		string	false	"Period end (RFC3339)"
+//	@Success		200		{file}		file
+//	@Failure		400		{object}	response.Error
+//	@Failure		500		{object}	response.Error
+//	@Router			/api/application/export [get]
+//	@Security		Bearer
+func (hd *HttpDelivery) ExportApplications(w http.ResponseWriter, r *http.Request) {
+	from, err := parseTimeParam(r.URL.Query().Get("from"))
+	if err != nil {
+		response.NewBad(hd.logger, w, r, err)
+		return
+	}
+	to, err := parseTimeParam(r.URL.Query().Get("to"))
+	if err != nil {
+		response.NewBad(hd.logger, w, r, err)
+		return
+	}
+
+	file, err := hd.service.Export(r.Context(), from, to)
+	if err != nil {
+		response.NewError(hd.logger, w, r, err)
+		return
+	}
+
+	filename := fmt.Sprintf("applications_%s.xlsx", time.Now().Format("2006-01-02"))
+	w.Header().Set("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=%q", filename))
+	w.Header().Set("Content-Length", fmt.Sprintf("%d", len(file)))
+	if _, err := w.Write(file); err != nil {
+		hd.logger.Error("failed to write export file", zap.Error(err))
+	}
 }
 
 // -----------------------------------------------------------------------------

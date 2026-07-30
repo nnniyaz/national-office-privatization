@@ -1,7 +1,9 @@
 import {useTypedSelector} from "../../shared/hooks/useTypedSelector.ts";
 import {useActions} from "../../shared/hooks/useActions.ts";
-import {useEffect} from "react";
-import {Card, Empty, Table} from "antd";
+import {useEffect, useState} from "react";
+import {Button, Card, DatePicker, Empty, Table} from "antd";
+import {DownloadOutlined} from "@ant-design/icons";
+import type {Dayjs} from "dayjs";
 import {txts} from "../../shared/core/i18ngen.ts";
 import {ColumnsType} from "antd/es/table";
 import {Application as ApplicationModel} from "../../domain/application/application.ts";
@@ -12,7 +14,9 @@ import {translate} from "../../shared/translate/translate.ts";
 export default function Application() {
     const {lang} = useTypedSelector(state => state.system);
     const {applications, isLoading} = useTypedSelector(state => state.application);
-    const {getApplications} = useActions();
+    const {getApplications, exportApplications} = useActions();
+    const [exportPeriod, setExportPeriod] = useState<[Dayjs | null, Dayjs | null] | null>(null);
+    const [isExporting, setIsExporting] = useState(false);
 
     const columns: ColumnsType<ApplicationModel> = [
         {
@@ -65,6 +69,18 @@ export default function Application() {
         };
     });
 
+    const handleExport = async () => {
+        // границы периода включительно: от начала первого дня до конца последнего
+        const from = exportPeriod?.[0]?.startOf("day").toISOString();
+        const to = exportPeriod?.[1]?.endOf("day").toISOString();
+        setIsExporting(true);
+        try {
+            await exportApplications(from, to);
+        } finally {
+            setIsExporting(false);
+        }
+    };
+
     useEffect(() => {
         const controller = new AbortController();
         getApplications(controller);
@@ -73,6 +89,22 @@ export default function Application() {
 
     return (
         <Card styles={{body: {padding: "10px"}}}>
+            <div style={{width: "100%", display: "flex", justifyContent: "flex-end", gap: "10px", marginBottom: "10px"}}>
+                <DatePicker.RangePicker
+                    placeholder={[translate("export_period", lang), translate("export_period", lang)]}
+                    value={exportPeriod}
+                    onChange={(dates) => setExportPeriod(dates)}
+                    allowEmpty={[true, true]}
+                />
+                <Button
+                    type={"primary"}
+                    icon={<DownloadOutlined/>}
+                    loading={isExporting}
+                    onClick={handleExport}
+                >
+                    {translate("export_to_excel", lang)}
+                </Button>
+            </div>
             <Table
                 locale={{emptyText: <Empty description={txts.no_data[lang]}/>}}
                 rowKey={"id"}

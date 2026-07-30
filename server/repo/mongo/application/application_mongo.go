@@ -59,21 +59,46 @@ func (m *mongoApplication) ToAggregate() *application.Application {
 }
 
 func (r *RepoApplication) Get(ctx context.Context) ([]*application.Application, error) {
-	cursor, err := r.Coll().Find(ctx, bson.D{}, options.Find().SetSort(bson.D{{"createdAt", -1}}))
+	var m []mongoApplication
+	cursor, err := r.Coll().Find(ctx, bson.D{}, options.Find().SetSort(bson.D{bson.E{Key: "createAt", Value: -1}}))
 	if err != nil {
 		return nil, err
 	}
-	defer cursor.Close(ctx)
-
+	if err := cursor.All(ctx, &m); err != nil {
+		return nil, err
+	}
 	var applications []*application.Application
-	for cursor.Next(ctx) {
-		var a mongoApplication
-		if err := cursor.Decode(&a); err != nil {
-			return nil, err
-		}
-		applications = append(applications, a.ToAggregate())
+	for _, v := range m {
+		applications = append(applications, v.ToAggregate())
+	}
+	return applications, nil
+}
+
+func (r *RepoApplication) GetByPeriod(ctx context.Context, from, to *time.Time) ([]*application.Application, error) {
+	createAt := bson.M{}
+	if from != nil {
+		createAt["$gte"] = *from
+	}
+	if to != nil {
+		createAt["$lte"] = *to
+	}
+	filter := bson.M{}
+	if len(createAt) > 0 {
+		filter["createAt"] = createAt
 	}
 
+	var m []mongoApplication
+	cursor, err := r.Coll().Find(ctx, filter, options.Find().SetSort(bson.D{bson.E{Key: "createAt", Value: 1}}))
+	if err != nil {
+		return nil, err
+	}
+	if err := cursor.All(ctx, &m); err != nil {
+		return nil, err
+	}
+	var applications []*application.Application
+	for _, v := range m {
+		applications = append(applications, v.ToAggregate())
+	}
 	return applications, nil
 }
 
