@@ -1,0 +1,8 @@
+.env
+.env.*
+.cache/
+.gopath/
+.idea/
+.DS_Store
+tests/
+*.md

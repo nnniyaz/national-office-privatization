@@ -113,6 +113,12 @@ func (h *Handler) InitRoutes(isDevMode bool) *chi.Mux {
 	r.Use(middleware.Logger)
 	r.Use(middleware.RealIP)
 
+	r.Get("/healthz", func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte("ok"))
+	})
+
 	r.Get("/swagger/*", httpSwagger.WrapHandler)
 
 	r.Route("/api", func(r chi.Router) {

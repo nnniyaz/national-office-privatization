@@ -1,3 +1,5 @@
+# LEGACY: деплой в k3s на Hetzner через self-hosted runner. Запускается только вручную;
+# после cutover на Azure VM + Vercel удалить вместе с .k8s/. См. README.md.
 name: Prod Admin
 
 on:

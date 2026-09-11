@@ -1,0 +1,10 @@
+# Общий для проектов nop-admin и nop-client (Root Directory admin/ и client/,
+# "Include source files outside of the Root Directory" включён ради shared/).
+server
+.k8s
+.github
+admin/node_modules
+admin/dist
+client/node_modules
+client/.next
+*.md

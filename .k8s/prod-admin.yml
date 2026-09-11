@@ -1,3 +1,5 @@
+# LEGACY (k3s на Hetzner): не используется после переезда на Azure VM + Vercel,
+# см. README.md, раздел «Деплой». Удалить после cutover.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
