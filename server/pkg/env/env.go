@@ -41,6 +41,16 @@ func GetEnvAsBool(key string) (bool, error) {
 	return value, nil
 }
 
+// GetEnvOr returns the value of key or def when the variable is not set at all.
+// An empty value is returned as is, so callers can distinguish "unset" from "empty".
+func GetEnvOr(key, def string) string {
+	v, ok := os.LookupEnv(key)
+	if !ok {
+		return def
+	}
+	return strings.Trim(v, "\"")
+}
+
 func MustGetEnv(key string) string {
 	v, err := GetEnv(key)
 	if err != nil {

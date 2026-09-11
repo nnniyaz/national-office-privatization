@@ -56,6 +56,6 @@ func NewService(repos *repo.Repository, config *config.Config, l logger.Logger, 
 		Npa:         npa.NewNpaService(l, repos.RepoNpa),
 		Event:       event.NewEventService(l, repos.RepoEvent),
 		Application: application.NewApplicationService(l, repos.RepoApplication, emailService, enterpriseService),
-		Upload:      upload.NewUploadService(l, s3),
+		Upload:      upload.NewUploadService(l, s3, config.GetSpaceAcl()),
 	}
 }

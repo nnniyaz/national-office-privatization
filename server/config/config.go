@@ -9,9 +9,10 @@ type Config struct {
 	spaceSecret   string
 	spaceEndPoint string
 	spaceRegion   string
+	spaceAcl      string
 }
 
-func New(isDevMode bool, smtpPort int, smtpUser, smtpPass, smtpHost, mongoUri, spaceBucket, spaceKey, spaceSecret, spaceEndPoint, spaceRegion string) *Config {
+func New(isDevMode bool, smtpPort int, smtpUser, smtpPass, smtpHost, mongoUri, spaceBucket, spaceKey, spaceSecret, spaceEndPoint, spaceRegion, spaceAcl string) *Config {
 	return &Config{
 		mongoUri:      mongoUri,
 		isDevMode:     isDevMode,
@@ -21,6 +22,7 @@ func New(isDevMode bool, smtpPort int, smtpUser, smtpPass, smtpHost, mongoUri, s
 		spaceSecret:   spaceSecret,
 		spaceEndPoint: spaceEndPoint,
 		spaceRegion:   spaceRegion,
+		spaceAcl:      spaceAcl,
 	}
 }
 
@@ -54,6 +56,12 @@ func (c *Config) GetSpaceEndPoint() string {
 
 func (c *Config) GetSpaceRegion() string {
 	return c.spaceRegion
+}
+
+// GetSpaceAcl is the canned ACL sent with PutObject. Empty or "none" means the
+// x-amz-acl header is omitted (Cloudflare R2 rejects ACLs); default is public-read (MinIO).
+func (c *Config) GetSpaceAcl() string {
+	return c.spaceAcl
 }
 
 type CfgEmail struct {

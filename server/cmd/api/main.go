@@ -62,6 +62,7 @@ func main() {
 		env.MustGetEnv("SPACE_SECRET"),
 		env.MustGetEnv("SPACE_ENDPOINT"),
 		env.MustGetEnv("SPACE_REGION"),
+		env.GetEnvOr("SPACE_ACL", "public-read"),
 	)
 
 	// --- init logger

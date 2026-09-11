@@ -24,10 +24,16 @@ type UploadService interface {
 type uploadService struct {
 	logger   logger.Logger
 	s3Client *s3.S3
+	acl      string
 }
 
-func NewUploadService(l logger.Logger, s3Client *s3.S3) UploadService {
-	return &uploadService{logger: l, s3Client: s3Client}
+// NewUploadService creates the S3 uploader. acl is the canned ACL for PutObject;
+// "" or "none" disables the x-amz-acl header (required for Cloudflare R2).
+func NewUploadService(l logger.Logger, s3Client *s3.S3, acl string) UploadService {
+	if acl == "none" {
+		acl = ""
+	}
+	return &uploadService{logger: l, s3Client: s3Client, acl: acl}
 }
 
 func (s *uploadService) UploadImage(s3Bucket, folderName string, file multipart.File, fileHeader *multipart.FileHeader) (string, error) {
@@ -37,14 +43,17 @@ func (s *uploadService) UploadImage(s3Bucket, folderName string, file multipart.
 		return "", ErrMaxFileSizeIs1MB
 	}
 	fileName := uuid.NewUUID().String() + "_" + fileHeader.Filename
-	_, err := s.s3Client.PutObject(&s3.PutObjectInput{
+	input := &s3.PutObjectInput{
 		Bucket:       aws.String(s3Bucket),
 		Key:          aws.String(folderName + "/" + fileName),
 		Body:         bytes.NewReader(buf.Bytes()),
-		ACL:          aws.String("public-read"),
 		CacheControl: aws.String("max-age=21600000"),
 		ContentType:  aws.String(fileHeader.Header.Get("Content-Type")),
-	})
+	}
+	if s.acl != "" {
+		input.ACL = aws.String(s.acl)
+	}
+	_, err := s.s3Client.PutObject(input)
 	buf.Reset()
 	if err != nil {
 		return "", err
