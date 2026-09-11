@@ -47,7 +47,7 @@ func (m *mongoNpa) ToAggregate() *npa.Npa {
 }
 
 func (r *RepoNpa) Get(ctx context.Context) ([]*npa.Npa, error) {
-	cursor, err := r.Coll().Find(ctx, bson.D{}, options.Find().SetSort(bson.D{{"createdAt", -1}}))
+	cursor, err := r.Coll().Find(ctx, bson.D{}, options.Find().SetSort(bson.D{{Key: "createdAt", Value: -1}}))
 	if err != nil {
 		return nil, err
 	}

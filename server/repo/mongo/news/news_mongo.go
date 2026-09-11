@@ -48,7 +48,7 @@ func (m *mongoNews) ToAggregate() *news.News {
 
 func (r *RepoNews) Get(ctx context.Context) ([]*news.News, error) {
 	var m []mongoNews
-	cursor, err := r.Coll().Find(ctx, bson.D{}, options.Find().SetSort(bson.D{{"createdAt", -1}}))
+	cursor, err := r.Coll().Find(ctx, bson.D{}, options.Find().SetSort(bson.D{{Key: "createdAt", Value: -1}}))
 	if err != nil {
 		return nil, err
 	}

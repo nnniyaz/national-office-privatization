@@ -47,7 +47,7 @@ func (m *mongoDocument) ToAggregate() *document.Document {
 }
 
 func (r *RepoDocument) Get(ctx context.Context) ([]*document.Document, error) {
-	cursor, err := r.Coll().Find(ctx, bson.D{}, options.Find().SetSort(bson.D{{"createdAt", -1}}))
+	cursor, err := r.Coll().Find(ctx, bson.D{}, options.Find().SetSort(bson.D{{Key: "createdAt", Value: -1}}))
 	if err != nil {
 		return nil, err
 	}

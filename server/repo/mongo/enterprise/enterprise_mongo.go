@@ -116,26 +116,26 @@ func (m *mongoEnterprise) ToAggregate() *enterprise.Enterprise {
 func (r *RepoEnterprise) Get(ctx context.Context, offset, limit int64, search, region, field string) ([]*enterprise.Enterprise, int64, error) {
 	var m []mongoEnterprise
 	filter := bson.D{
-		{"governmentShare", bson.D{{"$gt", -1}}},
+		{Key: "governmentShare", Value: bson.D{{Key: "$gt", Value: -1}}},
 	}
 	if search != "" {
 		filter = append(filter, bson.E{
 			Key:   "name",
-			Value: bson.D{{"$regex", primitive.Regex{Pattern: search, Options: "i"}}},
+			Value: bson.D{{Key: "$regex", Value: primitive.Regex{Pattern: search, Options: "i"}}},
 		})
 	}
 
 	if region != "" {
 		filter = append(filter, bson.E{
 			Key:   "location",
-			Value: bson.D{{"$regex", primitive.Regex{Pattern: region, Options: "i"}}},
+			Value: bson.D{{Key: "$regex", Value: primitive.Regex{Pattern: region, Options: "i"}}},
 		})
 	}
 
 	if field != "" {
 		filter = append(filter, bson.E{
 			Key:   "industry",
-			Value: bson.D{{"$regex", primitive.Regex{Pattern: field, Options: "i"}}},
+			Value: bson.D{{Key: "$regex", Value: primitive.Regex{Pattern: field, Options: "i"}}},
 		})
 	}
 
@@ -144,7 +144,7 @@ func (r *RepoEnterprise) Get(ctx context.Context, offset, limit int64, search, r
 		return nil, 0, err
 	}
 
-	cursor, err := r.Coll().Find(ctx, filter, options.Find().SetSort(bson.D{{"createdAt", -1}}).SetSkip(offset).SetLimit(limit))
+	cursor, err := r.Coll().Find(ctx, filter, options.Find().SetSort(bson.D{{Key: "createdAt", Value: -1}}).SetSkip(offset).SetLimit(limit))
 	if err != nil {
 		return nil, 0, err
 	}
